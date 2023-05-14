@@ -13,8 +13,8 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item><router-link to="/region">지역별 여행지</router-link></b-nav-item>
-        <b-nav-item><router-link to="/">핫플레이스</router-link></b-nav-item>
-        <b-nav-item href="#">여행계획</b-nav-item>
+        <b-nav-item><router-link to="/hotplace">핫플레이스</router-link></b-nav-item>
+        <b-nav-item><router-link to="/plan">여행계획</router-link></b-nav-item>
         <b-nav-item href="#">공지사항</b-nav-item>
       </b-navbar-nav>
 
