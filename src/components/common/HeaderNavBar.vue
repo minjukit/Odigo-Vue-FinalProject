@@ -13,9 +13,11 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item><router-link to="/region">지역별 여행지</router-link></b-nav-item>
-        <b-nav-item><router-link to="/">핫플레이스</router-link></b-nav-item>
-        <b-nav-item href="#">여행계획</b-nav-item>
-        <b-nav-item href="#">공지사항</b-nav-item>
+
+        <b-nav-item><router-link to="/board">핫플레이스</router-link></b-nav-item>
+        <b-nav-item><router-link to="/region">여행계획</router-link></b-nav-item>
+        <b-nav-item><router-link to="/board">공지사항</router-link></b-nav-item>
+
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -36,8 +38,10 @@
           <template #button-content>
             <em>User</em>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#">회원가입</b-dropdown-item>
+          <b-dropdown-item href="#">로그인</b-dropdown-item>
+          <b-dropdown-item href="#">로그아웃</b-dropdown-item>
+
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -84,6 +88,12 @@ b-nav-item{
 
 #imgLogo {
     width: 30px;
+}
+
+
+.navbar-brand a:link{
+    text-decoration: none;
+    color: rgb(90, 90, 90);
 }
 
 
