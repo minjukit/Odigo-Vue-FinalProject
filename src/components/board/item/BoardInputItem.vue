@@ -2,31 +2,16 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group
-          id="userid-group"
-          label="작성자:"
-          label-for="userid"
-          description="작성자를 입력하세요."
-        >
-          <b-form-input
-            id="userid"
-            :disabled="isUserid"
-            v-model="article.userid"
-            type="text"
-            required
-            placeholder="작성자 입력..."
-          ></b-form-input>
-        </b-form-group>
 
         <b-form-group
-          id="subject-group"
+          id="title-group"
           label="제목:"
-          label-for="subject"
+          label-for="title"
           description="제목을 입력하세요."
         >
           <b-form-input
-            id="subject"
-            v-model="article.subject"
+            id="title"
+            v-model="article.title"
             type="text"
             required
             placeholder="제목 입력..."
@@ -67,9 +52,9 @@ export default {
   data() {
     return {
       article: {
-        articleno: 0,
+        id: 0,
         userid: "",
-        subject: "",
+        title: "",
         content: "",
       },
       isUserid: false,
@@ -80,7 +65,7 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
+      http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
         // this.article.articleno = data.article.articleno;
         // this.article.userid = data.article.userid;
         // this.article.subject = data.article.subject;
@@ -96,15 +81,12 @@ export default {
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
+      
       err &&
-        !this.article.subject &&
+        !this.article.title &&
         ((msg = "제목 입력해주세요"),
         (err = false),
-        this.$refs.subject.focus());
+        this.$refs.title.focus());
       err &&
         !this.article.content &&
         ((msg = "내용 입력해주세요"),
@@ -117,44 +99,40 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.article.articleno = 0;
-      this.article.subject = "";
+      this.article.id = 0;
+      this.article.title = "";
       this.article.content = "";
       this.$router.push({ name: "boardList" });
     },
     registArticle() {
+      console.log(this.article);
       http
         .post(`/board`, {
           userid: this.article.userid,
-          subject: this.article.subject,
+          title: this.article.title,
           content: this.article.content,
         })
-        .then(({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
-          }
-          alert(msg);
+        .then(() => {
           this.moveList();
-        });
+        }).catch(()=>{
+             let msg = "등록 처리시 문제가 발생했습니다.";
+             alert(msg);
+             });
     },
     modifyArticle() {
+      
       http
-        .put(`/board/${this.article.articleno}`, {
-          articleno: this.article.articleno,
+        .put(`/board/${this.article.id}`,  {
+          id: this.article.id,
           userid: this.article.userid,
-          subject: this.article.subject,
+          title: this.article.title,
           content: this.article.content,
         })
-        .then(({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "수정이 완료되었습니다.";
-          }
-          alert(msg);
+        .then(() => {
           // 현재 route를 /list로 변경.
-          this.$router.push({ name: "boardList" });
-        });
+          this.moveList();
+        }).catch(() => {    let msg = "수정이 ㄴㄴ."; alert(msg);});
+
     },
     moveList() {
       this.$router.push({ name: "boardList" });

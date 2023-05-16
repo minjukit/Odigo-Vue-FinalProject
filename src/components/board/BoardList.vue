@@ -57,7 +57,7 @@ export default {
   created() {
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
-      console.log(data);
+
     });
   },
   methods: {
