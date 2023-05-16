@@ -26,7 +26,7 @@
       <b-col>
         <b-card
           :header-html="`<h3>${article.id}.
-          ${article.title} [${article.count}]</h3><div><h6>${article.userid}</div><div>${article.mdate}</h6></div>`"
+          ${article.title} </h3><div><h6>${article.userid}</div><div>${article.modifiedDate}</h6></div>조회수: ${article.count}`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -69,7 +69,7 @@ export default {
     moveModifyArticle() {
       this.$router.replace({
         name: "boardModify",
-        params: { boardid: this.article.id },
+        params: { id: this.article.id },
       });
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
@@ -77,7 +77,7 @@ export default {
       if (confirm("정말로 삭제?")) {
         this.$router.replace({
           name: "boardDelete",
-          params: { boardid: this.article.id },
+          params: { id: this.article.id },
         });
       }
     },
