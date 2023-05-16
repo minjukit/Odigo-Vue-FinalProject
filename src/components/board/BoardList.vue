@@ -28,7 +28,7 @@
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
             <board-list-item
               v-for="article in articles"
-              :key="article.articleno"
+              :key="article.boardid"
               v-bind="article"
             />
           </tbody>
@@ -43,6 +43,7 @@
 import http from "@/util/http-common.js";
 import BoardListItem from "@/components/board/item/BoardListItem";
 
+
 export default {
   name: "BoardList",
   components: {
@@ -56,6 +57,7 @@ export default {
   created() {
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
+      console.log(data);
     });
   },
   methods: {

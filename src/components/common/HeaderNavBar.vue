@@ -95,5 +95,12 @@ b-nav-item{
     color: rgb(90, 90, 90);
 }
 
+/* a:hover {
+  text-decoration: none;
+  font-weight: bold;
+}
 
+a.router-link-exact-active {
+  color: #3aa4ca;
+} */
 </style>

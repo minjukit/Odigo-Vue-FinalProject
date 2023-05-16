@@ -41,19 +41,19 @@ const routes = [
           import(/* webpackChunkName: "board" */ "@/components/board/BoardRegister.vue"),
       },
       {
-        path: "detail/:articleno",
+        path: "detail/:id",
         name: "boardDetail",
         component: () =>
           import(/* webpackChunkName: "board" */ "@/components/board/BoardDetail.vue"),
       },
       {
-        path: "modify/:articleno",
+        path: "modify/:id",
         name: "boardModify",
         component: () =>
           import(/* webpackChunkName: "board" */ "@/components/board/BoardModify.vue"),
       },
       {
-        path: "delete/:articleno",
+        path: "delete/:id",
         name: "boardDelete",
         component: () =>
           import(/* webpackChunkName: "board" */ "@/components/board/BoardDelete.vue"),
