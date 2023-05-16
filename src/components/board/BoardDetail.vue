@@ -25,7 +25,7 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.id}.
+          :header-html="`<h3>
           ${article.title} </h3><div><h6>${article.userid}</div><div>${article.modifiedDate}</h6></div>조회수: ${article.count}`"
           class="mb-2"
           border-variant="dark"

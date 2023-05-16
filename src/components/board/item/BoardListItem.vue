@@ -1,6 +1,6 @@
 <template>
   <b-tr>
-    <b-td>{{ id }}</b-td>
+    <b-td>{{ idx+1 }}</b-td>
     <b-th class="text-left">
       <router-link
         :to="{ name: 'boardDetail', params: { id: id } }"
@@ -19,6 +19,7 @@ import moment from "moment";
 export default {
   name: "BoardListItem",
   props: {
+    idx: Number,
     id: Number,
     userid: String,
     content: String,

@@ -14,25 +14,25 @@
     </b-row>
     <b-row>
       <b-col v-if="articles.length">
-        <b-table-simple hover responsive>
-          <b-thead head-variant="dark">
-            <b-tr>
-              <b-th>글번호</b-th>
-              <b-th>제목</b-th>
-              <b-th>조회수</b-th>
-              <b-th>작성자</b-th>
-              <b-th>작성일</b-th>
-            </b-tr>
-          </b-thead>
+        <b-table hover responsive
+        :items="articles"
+        :per-page="perPage"
+        :current-page="currentPage"
+        :fields="fields">
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
             <board-list-item
-              v-for="article in articles"
-              :key="article.boardid"
+              v-for="(article,idx) in articles"
+              :key="article.id"
+              :idx="idx"
               v-bind="article"
             />
           </tbody>
-        </b-table-simple>
+        </b-table>
+        <!--page navigation-->
+        <div class="overflow-auto" id="pagNav">
+          <b-pagination v-model="currentPage" :total-rows="rows" @page-click="pageClick" :link-gen="linkGen" :per-page="perPage" use-router align="fill"></b-pagination>
+        </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
     </b-row>
@@ -52,6 +52,15 @@ export default {
   data() {
     return {
       articles: [],
+      currentPage: 1,
+      perPage: 6, // 한페이지 당 보여질 글 개수
+      fields: [
+        { key: 'id', label: '글번호' },
+        { key: 'user', label: '작성자' },
+        { key: 'title', label: '제목' },
+         { key: 'count', label: '조회수' },
+          { key: 'modifiedDate', label: '작성일' },
+      ],
     };
   },
   created() {
@@ -64,7 +73,26 @@ export default {
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
     },
+    pageClick(button, page){
+      this.currentPage = page;
+      this.getBoardListByPage(page);
+    },
+    getBoardListByPage(page){
+      let offset = (page-1)*this.perPage;
+      http.get(`/board/list?${offset}&limit=${this.perPage}`)
+      .then(response => {
+        this.articles = response.data;
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
   },
+    computed: {
+      rows() {
+        return this.articles.length
+      }
+    }
 };
 </script>
 
@@ -77,5 +105,11 @@ export default {
   width: 300px;
   text-align: left;
 }
+
+/* #pagNav{
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+} */
 
 </style>

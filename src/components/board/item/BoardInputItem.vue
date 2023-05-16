@@ -7,7 +7,6 @@
           id="title-group"
           label="제목:"
           label-for="title"
-          description="제목을 입력하세요."
         >
           <b-form-input
             id="title"
@@ -112,8 +111,14 @@ export default {
           title: this.article.title,
           content: this.article.content,
         })
-        .then(() => {
-          this.moveList();
+        .then(response => {
+          if (response.status === 200) {
+            // 200 OK 상태 코드 처리
+            this.moveList();
+          } else {
+            // 다른 상태 코드 처리
+            alert(response.status);
+          }
         }).catch(()=>{
              let msg = "등록 처리시 문제가 발생했습니다.";
              alert(msg);
@@ -131,7 +136,7 @@ export default {
         .then(() => {
           // 현재 route를 /list로 변경.
           this.moveList();
-        }).catch(() => {    let msg = "수정이 ㄴㄴ."; alert(msg);});
+        }).catch(() => {    let msg = "수정 중 문제가 발생했습니다."; alert(msg);});
 
     },
     moveList() {
