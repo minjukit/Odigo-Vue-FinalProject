@@ -1,18 +1,45 @@
 <template>
 	<div class="container" style="margin-top: 2%;">
-		<div class="row">
+		<div class="row" style="margin-left: 0%; width:103%">
 			<input id="search-keyword" class="form-control col-8 search" type="search" placeholder="검색어를 입력하세요"
 				aria-label="검색어를 입력하세요" style="margin-right: 2%;" v-model.lazy:value="keyWord" />
 			<button id="btn-search" class="btn btn-outline-success col-3" type="button" @click="getById">검색</button>
-			<div id="map"></div>
 		</div>
-
+		<div class="row" style="margin-top: 1.5%">
+			<div class="col-4">
+				<map-list :items="items"></map-list>
+			</div>
+			<div class="col-8">
+				<div id="map"></div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-import empRestAPI from '@/util/http-common.js'
+import MapList from '@/components/map/MapList'
+import { mapActions, mapGetters } from 'vuex';
+import Constant from '@/common/Constant'
+
 export default {
+	components: {
+		MapList
+	},
+	created() {
+		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
+	},
+	computed: {
+		...mapGetters(["items", "data"]),
+		// items() {
+		// 	return this.$store.getters.items;
+		// }
+	},
+	// watch: {
+	// 	items() {
+	// 		console.log();
+	// 		this.makeList(this.items)
+	// 	}
+	// },
 	data() {
 		return {
 			map: null,
@@ -22,6 +49,7 @@ export default {
 			markers: [],
 			infos: [],
 			bounds: new window.kakao.maps.LatLngBounds(),
+			// items: [],
 		};
 	},
 	mounted() {
@@ -34,6 +62,10 @@ export default {
 		}
 	},
 	methods: {
+		// [Constant.GET_ROUTES]() {
+		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
+		// },
+		...mapActions([Constant.GET_ROUTES]),
 		loadScript() {
 			const script = document.createElement("script");
 			script.src =
@@ -69,16 +101,25 @@ export default {
 
 		getById() {
 			console.log(this.keyWord);
-			empRestAPI.get(`/trip/map/${this.keyWord}`)
-				.then(({ data }) => {
-					this.result = data
-					console.log(this.result.documents)
-					console.log(this.result.meta)
-					this.makeList(data);
-				})
-				.catch(() => console.log('목록 조회에 실패하였습니다.'));
+			if (this.keyWord == null || this.keyWord.length == 0) {
+				return
+			}
+			this[Constant.GET_ROUTES](this.keyWord)
+				.then(
+					() => {
+						console.log(this.data),
+							this.makeList(this.data)
+					}
+				);
+			// empRestAPI.get(`/trip/map/${this.keyWord}`)
+			// 	.then(({ data }) => {
+			// 		this.result = data
+			// 		this.items = this.result.documents;
+			// 		console.log(this.items)
+			// 		console.log(this.result.meta)
+			// 	})
+			// .catch(() => console.log('목록 조회에 실패하였습니다.'));
 		},
-
 		makeList(data) {
 			this.positions = [];
 			let trips = data.documents;
@@ -133,12 +174,6 @@ export default {
 
 				this.markers.push(marker);
 
-				const vm = this 
-				
-				window.removePoint = function()
-				{ 
-					vm.closeInfoWindow()
-			}
 				// vm.removePoint = function(id) { console.log(`removing point ${id}...`) }
 
 				var infowindow = new window.kakao.maps.InfoWindow({
@@ -147,7 +182,7 @@ export default {
 						'        <div class="title">' +
 						area[i].place_name +
 						// `<a class="btn btn-danger" @click.native="removePoint(${vm.asd})">Remove</a>` +
-						`           <div class="close" onclick="removePoint()" style="font-size : 13px; margin:5px">닫기</div>` +
+						`           <div class="close" onclick="closeInfoWindowByIndex(${i})" style="font-size : 13px; margin:5px">닫기</div>` +
 						'        </div>' +
 						'        <div class="body">' +
 						// '            <div class="img">' +
@@ -195,21 +230,28 @@ export default {
 				this.infos[idx].close();
 			}
 		},
+		closeInfoWindowByIndex(idx) {
+			console.log("close");
+			this.infos[idx].close();
+		},
+
 		test(id) {
 			console.log(id);
 		},
 
 		moveCenter(lat, lng) {
 			this.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
-		}
+		},
 	}
 }
 </script>
 
 <style scoped>
 #map {
-	width: 93.7%;
+	width: 96%;
 	height: 500px;
 	margin-top: 1%;
+	margin-left: -10px;
+	padding: 0;
 }
 </style>
