@@ -1,16 +1,17 @@
-<template>
+<!-- ***************사용 안함***************-->
+<template #cell(fieldName)="data">
+<router-link
+        :to="{ name: 'boardDetail', params: { id: id } }"
+        >
   <b-tr>
     <b-td>{{ idx+1 }}</b-td>
-    <b-th class="text-left">
-      <router-link
-        :to="{ name: 'boardDetail', params: { id: id } }"
-        >{{ title }}</router-link
-      >
-    </b-th>
+    <b-td>{{ title }}</b-td>
     <b-td>{{ count }}</b-td>
     <b-td>{{ userid }}</b-td>
     <b-td>{{ modifiedDate | dateFormat }}</b-td>
   </b-tr>
+  </router-link
+      >
 </template>
 
 <script>

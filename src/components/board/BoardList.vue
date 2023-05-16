@@ -15,23 +15,26 @@
     <b-row>
       <b-col v-if="articles.length">
         <b-table hover responsive
-        :items="articles"
         :per-page="perPage"
+        :items="articles"
+        :fields="fields"
         :current-page="currentPage"
-        :fields="fields">
-          <tbody>
-            <!-- 하위 component인 ListRow에 데이터 전달(props) -->
+        @row-clicked="rowClickHandler">
+        <template #cell(index)="data">
+          {{ (currentPage-1)*perPage + data.index + 1 }}
+        </template>
+        <!-- <tbody>
             <board-list-item
               v-for="(article,idx) in articles"
               :key="article.id"
               :idx="idx"
               v-bind="article"
             />
-          </tbody>
+          </tbody> -->
         </b-table>
         <!--page navigation-->
         <div class="overflow-auto" id="pagNav">
-          <b-pagination v-model="currentPage" :total-rows="rows" @page-click="pageClick" :link-gen="linkGen" :per-page="perPage" use-router align="fill"></b-pagination>
+          <b-pagination v-model="currentPage" :total-rows="rows" @page-click="pageClick" :per-page="perPage" use-router align="fill"></b-pagination>
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -41,13 +44,13 @@
 
 <script>
 import http from "@/util/http-common.js";
-import BoardListItem from "@/components/board/item/BoardListItem";
+// import BoardListItem from "@/components/board/item/BoardListItem";
 
 
 export default {
   name: "BoardList",
   components: {
-    BoardListItem,
+    // BoardListItem,
   },
   data() {
     return {
@@ -55,7 +58,7 @@ export default {
       currentPage: 1,
       perPage: 6, // 한페이지 당 보여질 글 개수
       fields: [
-        { key: 'id', label: '글번호' },
+        { key: 'index', label: '글번호' },
         { key: 'user', label: '작성자' },
         { key: 'title', label: '제목' },
          { key: 'count', label: '조회수' },
@@ -66,7 +69,6 @@ export default {
   created() {
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
-
     });
   },
   methods: {
@@ -86,6 +88,14 @@ export default {
       .catch(err => {
         console.log(err);
       })
+    },
+    rowClickHandler(row){ //click event
+      this.$router.push({ 
+        name: "boardDetail",
+        params:{
+          id:row.id
+        } 
+      });
     }
   },
     computed: {
