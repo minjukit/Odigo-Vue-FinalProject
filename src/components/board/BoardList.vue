@@ -12,14 +12,50 @@
         >
       </b-col>
     </b-row>
+<b-row>
+      <b-col class="my-1" align-h="center">
+        <b-form-group
+          label=""
+          label-for="sort-by-select"
+          label-cols-sm="10"
+          label-align-sm="right"
+          label-size="sm"
+          class="mb-0"
+       
+        >
+          <!-- <b-input-group size="sm">
+            <b-form-select
+              id="sort-by-select"
+              v-model="sortBy"
+              :options="sortOptions"
+              :aria-describedby="ariaDescribedby"
+            >
+            <template #first>
+                <option value="dateDesc">최근순</option>
+                <option value="dateAsc">오래된순</option>
+              </template>
+            </b-form-select>
+          </b-input-group> -->
+        </b-form-group>
+      </b-col>
+
+    </b-row>
     <b-row>
       <b-col v-if="articles.length">
         <b-table hover responsive
         :per-page="perPage"
         :items="articles"
         :fields="fields"
+        :filter="filter"
+        :filter-included-fields="filterOn"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        :sort-direction="sortDirection"
         :current-page="currentPage"
-        @row-clicked="rowClickHandler">
+        :filter-function="sortBy"
+        @row-clicked="rowClickHandler"
+        @filtered="onFiltered">
+
         <template #cell(index)="data">
           {{ (currentPage-1)*perPage + data.index + 1 }}
         </template>
@@ -33,8 +69,8 @@
           </tbody> -->
         </b-table>
         <!--page navigation-->
-        <div class="overflow-auto" id="pagNav">
-          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="fill"></b-pagination>
+        <div class="overflow-auto mt-5" id="pagNav">
+          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="center"></b-pagination>
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -62,8 +98,16 @@ export default {
         { key: 'user', label: '작성자' },
         { key: 'title', label: '제목' },
          { key: 'count', label: '조회수' },
-          { key: 'modifiedDate', label: '작성일' },
+        { key: 'modifiedDate', label: '작성일', sortable: true, sortDirection: 'desc'},
       ],
+      filter: null,
+      filterOn: [],
+      sortDirection: 'dateDesc',
+      sortBy: '', // 정렬방식 
+      sortOption: [
+        { value: 'dateDesc', text: '최근순' },
+        { value: 'dateAsc', text: '오래된순' }
+      ]
     };
   },
   created() {
@@ -100,11 +144,34 @@ export default {
           currentPage: this.currentPage,
         } 
       });
-    }
+    },
+    onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      }
   },
     computed: {
       rows() {
         return this.articles.length
+      },
+       sortOptions() {
+        // Create an options list from our fields
+        return this.fields
+          .filter(f => f.sortable)
+          .map(f => {
+            return { text: f.label, value: f.key }
+          })
+      },
+    },
+    watch: {
+      // 지정정렬안됨
+      sortBy(date){
+        if(date == 'dateAsc'){
+          this.articles.sort((a,b) => b.modifiedDate - a.modifiedDate);
+        }else if(date == 'dateDesc'){
+          this.articles.sort((a,b) => a.modifiedDate - b.modifiedDate);
+        }
       }
     }
 };

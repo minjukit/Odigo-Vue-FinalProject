@@ -6,27 +6,13 @@
       </b-col>
     </b-row>
     <b-row class="mb-1">
-      <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listArticle">목록</b-button>
-      </b-col>
-      <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyArticle"
-          class="mr-2"
-          >글수정</b-button
-        >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
-      </b-col>
-    </b-row>
-    <b-row class="mb-1">
       <b-col>
+         <div  class='text-right'>조회수: {{article.count}}</div>
         <b-card
-          :header-html="`<h3>
-          ${article.title} </h3><div><h6>${article.userid}</div><div>${article.modifiedDate}</h6></div>조회수: ${article.count}`"
+          :header-html=
+          "`<div  class='text-left'><h3>${article.title} </h3></div>
+          <div  class='text-left'>${article.modifiedDate}</h6></div>
+          <div class='text-right'><h6>${article.userid}</div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -35,6 +21,22 @@
             <div v-html="message"></div>
           </b-card-body>
         </b-card>
+      </b-col>
+    </b-row>
+    <b-row class="mb-1">
+      <b-col class="mb-1" align-self="center">
+        <b-button variant="outline-secondary" @click="listArticle">목록</b-button>
+      </b-col>
+      <b-col class="text-right">
+        <b-button
+          variant="outline-info"
+          size="sm"
+          @click="moveModifyArticle"
+          class="mr-2"
+          >글수정</b-button>
+        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
+          >글삭제</b-button
+        >
       </b-col>
     </b-row>
   </b-container>
