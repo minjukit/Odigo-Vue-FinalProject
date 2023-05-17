@@ -42,12 +42,14 @@
 
 <script>
 import http from "@/util/http-common.js";
+//import moment from "moment"
 
 export default {
   name: "BoardDetail",
   data() {
     return {
       article: {},
+      modifiedDate: ""
     };
   },
   computed: {
@@ -64,7 +66,7 @@ export default {
   },
   methods: {
     listArticle() {
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "boardList" , params: {currentPage: this.$route.params.currentPage}});
     },
     moveModifyArticle() {
       this.$router.replace({
@@ -83,8 +85,8 @@ export default {
     },
   },
   // filters: {
-  //   dateFormat(regtime) {
-  //     return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+  //   dateFormat(modifiedDate) {
+  //     this.modifiedDate = moment(new Date(modifiedDate)).format("YY.MM.DD hh:mm:ss");
   //   },
   // },
 };

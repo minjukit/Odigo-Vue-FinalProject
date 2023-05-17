@@ -34,7 +34,7 @@
         </b-table>
         <!--page navigation-->
         <div class="overflow-auto" id="pagNav">
-          <b-pagination v-model="currentPage" :total-rows="rows" @page-click="pageClick" :per-page="perPage" use-router align="fill"></b-pagination>
+          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="fill"></b-pagination>
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -67,6 +67,8 @@ export default {
     };
   },
   created() {
+    this.currentPage = this.$route.params.currentPage;
+    if(this.currentPage === undefined) this.currentPage =1;
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
     });
@@ -75,25 +77,27 @@ export default {
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
     },
-    pageClick(button, page){
-      this.currentPage = page;
-      this.getBoardListByPage(page);
+    pageClick(){
+      //this.currentPage = page;
+      //this.getBoardListByPage(page);
     },
-    getBoardListByPage(page){
-      let offset = (page-1)*this.perPage;
-      http.get(`/board/list?${offset}&limit=${this.perPage}`)
-      .then(response => {
-        this.articles = response.data;
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    },
+    // getBoardListByPage(page){
+    //   let offset = (page-1)*this.perPage;
+    //   http.get(`/board/list?${offset}&limit=${this.perPage}`)
+    //   .then(response => {
+    //     this.articles = response.data;
+    //     console.log("sdfs")
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   })
+    // },
     rowClickHandler(row){ //click event
       this.$router.push({ 
         name: "boardDetail",
         params:{
-          id:row.id
+          id:row.id,
+          currentPage: this.currentPage,
         } 
       });
     }
