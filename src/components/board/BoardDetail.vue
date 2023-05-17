@@ -21,8 +21,6 @@
             <div v-html="message"></div>
           </b-card-body>
         </b-card>
-
-
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -41,16 +39,21 @@
         >
       </b-col>
     </b-row>
+    <div class="mt-5">
+      <comment-list-item></comment-list-item>
+    </div>
   </b-container>
+
 </template>
 
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment"
+import CommentListItem from "./item/CommentListItem.vue";
 
 
 export default {
-  components: {  },
+  components: {CommentListItem  },
   name: "BoardDetail",
   data() {
     return {

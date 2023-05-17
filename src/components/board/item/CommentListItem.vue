@@ -1,48 +1,25 @@
-  <template>
-    <b-row class="mb-1">
-    <b-col style="text-align: left">
-      <b-form @submit="onSubmit" @reset="onReset">
-
-        <b-form-group
-          id="title-group"
-          label="제목:"
-          label-for="title"
-        >
-          <b-form-input
-            id="title"
-            v-model="article.title"
-            type="text"
-            required
-            placeholder="제목 입력..."
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="content-group" label="내용:" label-for="content">
-          <b-form-textarea
-            id="content"
-            v-model="article.content"
-            placeholder="내용 입력..."
-            rows="10"
-            max-rows="15"
+<template>
+   <!-- <b-form @submit="onSubmit" @reset="onReset"> -->
+    <b-card bg-variant="light">
+      <div>
+        <b-form-input aplaceholder="여기 닉넴" class="mt-1"></b-form-input>
+        <b-form-textarea
+          id="textarea-no-resize"
+          v-model="text"
+          placeholder="댓글을 입력하세요..."
+          rows="3"
+          no-resize
+          class = "mt-2"
+          @keyup.13="addComment()"
           ></b-form-textarea>
-        </b-form-group>
+        <b-button class = "mt-3">전송</b-button>
+      </div>
+    </b-card>
+    <!-- </b-form>  -->
+</template>
 
-        <b-button
-          type="submit"
-          variant="primary"
-          class="m-1"
-          v-if="this.type === 'register'"
-          >글작성</b-button
-        >
-        <b-button type="submit" variant="primary" class="m-1" v-else
-          >글수정</b-button
-        >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
-      </b-form>
-    </b-col>
-  </b-row>
-  </template>
-  
+
+
   <script>
   export default {
     name: 'CommentListItem',
@@ -50,12 +27,21 @@
     data() {
         return {
             comments: [{
-              
+
             }],
+            text: ""
         };
     },
     created() {},
-    methods: {},
+    methods: {
+       addComment(){
+      this.comments.push({
+        id:4,name:this.newComment.name,content:this.newComment.content, time:new Date(),like:0
+      })
+      this.newComment.name = " "
+      this.newComment.content= " "
+    }
+    },
   };
   </script>
   
