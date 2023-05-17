@@ -41,22 +41,16 @@
         >
       </b-col>
     </b-row>
-    <comment-list-item
-             v-for="(article,idx) in articles"
-              :key="article.id"
-              :idx="idx"
-              v-bind="article"
-            />
   </b-container>
 </template>
 
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment"
-import CommentListItem from "./item/CommentListItem.vue";
+
 
 export default {
-  components: { CommentListItem },
+  components: {  },
   name: "BoardDetail",
   data() {
     return {
