@@ -11,16 +11,19 @@
         <b-card
           :header-html=
           "`<div  class='text-left'><h3>${article.title} </h3></div>
-          <div  class='text-left'>${article.modifiedDate}</h6></div>
+          <div  class='text-left'>${modifiedDate}</h6></div>
           <div class='text-right'><h6>${article.userid}</div>`"
           class="mb-2"
           border-variant="dark"
           no-body
         >
+   
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
         </b-card>
+
+
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -44,14 +47,14 @@
 
 <script>
 import http from "@/util/http-common.js";
-//import moment from "moment"
+import moment from "moment"
 
 export default {
   name: "BoardDetail",
   data() {
     return {
       article: {},
-      modifiedDate: ""
+      modifiedDate: Date
     };
   },
   computed: {
@@ -64,6 +67,7 @@ export default {
   created() {
     http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
       this.article = data;
+      this.modifiedDate= moment(this.article.modifiedDate).format("YY.MM.DD hh:mm:ss");
     });
   },
   methods: {
@@ -87,8 +91,8 @@ export default {
     },
   },
   // filters: {
-  //   dateFormat(modifiedDate) {
-  //     this.modifiedDate = moment(new Date(modifiedDate)).format("YY.MM.DD hh:mm:ss");
+  //   dateFormat() {
+  //     this.modifiedDate = moment(this.article.modifiedDate).format("YY.MM.DD hh:mm:ss");
   //   },
   // },
 };

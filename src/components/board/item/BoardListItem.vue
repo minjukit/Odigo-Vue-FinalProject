@@ -9,6 +9,7 @@
     <b-td>{{ count }}</b-td>
     <b-td>{{ userid }}</b-td>
     <b-td>{{ modifiedDate | dateFormat }}</b-td>
+      
   </b-tr>
   </router-link
       >
@@ -26,12 +27,12 @@ export default {
     content: String,
     title: String,
     count: Number,
-    createdDate: String,
-    modifiedDate: String
+    createdDate: Date,
+    modifiedDate: Date
   },
   filters: {
     dateFormat(mdate) {
-      return moment(new Date(mdate)).format("YY.MM.DD");
+      return moment(mdate).format("YY.MM.DD");
     },
   },
 };

@@ -15,27 +15,19 @@
 <b-row>
       <b-col class="my-1" align-h="center">
         <b-form-group
-          label=""
+          label="정렬"
           label-for="sort-by-select"
           label-cols-sm="10"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
-       
         >
-          <!-- <b-input-group size="sm">
-            <b-form-select
-              id="sort-by-select"
-              v-model="sortBy"
-              :options="sortOptions"
-              :aria-describedby="ariaDescribedby"
-            >
-            <template #first>
-                <option value="dateDesc">최근순</option>
-                <option value="dateAsc">오래된순</option>
-              </template>
-            </b-form-select>
-          </b-input-group> -->
+        <b-input-group size="sm">
+          <b-form-select v-model="sortBy" :options="sortOption" 
+           id="sort-by-select">
+              <!-- option data안에 있음 -->
+          </b-form-select>
+        </b-input-group>
         </b-form-group>
       </b-col>
 
@@ -44,17 +36,11 @@
       <b-col v-if="articles.length">
         <b-table hover responsive
         :per-page="perPage"
-        :items="articles"
+        :items="filteredData"
         :fields="fields"
-        :filter="filter"
-        :filter-included-fields="filterOn"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
-        :sort-direction="sortDirection"
         :current-page="currentPage"
-        :filter-function="sortBy"
         @row-clicked="rowClickHandler"
-        @filtered="onFiltered">
+        >
 
         <template #cell(index)="data">
           {{ (currentPage-1)*perPage + data.index + 1 }}
@@ -81,7 +67,7 @@
 <script>
 import http from "@/util/http-common.js";
 // import BoardListItem from "@/components/board/item/BoardListItem";
-
+import moment from "moment";
 
 export default {
   name: "BoardList",
@@ -97,17 +83,15 @@ export default {
         { key: 'index', label: '글번호' },
         { key: 'user', label: '작성자' },
         { key: 'title', label: '제목' },
-         { key: 'count', label: '조회수' },
-        { key: 'modifiedDate', label: '작성일', sortable: true, sortDirection: 'desc'},
+        { key: 'count', label: '조회수' },
+        { key: 'modifiedDate', label: '작성일'},
       ],
-      filter: null,
-      filterOn: [],
-      sortDirection: 'dateDesc',
-      sortBy: '', // 정렬방식 
+      sortBy: 'dateDesc', // 정렬방식 default
       sortOption: [
         { value: 'dateDesc', text: '최근순' },
         { value: 'dateAsc', text: '오래된순' }
-      ]
+      ],
+       
     };
   },
   created() {
@@ -115,6 +99,9 @@ export default {
     if(this.currentPage === undefined) this.currentPage =1;
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
+      for(let i =0; i<this.articles.length; i++){
+         this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
+      }
     });
   },
   methods: {
@@ -144,34 +131,22 @@ export default {
           currentPage: this.currentPage,
         } 
       });
-    },
-    onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      }
+    }
   },
     computed: {
       rows() {
         return this.articles.length
       },
-       sortOptions() {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      },
-    },
-    watch: {
-      // 지정정렬안됨
-      sortBy(date){
-        if(date == 'dateAsc'){
-          this.articles.sort((a,b) => b.modifiedDate - a.modifiedDate);
-        }else if(date == 'dateDesc'){
-          this.articles.sort((a,b) => a.modifiedDate - b.modifiedDate);
+      filteredData(){
+        let sortedArticles = [...this.articles]; // eslint 부작용 제거 => 배열 복사
+        if(this.sortBy === 'dateDesc'){
+          sortedArticles.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='dateAsc'){
+          sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+          console.log(sortedArticles);
         }
+         return sortedArticles;
       }
     }
 };
