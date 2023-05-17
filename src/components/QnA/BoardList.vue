@@ -96,10 +96,8 @@ export default {
     };
   },
   created() {
-    this.sortBy = this.$route.params.sortBy;
     this.currentPage = this.$route.params.currentPage;
     if(this.currentPage === undefined) this.currentPage =1;
-     if(this.sortBy === undefined) this.sortBy ='dateDesc';
     http.get(`/board`).then(({ data }) => {
       this.articles = data;
       for(let i =0; i<this.articles.length; i++){
@@ -132,7 +130,6 @@ export default {
         params:{
           id:row.id,
           currentPage: this.currentPage,
-          sortBy: this.sortBy
         } 
       });
     }

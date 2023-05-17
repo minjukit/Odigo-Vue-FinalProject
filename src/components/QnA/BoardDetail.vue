@@ -16,7 +16,6 @@
           border-variant="dark"
           no-body
         >
-   
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
@@ -79,12 +78,7 @@ export default {
   },
   methods: {
     listArticle() {
-      this.$router.push({ name: "boardList" , 
-      params: {
-        currentPage: this.$route.params.currentPage,
-        sortBy: this.$route.params.sortBy
-      }
-      });
+      this.$router.push({ name: "boardList" , params: {currentPage: this.$route.params.currentPage}});
     },
     moveModifyArticle() {
       this.$router.replace({
