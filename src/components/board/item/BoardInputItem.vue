@@ -52,10 +52,9 @@ export default {
     return {
       article: {
         id: 0,
-        userid: "",
+        user: "",
         title: "",
         content: "",
-     
       },
       isUserid: false,
     };
@@ -65,11 +64,13 @@ export default {
   },
   created() {
     if (this.type === "modify") {
+     
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
         // this.article.articleno = data.article.articleno;
         // this.article.userid = data.article.userid;
         // this.article.subject = data.article.subject;
         // this.article.content = data.article.content;
+         console.log(data)
         this.article = data;
       });
       this.isUserid = true;

@@ -9,7 +9,7 @@
       <b-col>
         <b-card
           :header-html=
-          "`<div  class='text-left'><h3>${article.title} </h3></div>
+          "`<div class='text-left'><h3>${article.title} </h3></div>
           <div  class='text-left'>${modifiedDate} | ${article.count} 읽음</h6></div>
           <div class='text-right'><h6>${article.userid}</div>`"
           class="mb-2"
@@ -39,8 +39,15 @@
         >
       </b-col>
     </b-row>
+     <!--댓글-->
     <div class="mt-5">
-      <comment-list-item></comment-list-item>
+    <h4 class="text-left">댓글</h4>
+     <comment-input-item></comment-input-item>
+    <comment-list-item></comment-list-item>
+    </div>
+     <div class="mt-5">
+    <h4 class="text-left">댓글</h4>
+     <comment-list></comment-list>
     </div>
   </b-container>
 
@@ -49,12 +56,15 @@
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment"
+import CommentInputItem from "./item/CommentInputItem.vue";
 import CommentListItem from "./item/CommentListItem.vue";
+import CommentList from "./CommentList.vue";
 
 
 export default {
-  components: {CommentListItem  },
+  components: {CommentInputItem,CommentListItem, CommentList},
   name: "BoardDetail",
+  
   data() {
     return {
       article: {},

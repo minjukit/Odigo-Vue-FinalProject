@@ -12,7 +12,7 @@
         >
       </b-col>
     </b-row>
-<b-row>
+    <b-row>
       <b-col class="my-1" align-h="center">
         <b-form-group
           label="정렬"
