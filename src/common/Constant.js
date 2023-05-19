@@ -1,0 +1,27 @@
+export default Object.freeze(
+    {
+        GET_ROUTES: "getRoutes",
+        SET_ROUTES: "setRoutes",
+        SET_ALLROUTES : "setAllRoutes",
+        GET_ALLROUTES : "getAllRoutes",
+        REGISTER_ROUTE: "resgisterRoute",
+        GET_ROUTE: "getRoute",
+        SET_ROUTE: "setRoute",
+        MODIFY_ROUTE: "modifyRoute",
+        REMOVE_ROUTE: "removeRoute",
+        INITIATE_ROUTE: "intitiate",
+        SET_INIT_ROUTE: "setInitRoute",
+        GET_PLANS : "getPlans",
+        SET_PLANS : "setPlans",
+        INIT_PLANS : "initPlans",
+        INITIATE_PLANS: "initiatePlans",
+        REMOVE_PLAN: "removePlan",
+        REMOVE_PLAN_MUTAION: "removePlanMutation",
+        MOVE_UP:"moveUpAction",
+        MOVE_UP_MUTATION : "moveUpMutation",
+        MOVE_DOWN:"moveDownAction",
+        MOVE_DOWN_MUTATION : "moveDownMutation",
+        REPRACE_ROUTE : "replaceRoute",
+        REPLACE_ROUTE_MUTATATION: "replaceRouteMutation",
+    }
+);

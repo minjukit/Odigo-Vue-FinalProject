@@ -23,6 +23,21 @@ const routes = [
     name: "region",
     component: () => import(/* webpackChunkName: "region" */ "@/views/TripByRegionView.vue"),
   },
+  {
+    path: "/plan",
+    name: "plan",
+    component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
+  },
+  {
+    path: "/savePlan",
+    name: "savePlan",
+    component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import(/* webpackChunkName: "region" */ "@/views/LoginView.vue"),
+  },
 ];
 
 const router = new VueRouter({
