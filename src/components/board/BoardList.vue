@@ -105,7 +105,10 @@ export default {
       for(let i =0; i<this.articles.length; i++){
          this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
       }
+      console.log("created")
+      console.log(this.filteredData)
     });
+
   },
   methods: {
     moveWrite() {
@@ -150,7 +153,8 @@ export default {
           sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
           console.log(sortedArticles);
         }
-         return sortedArticles;
+        return sortedArticles;
+
       }
     }
 };

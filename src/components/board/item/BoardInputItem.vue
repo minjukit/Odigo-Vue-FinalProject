@@ -64,7 +64,7 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-     
+      console.log()
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
         // this.article.articleno = data.article.articleno;
         // this.article.userid = data.article.userid;

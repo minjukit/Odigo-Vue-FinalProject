@@ -92,6 +92,9 @@ export default {
         sortBy: this.$route.params.sortBy
       }
       });
+      console.log("listarticle")
+      console.log(this.$route.params.currentPage)
+      console.log(this.$route.params.sortBy)
     },
     moveModifyArticle() {
       this.$router.replace({
