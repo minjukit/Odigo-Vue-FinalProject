@@ -40,7 +40,7 @@
       </b-col>
     </b-row>
      <!--댓글-->
-    <div class="mt-5">
+    <!-- <div class="mt-5">
     <h4 class="text-left">댓글</h4>
      <comment-input-item></comment-input-item>
     <comment-list-item></comment-list-item>
@@ -48,7 +48,7 @@
      <div class="mt-5">
     <h4 class="text-left">댓글</h4>
      <comment-list></comment-list>
-    </div>
+    </div> -->
   </b-container>
 
 </template>
@@ -56,19 +56,19 @@
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment"
-import CommentInputItem from "./item/CommentInputItem.vue";
-import CommentListItem from "./item/CommentListItem.vue";
-import CommentList from "./CommentList.vue";
+// import CommentInputItem from "./item/CommentInputItem.vue";
+// import CommentListItem from "./item/CommentListItem.vue";
+// import CommentList from "./CommentList.vue";
 
 
 export default {
-  components: {CommentInputItem,CommentListItem, CommentList},
+ // components: {CommentInputItem,CommentListItem, CommentList},
   name: "BoardDetail",
   
   data() {
     return {
       article: {},
-      modifiedDate: Date
+      modifiedDate: new Date()
     };
   },
   computed: {
@@ -97,7 +97,7 @@ export default {
       console.log(this.$route.params.sortBy)
     },
     moveModifyArticle() {
-      this.$router.replace({
+      this.$router.push({
         name: "boardModify",
         params: { id: this.article.id },
       });

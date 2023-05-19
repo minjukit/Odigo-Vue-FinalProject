@@ -53,9 +53,9 @@ export default {
       article: {
         id: 0,
         user: "",
-        title: "",
+        title: "테스트!!!",
         content: "",
-      },
+       },
       isUserid: false,
     };
   },
@@ -64,17 +64,25 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      console.log()
+      console.log(this.type)
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
         // this.article.articleno = data.article.articleno;
         // this.article.userid = data.article.userid;
         // this.article.subject = data.article.subject;
         // this.article.content = data.article.content;
-         console.log(data)
-        this.article = data;
+        console.log(data)
+        this.article = data
+        // this.article = {...data}
+        // this.id = data.id;
+        // this.title = data.title;
+        // this.content = data.content;
+        // console.log(this.article.title)
       });
-      this.isUserid = true;
+      //this.isUserid = true;
     }
+    // console.log("데이터왜안나와")
+    // console.log(this.article.title)
+    // console.log(this.article)
   },
   methods: {
     onSubmit(event) {
@@ -131,7 +139,7 @@ export default {
       http
         .put(`/board/${this.article.id}`,  {
           id: this.article.id,
-          userid: this.article.userid,
+          //userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
         })

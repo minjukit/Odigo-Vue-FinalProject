@@ -50,6 +50,7 @@ const routes = [
       {
         path: "modify/:id",
         name: "boardModify",
+        props: true,
         component: () =>
           import(/* webpackChunkName: "board" */ "@/components/board/BoardModify.vue"),
       },
