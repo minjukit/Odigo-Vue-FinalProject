@@ -22,7 +22,9 @@ export default {
     components: {CommentListItem},
     data() {
         return {
-            comments: [],
+            comments: [
+           
+            ],
         };
     },
     created() {

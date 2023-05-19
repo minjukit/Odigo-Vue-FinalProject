@@ -4,8 +4,8 @@
        <div class="container">
         <div class="row">
         <div class="col-10 ml-4 mx-auto">
-        <label class="nicklabel">{{comment.userid}}</label>
-        <label class="datelabel">{{comment.modifiedDate}}</label>
+        <label class="nicklabel">{{data.userid}}</label>
+        <label class="datelabel">{{data.modifiedDate}}</label>
 
         <b-dropdown class="dropdown" variant="link" toggle-class="text-decoration-none" no-caret>
         <!-- dropdown -->
@@ -18,7 +18,7 @@
           <!-- comment text -->
         <b-form-textarea
           id="textarea-no-resize"
-          v-model="text"
+          v-model="data.content"
           rows="3"
           no-resize
           readonly
@@ -51,12 +51,14 @@
     props: ["comment"],
     data() {
         return {
-            text: this.comment.content
+            data:{
+
+            }
         };
     },
     created() {
+      this.data = {...this.comment};
       console.log("댓글모두")
-      console.log(this.comment)
     },
     methods: {
     //    addComment(){
