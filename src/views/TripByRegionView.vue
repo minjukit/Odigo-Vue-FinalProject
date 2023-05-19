@@ -11,7 +11,7 @@ export default {
   name: 'TripByRegionView',
   components: {
     KakaoMap
-   
+
   }
 }
 </script>
