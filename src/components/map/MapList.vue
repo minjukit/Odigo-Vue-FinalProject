@@ -1,13 +1,13 @@
 <template>
     <div id="mapList">
-        <span style="font-size: 25px;">검색 목록</span>
+        <span style="font-size: 25px;">여행지 검색</span>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th scope="col" style="right-margin:5px;">번호</th>
-                        <th scope="col">장소 이름</th>
-                        <th scope="col">장소 분류</th>
+                        <th class="col-3" style="right-margin:5px;">번호</th>
+                        <th class="col-6">장소 이름</th>
+                        <th class="col-3">장소 분류</th>
                     </tr>
                 </thead>
                 <tbody style="font-size:15px">
@@ -15,7 +15,7 @@
                         <td colspan="3">검색 결과가 없습니다.</td>
                     </tr>
                     <template v-else>
-                        <tr v-for="(item, index) in items" :key="item.id">
+                        <tr v-for="(item, index) in items" :key="item.id" @click="pickSpot(item.id)">
                             <td style="width:55px;">{{ index + 1 }}</td>
                             <td>{{ item.place_name }}</td>
                             <td style="width:100px;">{{ item.category_group_name }}</td>
@@ -42,6 +42,7 @@ export default {
     },
     data() {
         return {
+            checkedId: "",
         }
     },
     created() {
@@ -49,7 +50,12 @@ export default {
     mounted() {
 
     },
-    methods: {},
+    methods: {
+        pickSpot(id) {
+            var checkedId = id;
+            this.$emit('checkedIdFromChild', checkedId)
+        },
+    },
 };
 </script>
 
