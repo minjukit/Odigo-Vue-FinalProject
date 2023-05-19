@@ -43,10 +43,8 @@
     <div class="mt-5">
     <h4 class="text-left">댓글</h4>
      <comment-input-item></comment-input-item>
-    <comment-list-item></comment-list-item>
     </div>
      <div class="mt-5">
-    <h4 class="text-left">댓글</h4>
      <comment-list></comment-list>
     </div>
   </b-container>
@@ -57,12 +55,11 @@
 import http from "@/util/http-common.js";
 import moment from "moment"
 import CommentInputItem from "./item/CommentInputItem.vue";
-import CommentListItem from "./item/CommentListItem.vue";
 import CommentList from "./CommentList.vue";
 
 
 export default {
-  components: {CommentInputItem,CommentListItem, CommentList},
+  components: {CommentInputItem, CommentList},
   name: "BoardDetail",
   
   data() {
@@ -105,7 +102,7 @@ export default {
     },
     deleteArticle() {
       if (confirm("정말로 삭제?")) {
-        this.$router.replace({
+        this.$router.push({
           name: "boardDelete",
           params: { id: this.article.id },
         });

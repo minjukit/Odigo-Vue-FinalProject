@@ -40,9 +40,10 @@ import http from "@/util/http-common"
         return {
             comment: {
               id: 0,
-              userid: 1,
+              userId: 1,
               title: "",
               content: "",
+              boardId: 1
             },
             text: ""
         };
@@ -50,12 +51,11 @@ import http from "@/util/http-common"
     created() {},
     methods: {
        addComment(){
-        
         http
         .post(`/comment`, {
-          userId: this.comment.userid,
+          userId: this.comment.userId,
           content: this.comment.content,
-          boardId: 1
+          boardId: this.comment.boardId
         })
         .then(response => {
           if (response.status === 200) {

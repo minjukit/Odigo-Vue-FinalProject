@@ -53,7 +53,7 @@ export default {
       article: {
         id: 0,
         user: "",
-        title: "테스트!!!",
+        title: "",
         content: "",
        },
       isUserid: false,
