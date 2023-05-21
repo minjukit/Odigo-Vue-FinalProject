@@ -1,12 +1,13 @@
 <template>
     <b-container>
+        <comment-input-item></comment-input-item>
     <b-row>
       <b-row v-if="comments.length">
        
        <!-- <b-row class="commentBody" v-for="comment in comments" :key="comment.id">
         <comment-list-item :comment="comment"></comment-list-item>
        </b-row> -->
-
+        
         <comment-list-item v-for="(comment) in comments" :key="comment.idx" :comment="comment" @commentChangeEvent="getCommentList"></comment-list-item>
        
 
@@ -20,10 +21,11 @@
 import http from "@/util/http-common.js";
 import moment from "moment";
 import CommentListItem from "./item/CommentListItem.vue";
+import CommentInputItem from "./item/CommentInputItem.vue";
 
 export default {
     name: 'CommentList',
-    components: {CommentListItem},
+    components: {CommentListItem, CommentInputItem},
     data() {
         return {
             comments: [
@@ -44,9 +46,9 @@ export default {
     methods: {
 
         getCommentList(){
-            console.log("delete.....")
+            console.log("list reload.....")
             http.get(`/comment`).then(({ data }) => {
-            console.log("delete...then..")
+            console.log("get function...then..")
             this.comments = data;
             for(let i =0; i<this.comments.length; i++){
                 this.comments[i].modifiedDate = moment(this.comments[i].modifiedDate).format("YY.MM.DD HH:mm");
