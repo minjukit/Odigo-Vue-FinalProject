@@ -11,9 +11,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item><router-link to="/region">지역별 여행지</router-link></b-nav-item>
+          <b-nav-item><router-link to="/region/regionSearch">지역별 여행지</router-link></b-nav-item>
           <b-nav-item><router-link to="/hotplace">핫플레이스</router-link></b-nav-item>
-          <b-nav-item><router-link to="/plan">여행계획</router-link></b-nav-item>
+          <b-nav-item><router-link to="/plan/searchPlan">여행계획</router-link></b-nav-item>
           <b-nav-item><router-link to="/board">공지사항</router-link></b-nav-item>
         </b-navbar-nav>
 
@@ -24,32 +24,34 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
 
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">ES</b-dropdown-item>
-            <b-dropdown-item href="#">RU</b-dropdown-item>
-            <b-dropdown-item href="#">FA</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item><router-link to="/login">login</router-link></b-nav-item>
-              <b-nav-item-dropdown right>
-          <template #button-content>
-            <em>User</em>
-          </template>
-          <b-dropdown-item href="#">회원가입</b-dropdown-item>
-          <b-dropdown-item href="#">로그인</b-dropdown-item>
-          <b-dropdown-item href="#">로그아웃</b-dropdown-item>
 
-        </b-nav-item-dropdown>
+          <b-nav-item><router-link to="/login">login</router-link></b-nav-item>
+          <b-nav-item><router-link to="/regForm">회원가입</router-link></b-nav-item>
+          <b-nav-item-dropdown right>
+            <template #button-content>
+              <em>User</em>
+            </template>
+            <b-dropdown-item href="#">회원가입</b-dropdown-item>
+            <b-dropdown-item href="#">로그인</b-dropdown-item>
+            <b-dropdown-item href="#">로그아웃</b-dropdown-item>
+
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
-
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "HeaderNavBar",
+  methods: {
+    ...mapGetters(["accessToken", "refreshToken"]),
+  }
+
+
 };
 </script>
 
@@ -88,9 +90,9 @@ b-nav-item {
   width: 30px;
 }
 
-.navbar-brand a:link{
-    text-decoration: none;
-    color: rgb(90, 90, 90);
+.navbar-brand a:link {
+  text-decoration: none;
+  color: rgb(90, 90, 90);
 }
 
 /* a:hover {
@@ -101,5 +103,4 @@ b-nav-item {
 a.router-link-exact-active {
   color: #3aa4ca;
 } */
-
 </style>

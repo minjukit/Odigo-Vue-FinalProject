@@ -23,7 +23,9 @@
                             <td class="middleTd">{{ item.place_name }}</td>
                             <td class="middleTd">{{ item.phone }}</td>
                             <td class="middleTd" style="width:100px;">{{ item.category_group_name }}</td>
-                            <td class="middleTd"><a :href="item.place_url" target="_blank">이동하기</a></td>
+                            <td class="middleTd"><a :href="item.place_url" target="_blank" v-if="item.place_url != null">
+                                    이동하기
+                                </a></td>
                             <td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
                         </tr>
                     </template>

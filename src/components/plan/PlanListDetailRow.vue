@@ -4,7 +4,9 @@
 		<td class="middleTd" @click="openModal">{{ item.place_name }}</td>
 		<td class="middleTd" @click="openModal">{{ item.phone }}</td>
 		<td class="middleTd" style="width:100px;" @click="openModal">{{ item.category_group_name }}</td>
-		<td class="middleTd"><a :href="item.place_url" target="_blank">이동하기</a></td>
+		<td class="middleTd" style="padding-top: 17px;">
+			<a :href="item.place_url" target="_blank" v-if="item.place_url != null">이동하기</a>
+		</td>
 		<td><b-button class="btn btn-light btn-sm" style="margin-right: 5px;" @click="moveUp(item.id)">올리기</b-button>
 			<b-button class="btn btn-dark btn-sm" @click="moveDown(item.id)">내리기</b-button>
 		</td>
@@ -14,7 +16,7 @@
 </template>
 
 <script>
-import RouteModal from '@/components/map/RouteModal.vue'
+import RouteModal from '@/components/plan/RouteModal.vue'
 import { mapActions } from 'vuex';
 import Constant from '@/common/Constant'
 export default {

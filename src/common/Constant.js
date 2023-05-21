@@ -13,6 +13,8 @@ export default Object.freeze(
         SET_INIT_ROUTE: "setInitRoute",
         GET_PLANS : "getPlans",
         SET_PLANS : "setPlans",
+        SET_PLAN : "setPlans",
+        SET_PLAN_MUTATION : "setPlansMutation",
         INIT_PLANS : "initPlans",
         INITIATE_PLANS: "initiatePlans",
         REMOVE_PLAN: "removePlan",
@@ -23,5 +25,9 @@ export default Object.freeze(
         MOVE_DOWN_MUTATION : "moveDownMutation",
         REPRACE_ROUTE : "replaceRoute",
         REPLACE_ROUTE_MUTATATION: "replaceRouteMutation",
+        SET_TOKENS: "setTokens",
+        SET_TOKENS_MUTATION: "setTokensMutation",
+        GET_CERT : "getCert",
+        GET_CERT_MUTATION: "getCertMutation",
     }
 );

@@ -22,6 +22,13 @@ const routes = [
     path: "/region",
     name: "region",
     component: () => import(/* webpackChunkName: "region" */ "@/views/TripByRegionView.vue"),
+    children : [
+      {
+        path: "regionSearch",
+        name: "boardList",
+        component: () => import(/* webpackChunkName: "board" */ "@/components/region/RegionSearch.vue"),
+      },
+    ]
   },
   {
     path: "/board",
@@ -66,16 +73,32 @@ const routes = [
     path: "/plan",
     name: "plan",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
-  },
-  {
-    path: "/savePlan",
-    name: "savePlan",
-    component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
+    beforeEnter: (to, from, next) => {
+      // alert("로그인을 해야 합니다.")
+      next();
+    },
+    children: [
+      {
+        path: "searchPlan",
+        name: "searchPlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/components/plan/PlanSearch.vue"),
+      },
+      {
+        path: "savePlan",
+        name: "savePlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
+      },
+    ]
   },
   {
     path: "/login",
     name: "login",
     component: () => import(/* webpackChunkName: "region" */ "@/views/LoginView.vue"),
+  },
+  {
+    path: "/regForm",
+    name: "regForm",
+    component: () => import("@/components/user/RegForm.vue"),
   },
 ];
 
@@ -84,5 +107,12 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to,from,next) => {
+  to
+  from
+  console.log("작동")
+  next()
+})
 
 export default router;
