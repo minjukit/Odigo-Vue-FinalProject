@@ -3,7 +3,7 @@
     <b-card border-variant="0"> <!-- 카드 no border-->
        <div class="container">
         <div class="row">
-        <div class="col-12 mx-auto">
+        <!-- <div class="col-12 mx-auto"> -->
         <label class="nicklabel">이름 {{data.userId}}</label>
         <label class="datelabel">{{data.modifiedDate}}</label>
 
@@ -37,7 +37,7 @@
         파일</button>
         </div>
         </div>
-        </div>
+        <!-- </div> -->
     </b-card>
     <!-- </b-form>  -->
 </template>

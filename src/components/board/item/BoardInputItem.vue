@@ -7,6 +7,7 @@
           id="title-group"
           label="제목:"
           label-for="title"
+  
         >
           <b-form-input
             id="title"
@@ -156,4 +157,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

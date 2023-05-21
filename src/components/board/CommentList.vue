@@ -1,19 +1,20 @@
 <template>
     <b-container>
-        <comment-input-item></comment-input-item>
-    <b-row>
+        <div>
+            <h4 class="text-left">댓글</h4>
+            <comment-input-item></comment-input-item>
+        </div>
+    <div>
       <b-row v-if="comments.length">
-       
-       <!-- <b-row class="commentBody" v-for="comment in comments" :key="comment.id">
-        <comment-list-item :comment="comment"></comment-list-item>
-       </b-row> -->
-        
-        <comment-list-item v-for="(comment) in comments" :key="comment.idx" :comment="comment" @commentChangeEvent="getCommentList"></comment-list-item>
+    
+        <comment-list-item 
+        v-for="(comment) in comments" :key="comment.idx" :comment="comment"
+         @commentChangeEvent="getCommentList" class="commentBody"></comment-list-item>
        
 
       </b-row>
       <b-col v-else class="text-center">첫 댓글을 작성해주세요</b-col>
-    </b-row>
+    </div>
     </b-container>
 </template>
 
@@ -70,6 +71,6 @@ export default {
 
 .commentBody{
     margin: auto;
-    width: 80%;
+    width: 78%;
 }
 </style>
