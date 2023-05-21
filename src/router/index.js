@@ -75,7 +75,11 @@ const routes = [
     name: "plan",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
-      // alert("로그인을 해야 합니다.")
+      console.log(store.getters.isLogin)
+      if(!store.getters.isLogin) {
+        alert("로그인을 해야 합니다.")
+        next('/login')
+      }
       next();
     },
     children: [

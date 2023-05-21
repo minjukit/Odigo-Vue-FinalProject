@@ -48,6 +48,7 @@ export default {
 					console.log("success")
 					console.log(response.data)
 					this.setTokens(response.data)
+					this.$router.push('/')
 				})
 				.catch(() => console.log("catch exception"))
 		}
