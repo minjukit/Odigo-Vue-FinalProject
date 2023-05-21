@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<plan-list-detail style="margin-top: 1.5%"></plan-list-detail>
+			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent = "reloadMap"></plan-list-detail>
 		</div>
 	</div>
 </template>
@@ -156,14 +156,7 @@ export default {
 			this.markers = [];
 			this.infos = [];
 			// draw line
-			this.linePositionpath = [];
-			this.polyline = new window.kakao.maps.Polyline({
-				map1: this.map,
-				strokeWeight: 2,
-				strokeColor: '#FF00FF',
-				strokeOpacity: 1,
-				strokeStyle: 'dashed'
-			});
+			this.setPolyLine();
 			
 			// 마커 이미지의 이미지 주소입니다
 			// var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
@@ -228,6 +221,7 @@ export default {
 			}
 
 			this.map.setBounds(this.bounds);
+			// line
 			this.polyline.setPath(this.linePositionpath); //line path 메소드로 지정
 			this.polyline.setMap(this.map); // 지도에 line 표시
 
@@ -250,6 +244,41 @@ export default {
 		toSavePage() {
 			console.log(this.planList.length)
 		},
+		setPolyLine(){
+			
+			this.linePositionpath = [];
+			this.polyline = new window.kakao.maps.Polyline({
+				map1: this.map,
+				strokeWeight: 4,
+				strokeColor: '#0066a0',
+				strokeOpacity: 1,
+				strokeStyle: 'shortdash',
+				endArrow : true,
+			});
+			// 지도에 line 초기화
+			this.polyline.setMap(null); 
+		},
+		reloadMap(){
+			// 지도에 line 초기화
+			this.polyline.setMap(null); 
+			// 아래 주석 모두 지워도 됨
+			// // draw line
+			// this.polyline={};
+			// this.linePositionpath = [];
+			// this.setPolyLine();
+			
+			// for (var i = 0; i < this.positions.length; i++) {
+			// 	// line - position에 담긴 좌표 path에 추가
+			// 	this.linePositionpath.push(this.positions[i].latlng);
+			// }
+			// console.log("=========this.reloadMap")
+			// 	console.log(this.linePositionpath)
+			// 	console.log("=========this.reloadMap2")
+			// 		console.log(this.positions)
+			// // line
+			// this.polyline.setPath(this.linePositionpath); //line path 메소드로 지정
+			// this.polyline.setMap(this.map); // 지도에 line 표시
+		}
 	}
 }
 </script>
