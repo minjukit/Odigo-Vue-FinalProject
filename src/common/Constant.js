@@ -26,10 +26,14 @@ export default Object.freeze(
         REPRACE_ROUTE : "replaceRoute",
         REPLACE_ROUTE_MUTATATION: "replaceRouteMutation",
         SET_TOKENS: "setTokens",
-        SET_TOKENS_MUTATION: "setTokensMutation",
+        SET_ALLTOKENS_MUTATION: "setTokensMutation",
+        SET_ACCESSTOKENS_MUTATION: "setAccessTokensMutation",
+        SET_REFRESHTOKENS_MUTATION: "setRefreshTokensMutation",
         GET_CERT : "getCert",
         GET_CERT_MUTATION: "getCertMutation",
         LOGOUT: "logout",
         REMOVE_TOKENS: "removeTokens",
+        CHECK_REFRESH_TOKEN_MUTATION : "checkRefreshTokenMutation",
+        CHECK_REFRESH_TOKEN : "checkRefreshToken",
     }
 );

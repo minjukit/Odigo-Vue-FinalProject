@@ -75,7 +75,12 @@ const routes = [
       console.log(store.getters.isLogin)
       if(!store.getters.isLogin) {
         alert("로그인을 해야 합니다.")
-        next('/login')
+        next({path: '/login',
+        query: {
+          redirect: to.fullPath,
+          data: 'example data' // 전달하려는 데이터 추가
+          }
+        })
       }
       next();
     },

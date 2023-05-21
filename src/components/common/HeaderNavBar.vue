@@ -58,6 +58,7 @@ export default {
 
     doLogout() {
       this[Constant.LOGOUT]()
+      this.$router.push('/')
     },
   },
 };

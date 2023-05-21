@@ -43,12 +43,15 @@ export default {
 				userId: this.id,
 				userPw: this.password,
 			}
+			console.log(data)
 			empRestAPI.post('/user/login', data)
 				.then((response) => {
-					console.log("success")
-					console.log(response.data)
 					this.setTokens(response.data)
-					this.$router.push('/')
+					if (this.$route.query.redirect == null) {
+						this.$router.push("/")
+					} else {
+						this.$router.push(this.$route.query.redirect)
+					}
 				})
 				.catch(() => console.log("catch exception"))
 		}

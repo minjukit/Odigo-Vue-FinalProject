@@ -130,7 +130,11 @@ export default {
 					() => {
 						this.makeList(this.data)
 					}
-				);
+				).catch((data) => {
+					if (data == "Error") {
+						this.getById()
+					}
+				});
 		},
 
 		makeList(data) {
@@ -142,8 +146,7 @@ export default {
 				}
 			}
 			this.markers = [];
-
-			if (trips == null) {
+			if (trips.length == 0) {
 				alert("검색 결과가 없습니다. 다시 검색해주세요");
 				return;
 			}

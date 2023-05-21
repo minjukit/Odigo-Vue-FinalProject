@@ -45,9 +45,7 @@
 		<div class="row" style="margin-top: 1%">
 			<div id="map" class="w"></div>
 		</div>
-		<div class="row">
-			<!-- <plan-list style="margin-top: 1.5%"></plan-list> -->
-		</div>
+		<check-modal v-if="showModal" @close="showModal = false"></check-modal>
 	</div>
 </template>
 
@@ -55,9 +53,11 @@
 import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
 import empRestAPI from "@/util/http-common.js";
+import CheckModal from './checkModal.vue';
 
 export default {
 	components: {
+		CheckModal
 	},
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
@@ -67,10 +67,11 @@ export default {
 		// this[Constant.INITIATE_PLANS]()
 	},
 	computed: {
-		...mapGetters(["items", "data", "planList"]),
+		...mapGetters(["items", "data", "planList", "isLogin"]),
 	},
 	data() {
 		return {
+			showModal: false,
 			map: null,
 			result: [],
 			keyWord: "",
@@ -96,11 +97,10 @@ export default {
 		}
 	},
 	methods: {
-		// [Constant.GET_ROUTES]() {
-		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
-		// },
 		...mapActions([Constant.SET_PLAN, Constant.GET_ROUTE, Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS]),
-
+		openModal() {
+			this.showModal = true
+		},
 		findTravel() {
 			empRestAPI.get(`/travel/spot?sido=${this.sidoCode}&gugun=${this.gugunCode}` +
 				`&category=${this.category}&keyWord=${this.keyWord}`)
@@ -123,9 +123,29 @@ export default {
 		},
 
 		addPlanList(idx) {
-			let address = this.result[idx].addr1
-			this[Constant.GET_ROUTE](address)
-				.then(({ data }) => this.checkPlan(data.documents, this.result[idx]))
+			if (this.isLogin == true) {
+				let address = this.result[idx].addr1
+				this[Constant.GET_ROUTE](address)
+					.then(({ data }) => this.checkPlan(data.documents, this.result[idx]))
+					.catch((data) => {
+						if (data == "Error") {
+							this.addPlanList(idx)
+							return;
+						}
+					})
+			} else {
+				let origin = this.result[idx];
+				console.log(origin)
+				let findPlan = {
+					address_name: origin.addr1,
+					place_name: origin.title,
+					x: origin.longitude,
+					y: origin.latitude,
+					id: origin.content_id + "1324212312123",
+				}
+				this[Constant.SET_PLAN](findPlan)
+			}
+			this.openModal()
 		},
 
 		checkPlan(list, origin) {
@@ -135,13 +155,14 @@ export default {
 					findPlan = list[i];
 				}
 			}
+			console.log(origin)
 			if (findPlan == null) {
 				findPlan = {
 					address_name: origin.addr1,
 					place_name: origin.title,
 					x: origin.longitude,
 					y: origin.latitude,
-					id: origin.id
+					id: origin.content_id + "12312413123"
 				}
 			}
 			this[Constant.SET_PLAN](findPlan)
@@ -169,12 +190,6 @@ export default {
 		// x:"127.3750283258"
 		// y:"36.3515415452515"
 
-		// getChecked(checkedId) {
-		// 	this.checkedId = checkedId
-		// 	this.closeInfoWindow()
-		// 	this.markerAndItemsInit()
-		// 	this.makeList(this.data)
-		// },
 
 		markerAndItemsInit() {
 			this.infos = []

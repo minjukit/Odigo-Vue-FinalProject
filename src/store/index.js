@@ -113,25 +113,70 @@ export default new Vuex.Store({
     },
 
     [Constant.SET_PLAN_MUTATION](state, payload) {
-      state.planList.push(payload)
+      let checkBool = true;
+
+      for (let i = 0; i < state.planList.length; i++) {
+        if (payload.id == state.planList[i].id) {
+          checkBool = false;
+        }
+      }
+      console.log(state.planList)
+      console.log(payload)
+      console.log(checkBool)
+      if (checkBool) {
+        payload.content = "";
+        payload.cost = "";
+        console.log(payload);
+        state.planList.push(payload);
+      } else {
+        alert("이미 추가된 장소 입니다.");
+      }
     },
 
-    [Constant.SET_TOKENS_MUTATION](state, payload) {
+    [Constant.SET_ALLTOKENS_MUTATION](state, payload) {
       state.accessToken = payload.access_TOKEN
       state.refreshToken = payload.refresh_TOKEN
       state.isLogin = true
     },
 
+    [Constant.SET_ACCESSTOKENS_MUTATION](state, payload) {
+      state.accessToken = payload.access_TOKEN
+      state.isLogin = true
+    },
+
+    [Constant.SET_REFRESHTOKENS_MUTATION](state, payload) {
+      state.refreshToken = payload.refresh_TOKEN
+      state.isLogin = true
+    },
+
     [Constant.GET_CERT_MUTATION](state) {
-      empRestAPI.post("/user/issue",null,{
+      empRestAPI.post("/user/issue", null, {
         headers: {
           ACCESS_TOKEN: state.accessToken,
-          REFRESH_TOKEN : state.refreshToken
-        },}).then(() => {
+          REFRESH_TOKEN: "noneToken",
+        },}).then((response) => {
+          console.log(response.data)
+          this.commit(Constant.SET_ACCESSTOKENS_MUTATION, response.data);
+          state.isLogin = true;
+        }).catch((data) => {
+          if(data.response.status == 403) {
+            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
+          }
+				});
+    },
+
+    [Constant.CHECK_REFRESH_TOKEN_MUTATION](state) {
+         empRestAPI.post("/user/issue", null, {
+        headers: {
+          ACCESS_TOKEN: "noneToken",
+          REFRESH_TOKEN: state.refreshToken,
+        },}).then((response) => {
+          console.log(response.data)
+          this.commit(Constant.SET_ALLTOKENS_MUTATION, response.data);
           state.isLogin = true;
         }).catch(() => {
           this.commit(Constant.REMOVE_TOKENS);
-        })
+				});
     },
 
     [Constant.REMOVE_TOKENS](state) {
@@ -146,11 +191,17 @@ export default new Vuex.Store({
       return empRestAPI.get(`/map/${keyWord}`,{
           headers: {
             ACCESS_TOKEN: state.accessToken,
-            REFRESH_TOKEN : state.refreshToken
+            // REFRESH_TOKEN : state.refreshToken
           },}).then(({ data }) => {
         commit(Constant.SET_ROUTES, data.documents);
         commit(Constant.SET_ALLROUTES, data);
-      });
+      }).catch((data) => {
+        if(data.response.status == 403) {
+          this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
+          console.log("checkRefresh");
+          throw new Error
+        }
+      })
     },
 
     [Constant.GET_ROUTE]({ commit, state },keyWord) {
@@ -160,8 +211,14 @@ export default new Vuex.Store({
       {
         headers: {
           ACCESS_TOKEN: state.accessToken,
-          REFRESH_TOKEN : state.refreshToken
-        },});
+          // REFRESH_TOKEN : state.refreshToken
+        },}).catch((data) => {
+          if(data.response.status == 403) {
+            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
+            console.log("checkRefresh");
+            throw new Error
+          }
+        })
     },
 
     [Constant.INITIATE_ROUTE]({ commit }) {
@@ -199,7 +256,7 @@ export default new Vuex.Store({
     },
 
     [Constant.SET_TOKENS]({commit}, tokens) {
-      commit(Constant.SET_TOKENS_MUTATION, tokens)
+      commit(Constant.SET_ALLTOKENS_MUTATION, tokens)
     },
 
     [Constant.GET_CERT]({commit}) {
