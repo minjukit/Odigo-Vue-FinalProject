@@ -120,15 +120,9 @@ export default new Vuex.Store({
       state.accessToken = payload.access_TOKEN
       state.refreshToken = payload.refresh_TOKEN
       state.isLogin = true
-      console.log("save tokens")
-      console.log(state.accessToken)
-      console.log(state.refreshToken)
     },
 
     [Constant.GET_CERT_MUTATION](state) {
-      // if (state.accessToken.length == 0 && state.refreshToken.length == 0) {
-      //   state.isLogin = false;
-      // }
       empRestAPI.post("/user/issue",null,{
         headers: {
           ACCESS_TOKEN: state.accessToken,
@@ -136,7 +130,7 @@ export default new Vuex.Store({
         },}).then(() => {
           state.isLogin = true;
         }).catch(() => {
-          state.isLogin = false;
+          this.commit(Constant.REMOVE_TOKENS);
         })
     },
 
@@ -149,7 +143,6 @@ export default new Vuex.Store({
 
   actions: {
     [Constant.GET_ROUTES]({ commit, state }, keyWord) {
-      console.log(state.accessToken)
       return empRestAPI.get(`/map/${keyWord}`,{
           headers: {
             ACCESS_TOKEN: state.accessToken,
@@ -210,8 +203,7 @@ export default new Vuex.Store({
     },
 
     [Constant.GET_CERT]({commit}) {
-      console.log("getCert")
-      return commit(Constant.GET_CERT_MUTATION)
+      commit(Constant.GET_CERT_MUTATION)
     },
 
     [Constant.LOGOUT]({commit}) {
