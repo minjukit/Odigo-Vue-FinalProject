@@ -49,6 +49,8 @@ export default {
 			infos: [],
 			bounds: {},
 			checkedId: "",
+			polyline: {},
+			linePositionpath: [],
 		};
 	},
 	mounted() {
@@ -103,6 +105,7 @@ export default {
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
 			this.startPlanMap()
+			
 		},
 
 		loadMaker() {
@@ -152,7 +155,16 @@ export default {
 			this.bounds = new window.kakao.maps.LatLngBounds();
 			this.markers = [];
 			this.infos = [];
-
+			// draw line
+			this.linePositionpath = [];
+			this.polyline = new window.kakao.maps.Polyline({
+				map1: this.map,
+				strokeWeight: 2,
+				strokeColor: '#FF00FF',
+				strokeOpacity: 1,
+				strokeStyle: 'dashed'
+			});
+			
 			// 마커 이미지의 이미지 주소입니다
 			// var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 			// var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
@@ -181,6 +193,10 @@ export default {
 				this.markers.push(marker);
 
 				this.bounds.extend(this.positions[i].latlng);
+
+				// line - position에 담긴 좌표 path에 추가
+				this.linePositionpath.push(this.positions[i].latlng);
+				
 
 				// this.markers.push(marker);
 
@@ -212,6 +228,8 @@ export default {
 			}
 
 			this.map.setBounds(this.bounds);
+			this.polyline.setPath(this.linePositionpath); //line path 메소드로 지정
+			this.polyline.setMap(this.map); // 지도에 line 표시
 
 		},
 
@@ -231,7 +249,7 @@ export default {
 		},
 		toSavePage() {
 			console.log(this.planList.length)
-		}
+		},
 	}
 }
 </script>
