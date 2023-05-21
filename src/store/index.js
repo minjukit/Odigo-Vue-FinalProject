@@ -14,6 +14,7 @@ export default new Vuex.Store({
     planList: [],
     accessToken: "",
     refreshToken: "",
+    isLogin: false,
   },
   getters: {
     items(state) {
@@ -35,6 +36,10 @@ export default new Vuex.Store({
 
     refreshToken(state) {
       return state.refreshToken;
+    },
+
+    isLogin(state) {
+      return state.isLogin;
     }
   },
   mutations: {
@@ -114,13 +119,31 @@ export default new Vuex.Store({
     [Constant.SET_TOKENS_MUTATION](state, payload) {
       state.accessToken = payload.access_TOKEN
       state.refreshToken = payload.refresh_TOKEN
+      state.isLogin = true
       console.log("save tokens")
       console.log(state.accessToken)
       console.log(state.refreshToken)
     },
 
     [Constant.GET_CERT_MUTATION](state) {
-      
+      // if (state.accessToken.length == 0 && state.refreshToken.length == 0) {
+      //   state.isLogin = false;
+      // }
+      empRestAPI.post("/user/issue",null,{
+        headers: {
+          ACCESS_TOKEN: state.accessToken,
+          REFRESH_TOKEN : state.refreshToken
+        },}).then(() => {
+          state.isLogin = true;
+        }).catch(() => {
+          state.isLogin = false;
+        })
+    },
+
+    [Constant.REMOVE_TOKENS](state) {
+      state.accessToken = "";
+      state.refreshToken = "";
+      state.isLogin = false;
     }
   },
 
@@ -187,8 +210,14 @@ export default new Vuex.Store({
     },
 
     [Constant.GET_CERT]({commit}) {
+      console.log("getCert")
       return commit(Constant.GET_CERT_MUTATION)
+    },
+
+    [Constant.LOGOUT]({commit}) {
+      commit(Constant.REMOVE_TOKENS);
     }
+
   },
   modules: {},
   plugins: [createPersistedState()],

@@ -29,5 +29,7 @@ export default Object.freeze(
         SET_TOKENS_MUTATION: "setTokensMutation",
         GET_CERT : "getCert",
         GET_CERT_MUTATION: "getCertMutation",
+        LOGOUT: "logout",
+        REMOVE_TOKENS: "removeTokens",
     }
 );

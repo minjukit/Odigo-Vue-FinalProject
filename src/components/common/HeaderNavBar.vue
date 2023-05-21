@@ -24,17 +24,17 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
 
-
-          <b-nav-item><router-link to="/login">login</router-link></b-nav-item>
-          <b-nav-item><router-link to="/regForm">회원가입</router-link></b-nav-item>
-          <b-nav-item-dropdown right>
+          <template v-if="!isLogin">
+            <b-nav-item><router-link to="/login">login</router-link></b-nav-item>
+            <b-nav-item><router-link to="/regForm">회원가입</router-link></b-nav-item>
+          </template>
+          <b-nav-item-dropdown right v-else>
             <template #button-content>
               <em>User</em>
             </template>
-            <b-dropdown-item href="#">회원가입</b-dropdown-item>
-            <b-dropdown-item href="#">로그인</b-dropdown-item>
-            <b-dropdown-item href="#">로그아웃</b-dropdown-item>
-
+            <b-dropdown-item>마이페이지</b-dropdown-item>
+            <b-dropdown-item>나의 계획</b-dropdown-item>
+            <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -43,15 +43,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import Constant from '@/common/Constant'
 
 export default {
   name: "HeaderNavBar",
+  created() {
+  },
+  computed: {
+    ...mapGetters(["isLogin"]),
+  },
   methods: {
-    ...mapGetters(["accessToken", "refreshToken"]),
-  }
+    ...mapActions([Constant.GET_CERT, Constant.LOGOUT]),
 
-
+    doLogout() {
+      this[Constant.LOGOUT]()
+    },
+  },
 };
 </script>
 

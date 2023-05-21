@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import store from '@/store/index'; 
 
 Vue.use(VueRouter);
 
@@ -111,7 +112,16 @@ const router = new VueRouter({
 router.beforeEach((to,from,next) => {
   to
   from
-  console.log("작동")
+  store.dispatch('getCert')
+    .then(() => {
+      // 액션이 완료된 후 다음으로 이동
+      next();
+    })
+    .catch(error => {
+      // 액션 처리 중 에러가 발생한 경우
+      console.error(error);
+      next(false); // 라우터 이동 취소
+    });
   next()
 })
 
