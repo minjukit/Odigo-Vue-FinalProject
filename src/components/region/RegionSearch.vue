@@ -62,7 +62,6 @@ export default {
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.addPlanList = this.addPlanList
-
 		this[Constant.INITIATE_ROUTE]()
 		// this[Constant.INITIATE_PLANS]()
 	},
