@@ -7,6 +7,7 @@ import Constant from "@/common/Constant";
 import empRestAPI from "@/util/http-common.js";
 import createPersistedState from "vuex-persistedstate";
 
+
 export default new Vuex.Store({
   state: {
     items: [],
@@ -270,4 +271,5 @@ export default new Vuex.Store({
   },
   modules: {},
   plugins: [createPersistedState()],
+
 });

@@ -19,11 +19,15 @@
 import RouteModal from '@/components/plan/RouteModal.vue'
 import { mapActions } from 'vuex';
 import Constant from '@/common/Constant'
+
+
 export default {
 	components: {
 		RouteModal,
 	},
 	props: ["item", "index"],
+	created() {
+	},
 	methods: {
 		openModal() {
 			this.showModal = true
@@ -36,14 +40,17 @@ export default {
 		toRemovePlan(id) {
 			console.log(id);
 			this[Constant.REMOVE_PLAN](id)
+			this.$emit("changeIndex");	
 		},
 		moveDown(id) {
 			console.log(id)
 			this.moveDownAction(id)
+			this.$emit("changeIndex");			
 		},
 		moveUp(id) {
 			console.log(id)
 			this.moveUpAction(id)
+			this.$emit("changeIndex");
 		},
 	},
 	data() {

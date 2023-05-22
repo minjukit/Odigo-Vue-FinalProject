@@ -3,8 +3,8 @@
     <b-card border-variant="0"> <!-- 카드 no border-->
        <div class="container">
         <div class="row">
-        <div class="col-10 ml-4 mx-auto">
-        <label class="nicklabel">{{data.userid}}</label>
+        <!-- <div class="col-12 mx-auto"> -->
+        <label class="nicklabel">이름 {{data.userId}}</label>
         <label class="datelabel">{{data.modifiedDate}}</label>
 
         <b-dropdown class="dropdown" variant="link" toggle-class="text-decoration-none" no-caret>
@@ -12,8 +12,8 @@
           <template #button-content >
             <b-icon class ="editicon" icon="three-dots" font-scale="1.2"></b-icon>
           </template>
-          <b-dropdown-item href="#">삭제</b-dropdown-item>
-          <b-dropdown-item href="#">수정</b-dropdown-item>
+          <b-dropdown-item @click="deleteComment(data.id)">삭제</b-dropdown-item>
+          <b-dropdown-item :to="{path: '/comment/modify'}">수정</b-dropdown-item>
         </b-dropdown>
           <!-- comment text -->
         <b-form-textarea
@@ -37,7 +37,7 @@
         파일</button>
         </div>
         </div>
-        </div>
+        <!-- </div> -->
     </b-card>
     <!-- </b-form>  -->
 </template>
@@ -45,6 +45,7 @@
 
 
   <script>
+  import http from "@/util/http-common.js";
   export default {
     name: 'CommentListItem',
     components: {},
@@ -59,6 +60,7 @@
     created() {
       this.data = {...this.comment};
       console.log("댓글모두")
+      console.log(this.data)
     },
     methods: {
     //    addComment(){
@@ -68,6 +70,44 @@
     //   this.newComment.name = " "
     //   this.newComment.content= " "
     // }
+      deleteComment(item){
+        console.log(item)
+        
+        http.delete(`/comment/${item}`).then((response) => {
+          let msg =response.status;
+          if (response.status === 200) {
+            msg = "삭제가 완료되었습니다.";
+          }
+          alert(msg);
+          this.$emit("commentChangeEvent");
+          //console.log(msg);
+          // 현재 route를 /list로 변경.
+        }).catch((err)=>{
+          alert("삭제 처리시 문제가 발생했습니다."+err);
+          this.$router.push({ 
+          name: "boardDetail",
+          params:{
+            id:this.data.boardId,
+            // currentPage: this.currentPage,
+            // sortBy: this.sortBy
+          } });
+        }
+        );
+      },
+      modifyComment(){
+      http
+        .put(`/comment/${this.data.id}`,  {
+          id: this.article.id,
+          userId: this.data.userid,
+          title: this.data.title,
+          content: this.data.content,
+        })
+        .then(() => {
+          // 현재 route를 /list로 변경.
+          this.$emit("commentChangeEvent");
+        }).catch(() => {    let msg = "수정 중 문제가 발생했습니다."; alert(msg);});
+
+      },
     },
   };
   </script>

@@ -20,7 +20,7 @@
                     </tr>
                     <template v-else>
                         <plan-list-detail-row v-for="(item, index) in planList" :key="item.id" :item="item"
-                            :index="index"></plan-list-detail-row>
+                            :index="index" @changeIndex="changeIndexEvent"></plan-list-detail-row>
                     </template>
                 </tbody>
             </table>
@@ -50,6 +50,7 @@ export default {
         }
     },
     created() {
+
     },
     mounted() {
 
@@ -72,6 +73,10 @@ export default {
             console.log(id)
             this.moveUpAction(id)
         },
+        changeIndexEvent(){
+            console.log("change List Detail.vue----------")
+            this.$emit("changeIndexEvent");
+        }
     },
 };
 </script>

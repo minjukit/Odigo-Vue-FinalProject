@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row" id="row1">
           <div class="col-10 mx-auto">
-            <b-form-input aplaceholder="여기 닉넴"></b-form-input>
+            <b-form-input placeholder="여기 닉넴"></b-form-input>
             <b-form-textarea 
               id="textarea-no-resize"
               v-model="comment.content"
@@ -12,7 +12,6 @@
               rows="3"
               no-resize
               class = "mt-2"
-              @keyup.13="addComment()"
               ></b-form-textarea>
               </div>
     
@@ -20,7 +19,7 @@
               <button class = "btn col-1.5" id="btn1">
               <b-icon class ="icon" icon="image" font-scale="1.1"></b-icon>
               파일</button>
-              <b-button class = "btn col-1.5" id="btn2">전송</b-button>
+              <b-button class = "btn col-1.5" id="btn2" type="submit">전송</b-button>
           </div>
       </div>
       </div>
@@ -30,7 +29,8 @@
 
 
 
-  <script>
+<script>
+
 import http from "@/util/http-common"
 
   export default {
@@ -40,27 +40,30 @@ import http from "@/util/http-common"
         return {
             comment: {
               id: 0,
-              userid: 1,
+              userId: 1,
               title: "",
               content: "",
+              boardId: 1
             },
             text: ""
         };
     },
     created() {},
     methods: {
+     
        addComment(){
-        
+       
         http
         .post(`/comment`, {
-          userId: this.comment.userid,
+          userId: this.comment.userId,
           content: this.comment.content,
-          boardId: 1
+          boardId: this.comment.boardId
         })
         .then(response => {
           if (response.status === 200) {
             // 200 OK 상태 코드 처리
             console.log("comment save...")
+            this.$emit("commentChangeEvent");
           } else {
             // 다른 상태 코드 처리
             alert(response.status);
@@ -69,16 +72,11 @@ import http from "@/util/http-common"
              let msg = "등록 처리시 문제가 발생했습니다.";
              alert(msg);
              });
-      // this.comments.push({
-      //   id:4,name:this.newComment.name,content:this.newComment.content, time:new Date(),like:0
-      // })
-      // this.newComment.name = " "
-      // this.newComment.content= " "
-      },onSubmit(){
-       
+
       },onReset(){
 
       }
+
 
     },
   };

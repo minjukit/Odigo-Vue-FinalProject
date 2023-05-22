@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<plan-list-detail style="margin-top: 1.5%"></plan-list-detail>
+			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent = "reloadMap"></plan-list-detail>
 		</div>
 	</div>
 </template>
@@ -49,6 +49,9 @@ export default {
 			infos: [],
 			bounds: {},
 			checkedId: "",
+			polyline: {},
+			linePositionpath: [],
+			markerImage: null,
 		};
 	},
 	mounted() {
@@ -103,6 +106,7 @@ export default {
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
 			this.startPlanMap()
+			
 		},
 
 		loadMaker() {
@@ -152,38 +156,20 @@ export default {
 			this.bounds = new window.kakao.maps.LatLngBounds();
 			this.markers = [];
 			this.infos = [];
-
-			// 마커 이미지의 이미지 주소입니다
-			// var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-			// var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
-
+			// draw line
+			this.setPolyLine();
+	
 			for (var i = 0; i < this.positions.length; i++) {
-				var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
-				// if (this.items[i].id == this.checkedId) {
-				// 	imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-				// }
-				// 마커 이미지의 이미지 크기 입니다
-				var imageSize = new window.kakao.maps.Size(24, 35);
+				
+				var marker = this.addMarker(this.positions[i].latlng, i);
 
-				// 마커 이미지를 생성합니다
-				var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-
-				// var points = [];
-
-				// 마커를 생성합니다
-				var marker = new window.kakao.maps.Marker({
-					map: this.map, // 마커를 표시할 지도
-					position: this.positions[i].latlng, // 마커를 표시할 위치
-					title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-					image: markerImage, // 마커 이미지
-					clickable: true,
-				});
 				this.markers.push(marker);
 
 				this.bounds.extend(this.positions[i].latlng);
 
-				// this.markers.push(marker);
-
+				// line - position에 담긴 좌표 path에 추가
+				this.linePositionpath.push(this.positions[i].latlng);
+				
 				var infowindow = new window.kakao.maps.InfoWindow({
 					content: '<div class="wrap" style="width: 270px; font-size: 13px">' +
 						'     	<div class="info">' +
@@ -212,6 +198,9 @@ export default {
 			}
 
 			this.map.setBounds(this.bounds);
+			// line
+			this.polyline.setPath(this.linePositionpath); //line path 메소드로 지정
+			this.polyline.setMap(this.map); // 지도에 line 표시
 
 		},
 
@@ -231,6 +220,45 @@ export default {
 		},
 		toSavePage() {
 			console.log(this.planList.length)
+		},
+		setPolyLine(){
+			
+			this.linePositionpath = [];
+			this.polyline = new window.kakao.maps.Polyline({
+				map1: this.map,
+				strokeWeight: 4,
+				strokeColor: '#0066a0',
+				strokeOpacity: 1,
+				strokeStyle: 'shortdash',
+			});
+			// 지도에 line 초기화
+			this.polyline.setMap(null); 
+		},
+		addMarker(position, idx) {
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
+			const imageSize = new window.kakao.maps.Size(36, 37);  // 마커 이미지의 크기
+			const imgOptions =  {
+				spriteSize : new window.kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+				spriteOrigin : new window.kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+				offset: new window.kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+			};
+			const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+			const marker = new window.kakao.maps.Marker({
+				image: markerImage,
+				position: position, // 마커를 표시할 위치
+				title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				clickable: true,
+			});
+			console.log(markerImage);
+			
+			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
+			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+			return marker;
+		},
+		reloadMap(){
+			// 지도에 line 초기화
+			this.polyline.setMap(null); 
 		}
 	}
 }
