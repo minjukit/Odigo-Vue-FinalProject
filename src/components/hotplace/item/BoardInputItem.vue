@@ -18,6 +18,16 @@
           ></b-form-input>
         </b-form-group>
 
+        <v-card-text>
+                <v-file-input
+                  accept=".txt"
+                  label="Click here to select a .txt file"
+                  outlined
+                  v-model="chosenFile"
+                >
+                </v-file-input>
+              </v-card-text>
+
         <b-form-group id="content-group" label="내용:" label-for="content">
           <b-form-textarea
             id="content"
@@ -26,8 +36,12 @@
             rows="10"
             max-rows="15"
           ></b-form-textarea>
+           
         </b-form-group>
-
+        <textarea v-model="content" rows="5"></textarea>
+            <input type="file" @change="onFileSelected">
+            <button @click="insertImage">이미지 삽입</button>
+            <div v-html="renderedContent"></div>
         <b-button
           type="submit"
           variant="primary"

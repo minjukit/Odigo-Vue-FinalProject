@@ -1,4 +1,5 @@
 <template>
+<section>
     <b-container class="bv-example-row mt-3 text-center">
     <h3 class="underline-hotpink">
       핫플레이스
@@ -6,6 +7,7 @@
     <h6>인기많은 여행지를 알아보세요</h6>
     <router-view></router-view>
   </b-container>
+  </section>
 </template>
 
 <script>
@@ -25,5 +27,9 @@ export default {
     rgba(255, 255, 255, 0) 70%,
     rgba(99, 167, 255, 0.3) 30%
   );
+}
+
+section{
+  display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #ffffff; 
 }
 </style>
