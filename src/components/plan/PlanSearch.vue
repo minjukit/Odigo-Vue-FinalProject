@@ -2,7 +2,8 @@
 	<div class="container" style="margin-top: 2%;">
 		<div class="row" style="margin-left: 0%; width:100%">
 			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
-				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:69.5%" v-model.lazy:value="keyWord" />
+				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:69.5%" v-model.lazy:value="keyWord"
+				@keyup.enter="getById" />
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
 				@click="getById">검색</button>
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toSavePage">저장
