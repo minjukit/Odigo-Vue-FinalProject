@@ -21,7 +21,12 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" @click="$emit('close')">여행지 더 추가 하기</button>
-						<button type="button" class="btn btn-primary" @click="toLogin">로그인 하기</button>
+						<template v-if="!isLogin">
+							<button type="button" class="btn btn-primary" @click="toLogin">로그인 하기</button>
+						</template>
+						<template v-else>
+							<button type="button" class="btn btn-primary" @click="toPlan">여행 계획 페이지로</button>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -38,13 +43,23 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(["planList"])
+		...mapGetters(["planList", "isLogin"])
 	},
 	methods: {
 		...mapActions([Constant.REMOVE_PLAN, Constant.MOVE_UP, Constant.MOVE_DOWN, Constant.REPRACE_ROUTE]),
 		toLogin() {
-			console.log("로그인 페이지로")
+			this.$router.push({
+				path: '/login',
+				query: {
+					redirect: '/plan/searchPlan',
+				}
+			})
 		},
+
+		toPlan() {
+			this.$router.push("/plan/searchPlan")
+		},
+
 		toRemovePlan(id) {
 			console.log(id);
 			this[Constant.REMOVE_PLAN](id)

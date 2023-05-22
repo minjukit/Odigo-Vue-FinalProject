@@ -131,8 +131,8 @@ export default {
 					() => {
 						this.makeList(this.data)
 					}
-				).catch((data) => {
-					if (data == "Error") {
+				).catch((response) => {
+					if (response == "Error") {
 						this.getById()
 					}
 				});
