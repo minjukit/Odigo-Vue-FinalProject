@@ -78,11 +78,11 @@ const routes = [
         next({path: '/login',
         query: {
           redirect: to.fullPath,
-          data: 'example data' // 전달하려는 데이터 추가
           }
         })
-      }
+      } else {
       next();
+      }
     },
     children: [
       {
