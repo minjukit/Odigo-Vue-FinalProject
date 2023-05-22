@@ -1,5 +1,7 @@
 <template>
+
   <b-row class="mb-1">
+  
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
 
@@ -18,30 +20,56 @@
           ></b-form-input>
         </b-form-group>
 
-        <v-card-text>
-                <v-file-input
-                  accept=".txt"
-                  label="Click here to select a .txt file"
-                  outlined
-                  v-model="chosenFile"
-                >
-                </v-file-input>
-              </v-card-text>
+        <img :src="imageFileUrl" v-if="imageFileUrl" max-width= "800" height="auto">
 
-        <b-form-group id="content-group" label="내용:" label-for="content">
+        <div class="mb-3">
+          <b-button-toolbar class="ml-0.5">
+          <b-button-group class="mr-1" @click="chooseImage">
+            <input
+              type="file"
+              style="display: none"
+              ref="imageInput"
+              accept="image/png,image/jpeg,image/jpg"
+              @change="onFileChange"
+            />
+          <b-button title="New File" >
+            <b-icon icon="camera" aria-hidden="true"></b-icon>
+            &nbsp;사진
+          </b-button>
+          
+          <b-button title="New loc">
+            <b-icon icon="map" aria-hidden="true"></b-icon>
+             &nbsp;위치
+          </b-button>
+          </b-button-group>
+          
+          <b-button-group class="mr-1">
+            <b-button title="Align left">
+              <b-icon icon="text-left" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button title="Align center">
+              <b-icon icon="text-center" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button title="Align right">
+              <b-icon icon="text-right" aria-hidden="true"></b-icon>
+        </b-button>
+      </b-button-group>
+
+          </b-button-toolbar>
+          
+        </div>
+        <b-form-group id="content-group" label="  " label-for="content">
           <b-form-textarea
             id="content"
             v-model="article.content"
-            placeholder="내용 입력..."
+            placeholder="내용을 입력하세요"
             rows="10"
             max-rows="15"
           ></b-form-textarea>
            
         </b-form-group>
-        <textarea v-model="content" rows="5"></textarea>
-            <input type="file" @change="onFileSelected">
-            <button @click="insertImage">이미지 삽입</button>
-            <div v-html="renderedContent"></div>
+        
+      
         <b-button
           type="submit"
           variant="primary"
@@ -54,15 +82,20 @@
         >
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
       </b-form>
+
+
     </b-col>
+   
   </b-row>
 </template>
 
 <script>
 import http from "@/util/http-common.js";
 
+import ImageInputItem from "./ImageInputItem.vue";
 export default {
   name: "BoardInputItem",
+  components: ImageInputItem,
   data() {
     return {
       article: {
@@ -70,8 +103,15 @@ export default {
         user: "",
         title: "",
         content: "",
-       },
+         
+      },
       isUserid: false,
+      file: null,
+        imageFile: null,
+        imageFileUrl: "",
+        files: [], //업로드용 파일
+                        filesPreview: [],
+                        uploadImageIndex: 0 // 이미지
     };
   },
   props: {
@@ -167,10 +207,45 @@ export default {
     moveList() {
       this.$router.push({ name: "HotPlaceList" });
     },
+    chooseImage() {
+      this.$refs.imageInput.click();
+    },
+    clearFiles() {
+        this.$refs['image-input'].reset()
+      },
+    onFileChange(event) {
+      const file = event.target.files[0]
+      if (!file) {
+        return false
+      }
+      if (!file.type.match('image.*')) {
+        return false
+      }
+      const reader = new FileReader()
+      const that = this
+     
+      reader.onload = function (e) {
+        console.log(e)
+        that.imageFileUrl = e.target.result
+      }
+   
+      reader.readAsDataURL(file)
+    },
+    clearImage() {
+      this.imageFile = null;
+      this.imageFileUrl = null;
+    },
+  
+    fileDeleteButton(e) {
+        const name = e.target.getAttribute('name');
+        this.files = this.files.filter(data => data.number !== Number(name));
+        // console.log(this.files);
+    },
+                
   },
 };
 </script>
 
-<style>
+<style scoped>
 
 </style>

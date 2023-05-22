@@ -71,7 +71,7 @@ import http from "@/util/http-common.js";
 import moment from "moment";
 
 export default {
-  name: "HotBoardList",
+  name: "hotPlaceList",
   components: {
     // BoardListItem,
   },
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     moveWrite() {
-      this.$router.push({ name: "boardRegister" });
+      this.$router.push('/hotplace/write' );
     },
     pageClick(){
       //this.currentPage = page;

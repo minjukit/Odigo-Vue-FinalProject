@@ -17,6 +17,11 @@ export default {
   components: {
     HeaderNavBar
   },
+  data() {
+		return {
+			transitionName: ""
+		}
+	},
   watch: {
     $route(to, from) {
       if(to.meta.page == null || from.meta.page == null){

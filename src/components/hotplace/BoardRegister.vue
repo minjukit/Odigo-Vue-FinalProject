@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BoardInputItem from "@/components/board/item/BoardInputItem.vue";
+import BoardInputItem from "@/components/hotplace/item/BoardInputItem.vue";
 
 export default {
   name: "BoardWrite",
