@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import store from '@/store/index'; 
 
 Vue.use(VueRouter);
 
@@ -13,15 +14,19 @@ const routes = [
   {
     path: "/about",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
     path: "/region",
     name: "region",
     component: () => import(/* webpackChunkName: "region" */ "@/views/TripByRegionView.vue"),
+    children : [
+      {
+        path: "regionSearch",
+        name: "boardList",
+        component: () => import(/* webpackChunkName: "board" */ "@/components/region/RegionSearch.vue"),
+      },
+    ]
   },
   {
     path: "/board",
@@ -66,16 +71,41 @@ const routes = [
     path: "/plan",
     name: "plan",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
-  },
-  {
-    path: "/savePlan",
-    name: "savePlan",
-    component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
+    beforeEnter: (to, from, next) => {
+      console.log(store.getters.isLogin)
+      if(!store.getters.isLogin) {
+        alert("로그인을 해야 합니다.")
+        next({path: '/login',
+        query: {
+          redirect: to.fullPath,
+          data: 'example data' // 전달하려는 데이터 추가
+          }
+        })
+      }
+      next();
+    },
+    children: [
+      {
+        path: "searchPlan",
+        name: "searchPlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/components/plan/PlanSearch.vue"),
+      },
+      {
+        path: "savePlan",
+        name: "savePlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
+      },
+    ]
   },
   {
     path: "/login",
     name: "login",
     component: () => import(/* webpackChunkName: "region" */ "@/views/LoginView.vue"),
+  },
+  {
+    path: "/regForm",
+    name: "regForm",
+    component: () => import("@/components/user/RegForm.vue"),
   },
 ];
 
@@ -84,5 +114,21 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to,from,next) => {
+  to
+  from
+  store.dispatch('getCert')
+    .then(() => {
+      // 액션이 완료된 후 다음으로 이동
+      next();
+    })
+    .catch(error => {
+      // 액션 처리 중 에러가 발생한 경우
+      console.error(error);
+      next(false); // 라우터 이동 취소
+    });
+  next()
+})
 
 export default router;

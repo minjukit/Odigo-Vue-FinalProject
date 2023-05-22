@@ -4,55 +4,50 @@
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>
-			<form class="form-signin">
-				<span id="reauth-email" class="reauth-email"></span>
-				<input type="id" id="inputEmail" class="form-control" style="margin-bottom: 3%;" placeholder="id"
-					v-model.lazy:value="id" required autofocus>
-				<input type="password" id="inputPassword" class="form-control" v-model.lazy:value="password"
-					placeholder="Password" required>
-				<div id="remember" class="checkbox">
-					<label>
-						<input type="checkbox" value="remember-me"> Remember me
-					</label>
-				</div>
-				<button class="btn btn-lg btn-primary btn-block btn-signin" @click.prevent.stop="login">Sign in</button>
+			<form>
+				<input type="input" id="input" class="form-control" placeholder="id를 입력해주세요" v-model.lazy:value="id"
+					required autofocus>
+				<input type="input" id="input" class="form-control" placeholder="Password" v-model.lazy:value="password"
+					required>
+				<input type="input" id="input" class="form-control" placeholder="mail을 입력해주세요" v-model.lazy:value="mail"
+					required>
+				<input type="input" id="input" class="form-control" placeholder="이름을 입력해주세요" v-model.lazy:value="name"
+					required>
+				<input type="input" id="input" class="form-control" placeholder="전화번호를 입력해주세요"
+					v-model.lazy:value="phoneNumber" required>
+				<input type="input" id="input" class="form-control" placeholder="닉네임을 입력해주세요" v-model.lazy:value="nickName"
+					required>
+				<button class="btn btn-lg btn-primary btn-block" @click.prevent.stop="registerBtn">가입하기</button>
 			</form><!-- /form -->
-			<a href="#" class="forgot-password">
-				Forgot the password?
-			</a>
 		</div><!-- /card-container -->
 	</div><!-- /container -->
 </template>
 
 <script>
 import empRestAPI from "@/util/http-common.js";
-import Constant from '@/common/Constant';
-import { mapActions } from 'vuex';
 export default {
 	data() {
 		return {
 			id: "",
-			password: ""
+			password: "",
+			mail: "",
+			name: "",
+			phoneNumber: "",
+			nickName: "",
 		}
-	},
-	methods: {
-		...mapActions([Constant.SET_TOKENS])
-		,
-		login() {
+	}
+	, methods: {
+		registerBtn() {
 			const data = {
-				userId: this.id,
-				userPw: this.password,
+				loginId: this.id,
+				mail: this.mail,
+				name: this.name,
+				password: this.password,
+				phoneNumber: this.phoneNumber,
+				nickName: this.nickName,
 			}
-			console.log(data)
-			empRestAPI.post('/user/login', data)
-				.then((response) => {
-					this.setTokens(response.data)
-					if (this.$route.query.redirect == null) {
-						this.$router.push("/")
-					} else {
-						this.$router.push(this.$route.query.redirect)
-					}
-				})
+			empRestAPI.post('/user', data)
+				.then(() => console.log("success"))
 				.catch(() => console.log("catch exception"))
 		}
 	}
@@ -60,7 +55,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card-container.card {
 	max-width: 350px;
 	padding: 40px 40px;
@@ -129,15 +124,14 @@ export default {
 	box-sizing: border-box;
 }
 
-.form-signin #inputEmail,
-.form-signin #inputPassword {
+.form-signin #input {
 	direction: ltr;
 	height: 44px;
 	font-size: 16px;
 }
 
 .form-signin input[type=email],
-.form-signin input[type=password],
+input[type=input],
 .form-signin input[type=text],
 .form-signin button {
 	width: 100%;

@@ -19,27 +19,11 @@
                         <td colspan="7">검색 결과가 없습니다.</td>
                     </tr>
                     <template v-else>
-                        <!-- <tr v-for="(item, index) in planList" :key="item.id">
-                            <td class="middleTd" style="width:55px;" @click="openModal">{{ index + 1 }}</td>
-                            <td class="middleTd" @click="openModal">{{ item.place_name }}</td>
-                            <td class="middleTd" @click="openModal">{{ item.phone }}</td>
-                            <td class="middleTd" style="width:100px;" @click="openModal">{{ item.category_group_name }}</td>
-                            <td class="middleTd"><a :href="item.place_url" target="_blank">이동하기</a></td>
-                            <td><b-button class="btn btn-light btn-sm" style="margin-right: 5px;"
-                                    @click="moveUp(item.id)">올리기</b-button>
-                                <b-button class="btn btn-dark btn-sm" @click="moveDown(item.id)">내리기</b-button>
-                            </td>
-                            <td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
-                        </tr> -->
-                        <!-- <table-row v-for="item in planList" :key="item.id" :row-data="item"></table-row> -->
                         <plan-list-detail-row v-for="(item, index) in planList" :key="item.id" :item="item"
                             :index="index"></plan-list-detail-row>
                     </template>
                 </tbody>
             </table>
-            <!-- <button @click="openModal">열기</button> -->
-            <!-- <RouteModal v-if="showModal" @close="showModal = false" :detailitem="nowitem"></RouteModal> -->
-
         </div>
     </div>
 </template>
@@ -47,17 +31,14 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Constant from '@/common/Constant'
-// import RouteModal from '@/components/map/RouteModal.vue'
 import PlanListDetailRow from './PlanListDetailRow.vue';
 
 export default {
     name: "PlanList",
-    // props: ["items"],
     computed: {
         ...mapState(["planList"]),
     },
     components: {
-        // RouteModal,
         PlanListDetailRow
     },
     props: {
