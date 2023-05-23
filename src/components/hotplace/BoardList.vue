@@ -66,9 +66,9 @@
 </template>
 
 <script>
-import http from "@/util/http-common.js";
+// import http from "@/util/http-common.js";
 // import BoardListItem from "@/components/board/item/BoardListItem";
-import moment from "moment";
+//import moment from "moment";
 
 export default {
   name: "hotPlaceList",
@@ -100,14 +100,18 @@ export default {
     this.currentPage = this.$route.params.currentPage;
     if(this.currentPage === undefined) this.currentPage =1;
      if(this.sortBy === undefined) this.sortBy ='dateDesc';
-    http.get(`/hotplace`).then(({ data }) => {
-      this.articles = data;
-      for(let i =0; i<this.articles.length; i++){
-         this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
-      }
-      console.log("created")
-      console.log(this.filteredData)
-    });
+    // http.get(`/hotplace`,
+    // {headers: {
+    //         ACCESS_TOKEN: "noneToken",
+    //         REFRESH_TOKEN: "noneToken",
+    //       },}).then(({ data }) => {
+    //   this.articles = data;
+    //   for(let i =0; i<this.articles.length; i++){
+    //      this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
+    //   }
+    //   console.log("created")
+    //   console.log(this.filteredData)
+    // });
 
   },
   methods: {

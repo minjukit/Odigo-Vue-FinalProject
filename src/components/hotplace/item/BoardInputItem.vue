@@ -20,7 +20,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <img :src="imageFileUrl" v-if="imageFileUrl" max-width= "800" height="auto">
+        
 
         <div class="mb-3">
           <b-button-toolbar class="ml-0.5">
@@ -31,6 +31,7 @@
               ref="imageInput"
               accept="image/png,image/jpeg,image/jpg"
               @change="onFileChange"
+              multiple files
             />
           <b-button title="New File" >
             <b-icon icon="camera" aria-hidden="true"></b-icon>
@@ -81,21 +82,25 @@
           >글수정</b-button
         >
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+
+
+        
+        <div id="imagebound">
+          <div v-for ="image in images" :key = "image.url" class="imageelement" >
+            <img :src="image.url"  max-width= "1000" height="auto">
+          </div>
+        </div>
       </b-form>
-
-
     </b-col>
-   
   </b-row>
 </template>
 
 <script>
 import http from "@/util/http-common.js";
 
-import ImageInputItem from "./ImageInputItem.vue";
 export default {
   name: "BoardInputItem",
-  components: ImageInputItem,
+  
   data() {
     return {
       article: {
@@ -106,12 +111,9 @@ export default {
          
       },
       isUserid: false,
-      file: null,
-        imageFile: null,
-        imageFileUrl: "",
-        files: [], //업로드용 파일
-                        filesPreview: [],
-                        uploadImageIndex: 0 // 이미지
+      //file: null,
+      files: [], //업로드용 파일
+      images: [],
     };
   },
   props: {
@@ -139,6 +141,7 @@ export default {
     // console.log(this.article.title)
     // console.log(this.article)
   },
+
   methods: {
     onSubmit(event) {
       event.preventDefault();
@@ -214,38 +217,55 @@ export default {
         this.$refs['image-input'].reset()
       },
     onFileChange(event) {
-      const file = event.target.files[0]
-      if (!file) {
-        return false
+      const files = event.target.files;
+
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          console.log("file input method")
+          const file = files[i];
+          const reader = new FileReader();
+          var imageData = null;
+          reader.onload = (event)=>{
+            imageData = {
+              url: event.target.result
+            };
+            this.images.push(imageData)
+          }
+          console.log("===========imageData")
+          console.log(imageData)
+
+          console.log(this.images)
+          reader.readAsDataURL(file);
+        }
       }
-      if (!file.type.match('image.*')) {
-        return false
-      }
-      const reader = new FileReader()
-      const that = this
-     
-      reader.onload = function (e) {
-        console.log(e)
-        that.imageFileUrl = e.target.result
-      }
-   
-      reader.readAsDataURL(file)
     },
     clearImage() {
-      this.imageFile = null;
-      this.imageFileUrl = null;
+     
     },
-  
     fileDeleteButton(e) {
         const name = e.target.getAttribute('name');
         this.files = this.files.filter(data => data.number !== Number(name));
         // console.log(this.files);
-    },
-                
+    },   
   },
 };
 </script>
 
 <style scoped>
+#imagebound {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 30px auto auto auto;
+  border-radius: 1%;
+  border: 1px solid rgb(218, 218, 218);
+}
 
+.imageelement{
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
 </style>
