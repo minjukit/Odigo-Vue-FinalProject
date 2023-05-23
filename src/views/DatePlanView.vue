@@ -1,59 +1,38 @@
 <template>
-	<div class="container" style="margin-top: 2%;">
-		<div class="row" style="margin-left: 0%; width:100%">
-			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
-				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
-				@keyup.enter="getById" />
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="enddate"
-				v-model="startdate" class="mb-2" placeholder="시작일"></b-form-datepicker>
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" v-model="enddate" class="mb-2"
-				:min="startdate" placeholder="종료일"></b-form-datepicker>
-			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
-				@click="getById">검색</button>
-			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toDatePage">일별
-				설정</button>
-		</div>
-		<div class="row">
-			<div class="col-5">
-				<map-list :items="items" :checkedId="checkedId" @checkedIdFromChild="getChecked"></map-list>
-			</div>
-			<div class="col-7">
+	<div class="container" style="margin-top: 1%;">
+		<div class="row" style="margin-top: 1%">
+			<div class="col-6">
 				<div id="map"></div>
 			</div>
-		</div>
-		<div class="row">
-			<plan-list style="margin-top: 1.5%"></plan-list>
+			<div class="col-6">
+				<drag-list id="drag"></drag-list>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import MapList from '@/components/plan/MapList'
 import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
-import PlanList from '@/components/plan/PlanList.vue';
+import DragList from '@/components/plan/DragList';
 
 export default {
 	components: {
-		MapList,
-		PlanList,
-	},
-	watch: {
-		startdate() {
-			this[Constant.SET_STARTDATE](this.startdate)
-		},
-
-		enddate() {
-			this[Constant.SET_ENDDATE](this.enddate)
-		},
+		DragList
 	},
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
-		window.addPlanList = this.addPlanList
+		window.RemovePlanList = this.toRemovePlan
 		this[Constant.INITIATE_ROUTE]()
 		// this[Constant.INITIATE_PLANS]()
-		// this[Constant.PLANLIST_PRE_PROCESS]();
-		// console.log("created")
+	},
+	watch: {
+		planList() {
+			console.log("parent")
+			console.log(this.planList)
+			this.reloadMap()
+			this.startPlanMap()
+		}
 	},
 	computed: {
 		...mapGetters(["items", "data", "planList"]),
@@ -68,10 +47,9 @@ export default {
 			infos: [],
 			bounds: {},
 			checkedId: "",
-			startdate: null,
-			enddate: null,
-			now: new Date(),
-			days: 0,
+			polyline: {},
+			linePositionpath: [],
+			markerImage: null,
 		};
 	},
 	mounted() {
@@ -87,8 +65,13 @@ export default {
 		// [Constant.GET_ROUTES]() {
 		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
 		// },
-		...mapActions([Constant.GET_ROUTES, Constant.SET_STARTDATE, Constant.SET_ENDDATE,
-		Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS]),
+		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS, Constant.REMOVE_PLAN]),
+
+		toRemovePlan(idx) {
+			console.log(this.planList[idx]);
+			this[Constant.REMOVE_PLAN](this.planList[idx].id)
+			this.setPolyLine();
+		},
 
 		addPlanList(idx) {
 			console.log(this.items[idx].place_name)
@@ -126,6 +109,8 @@ export default {
 			};
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+			this.startPlanMap()
+
 		},
 
 		loadMaker() {
@@ -140,34 +125,23 @@ export default {
 
 			marker.setMap(this.map);
 		},
-
-		getById() {
+		startPlanMap() {
 			this.closeInfoWindow()
-			if (this.keyWord == null || this.keyWord.length == 0) {
-				return
-			}
-			this[Constant.GET_ROUTES](this.keyWord)
-				.then(
-					() => {
-						this.makeList(this.data)
-					}
-				).catch((response) => {
-					if (response == "Error") {
-						this.getById()
-					}
-				});
+
+			this.makeList(this.planList)
 		},
 
 		makeList(data) {
 			this.positions = [];
-			let trips = data.documents;
+			let trips = data;
 			if (this.markers != null) {
 				for (let mark of this.markers) {
 					mark.setMap(null);
 				}
 			}
 			this.markers = [];
-			if (trips.length == 0) {
+
+			if (trips == null) {
 				alert("검색 결과가 없습니다. 다시 검색해주세요");
 				return;
 			}
@@ -186,39 +160,19 @@ export default {
 			this.bounds = new window.kakao.maps.LatLngBounds();
 			this.markers = [];
 			this.infos = [];
+			// draw line
+			this.setPolyLine();
 
 			for (var i = 0; i < this.positions.length; i++) {
-				var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
-				if (this.items[i].id == this.checkedId) {
-					imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-				}
-				// 마커 이미지의 이미지 크기 입니다
-				var imageSize = new window.kakao.maps.Size(24, 35);
 
-				// 마커 이미지를 생성합니다
-				var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+				var marker = this.addMarker(this.positions[i].latlng, i);
 
-				// var points = [];
-
-				// 마커를 생성합니다
-				var marker = new window.kakao.maps.Marker({
-					map: this.map, // 마커를 표시할 지도
-					position: this.positions[i].latlng, // 마커를 표시할 위치
-					title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-					image: markerImage, // 마커 이미지
-					clickable: true,
-				});
-
-				if (this.items[i].id == this.checkedId) {
-					marker.setZIndex(10);
-				} else {
-					marker.setZIndex(5);
-				}
 				this.markers.push(marker);
 
 				this.bounds.extend(this.positions[i].latlng);
 
-				// this.markers.push(marker);
+				// line - position에 담긴 좌표 path에 추가
+				this.linePositionpath.push(this.positions[i].latlng);
 
 				var infowindow = new window.kakao.maps.InfoWindow({
 					content: '<div class="wrap" style="width: 300px; font-size: 13px">' +
@@ -231,15 +185,12 @@ export default {
 						'       <div class="body">' +
 						'           <div class="desc">' +
 						area[i].address_name +
-						`<div class="close" onclick="addPlanList(${i})" style="font-size : 13px; margin:3px -28px 0 0">추가하기</div>` +
+						`<div class="close" onclick="RemovePlanList(${i})" style="font-size : 13px; margin:3px -28px 0 0">삭제하기</div>` +
 						`      		</div>` +
 						`</div>` +
 						'	  </div>'// 인포윈도우에 표시할 내용
 				});
 				infowindow.setZIndex(11)
-				if (this.items[i].id == this.checkedId) {
-					var checkedidx = i
-				}
 				this.infos.push(infowindow);
 			}
 
@@ -250,15 +201,11 @@ export default {
 				});
 			}
 
-			if (checkedidx != null) {
-				this.infos[checkedidx].open(this.map, this.markers[checkedidx]);
-				this.bounds = new window.kakao.maps.LatLngBounds();
-				console.log(this.markers[checkedidx])
-				this.bounds.extend(this.markers[checkedidx].getPosition())
-				this.map.setBounds(this.bounds, 1000, 1000, 1000, 1000);
-			} else {
-				this.map.setBounds(this.bounds);
-			}
+			this.map.setBounds(this.bounds);
+			// line
+			this.polyline.setPath(this.linePositionpath); //line path 메소드로 지정
+			this.polyline.setMap(this.map); // 지도에 line 표시
+
 		},
 
 		closeInfoWindow() {
@@ -275,12 +222,46 @@ export default {
 		moveCenter(lat, lng) {
 			this.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
 		},
-		toDatePage() {
-			if (this.planList.length != 0) {
-				this.$router.push('/plan/DatePlan')
-			} else {
-				alert("여행지를 최소 하나는 선택 해야 합니다.");
-			}
+		toSavePage() {
+			console.log(this.planList.length)
+		},
+		setPolyLine() {
+			this.linePositionpath = [];
+			this.polyline = new window.kakao.maps.Polyline({
+				map1: this.map,
+				strokeWeight: 4,
+				strokeColor: '#0066a0',
+				strokeOpacity: 1,
+				strokeStyle: 'shortdash',
+			});
+			// 지도에 line 초기화
+			this.polyline.setMap(null);
+		},
+		addMarker(position, idx) {
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
+			const imageSize = new window.kakao.maps.Size(36, 37);  // 마커 이미지의 크기
+			const imgOptions = {
+				spriteSize: new window.kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+				spriteOrigin: new window.kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+				offset: new window.kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+			};
+			const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+			const marker = new window.kakao.maps.Marker({
+				image: markerImage,
+				position: position, // 마커를 표시할 위치
+				title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				clickable: true,
+			});
+			// console.log(markerImage);
+
+			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
+			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+			return marker;
+		},
+		reloadMap() {
+			// 지도에 line 초기화
+			this.polyline.setMap(null);
 		}
 	}
 }
@@ -288,19 +269,20 @@ export default {
 
 <style scoped>
 #map {
-	width: 96%;
-	height: 500px;
+	width: 105%;
+	height: 680px;
 	margin-top: 1%;
-	margin-left: -10px;
+	margin-left: -20px;
 	padding: 0;
 }
 
-#btn-search {
-	height: 38px
-}
-
-.date {
-	border: solid;
-	border-color: rgba(0, 0, 0, 0.2);
+#drag {
+	height: 630px;
+	border-radius: 30px;
+	border-style: solid;
+	border-width: 2.5px;
+	border-color: rgba(0, 0, 0, .3);
+	padding: 5px 0px 5px 0px;
+	margin-top: 6px;
 }
 </style>

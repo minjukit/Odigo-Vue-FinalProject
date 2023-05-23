@@ -12,6 +12,11 @@ const routes = [
     component: HomeView,
   },
   {
+    path: "/index",
+    name: "home",
+    component: HomeView,
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
@@ -72,7 +77,6 @@ const routes = [
     name: "plan",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
-      console.log(store.getters.isLogin)
       if(!store.getters.isLogin) {
         alert("로그인을 해야 합니다.")
         next({path: '/login',
@@ -95,6 +99,11 @@ const routes = [
         name: "savePlan",
         component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
       },
+      {
+        path: "DatePlan",
+        name: "DatePlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/views/DatePlanView.vue"),
+      },
     ]
   },
   {
@@ -106,6 +115,12 @@ const routes = [
     path: "/regForm",
     name: "regForm",
     component: () => import("@/components/user/RegForm.vue"),
+  },
+
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("@/components/plan/DragList.vue"),
   },
 ];
 

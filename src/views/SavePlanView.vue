@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent = "reloadMap"></plan-list-detail>
+			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent="reloadMap"></plan-list-detail>
 		</div>
 	</div>
 </template>
@@ -27,7 +27,7 @@ export default {
 	},
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
-		window.addPlanList = this.addPlanList
+		window.RemovePlanList = this.toRemovePlan
 		this[Constant.INITIATE_ROUTE]()
 		// this[Constant.INITIATE_PLANS]()
 	},
@@ -67,7 +67,13 @@ export default {
 		// [Constant.GET_ROUTES]() {
 		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
 		// },
-		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS]),
+		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS, Constant.REMOVE_PLAN]),
+
+		toRemovePlan(idx) {
+			console.log(this.planList[idx]);
+			this[Constant.REMOVE_PLAN](this.planList[idx].id)
+			this.setPolyLine();
+		},
 
 		addPlanList(idx) {
 			console.log(this.items[idx].place_name)
@@ -106,7 +112,7 @@ export default {
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
 			this.startPlanMap()
-			
+
 		},
 
 		loadMaker() {
@@ -158,9 +164,9 @@ export default {
 			this.infos = [];
 			// draw line
 			this.setPolyLine();
-	
+
 			for (var i = 0; i < this.positions.length; i++) {
-				
+
 				var marker = this.addMarker(this.positions[i].latlng, i);
 
 				this.markers.push(marker);
@@ -169,9 +175,9 @@ export default {
 
 				// line - position에 담긴 좌표 path에 추가
 				this.linePositionpath.push(this.positions[i].latlng);
-				
+
 				var infowindow = new window.kakao.maps.InfoWindow({
-					content: '<div class="wrap" style="width: 270px; font-size: 13px">' +
+					content: '<div class="wrap" style="width: 300px; font-size: 13px">' +
 						'     	<div class="info">' +
 						'       	<div class="title">' +
 						area[i].place_name +
@@ -181,7 +187,7 @@ export default {
 						'       <div class="body">' +
 						'           <div class="desc">' +
 						area[i].address_name +
-						`<div class="close" onclick="addPlanList(${i})" style="font-size : 13px; margin:3px -28px 0 0">추가하기</div>` +
+						`<div class="close" onclick="RemovePlanList(${i})" style="font-size : 13px; margin:3px -28px 0 0">삭제하기</div>` +
 						`      		</div>` +
 						`</div>` +
 						'	  </div>'// 인포윈도우에 표시할 내용
@@ -221,8 +227,8 @@ export default {
 		toSavePage() {
 			console.log(this.planList.length)
 		},
-		setPolyLine(){
-			
+		setPolyLine() {
+
 			this.linePositionpath = [];
 			this.polyline = new window.kakao.maps.Polyline({
 				map1: this.map,
@@ -232,14 +238,14 @@ export default {
 				strokeStyle: 'shortdash',
 			});
 			// 지도에 line 초기화
-			this.polyline.setMap(null); 
+			this.polyline.setMap(null);
 		},
 		addMarker(position, idx) {
 			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
 			const imageSize = new window.kakao.maps.Size(36, 37);  // 마커 이미지의 크기
-			const imgOptions =  {
-				spriteSize : new window.kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-				spriteOrigin : new window.kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+			const imgOptions = {
+				spriteSize: new window.kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+				spriteOrigin: new window.kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
 				offset: new window.kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
 			};
 			const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
@@ -250,15 +256,15 @@ export default {
 				clickable: true,
 			});
 			console.log(markerImage);
-			
+
 			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
 			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
 			return marker;
 		},
-		reloadMap(){
+		reloadMap() {
 			// 지도에 line 초기화
-			this.polyline.setMap(null); 
+			this.polyline.setMap(null);
 		}
 	}
 }

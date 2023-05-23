@@ -16,6 +16,8 @@ export default new Vuex.Store({
     accessToken: "",
     refreshToken: "",
     isLogin: false,
+    startDate: null,
+    endDate: null,
   },
   getters: {
     items(state) {
@@ -27,6 +29,7 @@ export default new Vuex.Store({
     },
 
     planList(state) {
+      console.log("come here?")
       console.log(state.planList);
       return state.planList;
     },
@@ -41,6 +44,16 @@ export default new Vuex.Store({
 
     isLogin(state) {
       return state.isLogin;
+    },
+
+    startDate(state) {
+      console.log(typeof(state.startDate))
+      return state.startDate
+    },
+
+    endDate(state) {
+      console.log(typeof(state.endDate))
+      return state.endDate
     }
   },
   mutations: {
@@ -121,9 +134,6 @@ export default new Vuex.Store({
           checkBool = false;
         }
       }
-      console.log(state.planList)
-      console.log(payload)
-      console.log(checkBool)
       if (checkBool) {
         payload.content = "";
         payload.cost = "";
@@ -156,10 +166,10 @@ export default new Vuex.Store({
           ACCESS_TOKEN: state.accessToken,
           REFRESH_TOKEN: "noneToken",
         },}).then((response) => {
-          console.log(response.data)
           this.commit(Constant.SET_ACCESSTOKENS_MUTATION, response.data);
           state.isLogin = true;
         }).catch((data) => {
+          console.log(data.response)
           if(data.response.status == 403) {
             this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
           }
@@ -184,7 +194,21 @@ export default new Vuex.Store({
       state.accessToken = "";
       state.refreshToken = "";
       state.isLogin = false;
-    }
+    },
+
+    [Constant.FORCE_PLANLIST_MUTATION](state, payload) {
+      state.planList = payload
+    },
+
+    [Constant.SET_STARTDATE_MUTATION](state, payload) {
+      state.startDate = payload
+      console.log(state.startDate)
+    },
+
+    [Constant.SET_ENDDATE_MUTATION](state, payload) {
+      state.endDate = payload
+      console.log(state.endDate)
+    },
   },
 
   actions: {
@@ -260,12 +284,30 @@ export default new Vuex.Store({
       commit(Constant.SET_ALLTOKENS_MUTATION, tokens)
     },
 
-    [Constant.GET_CERT]({commit}) {
-      commit(Constant.GET_CERT_MUTATION)
+    [Constant.GET_CERT]({commit, state}) {
+      if (state.isLogin == true) {
+        commit(Constant.GET_CERT_MUTATION)
+      }
     },
 
     [Constant.LOGOUT]({commit}) {
       commit(Constant.REMOVE_TOKENS);
+    },
+
+    [Constant.FORCE_PLANLIST]({commit}, payload) {
+      commit(Constant.FORCE_PLANLIST_MUTATION,payload)
+    },
+
+    [Constant.SET_STARTDATE]({commit}, payload) {
+      commit(Constant.SET_STARTDATE_MUTATION, payload);
+    },
+
+    [Constant.SET_ENDDATE]({commit}, payload) {
+      commit(Constant.SET_ENDDATE_MUTATION, payload);
+    },
+
+    [Constant.CHECK_REFRESH]({commit}) {
+      commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
     }
 
   },

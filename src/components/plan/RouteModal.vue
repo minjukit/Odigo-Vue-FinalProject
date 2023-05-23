@@ -44,10 +44,19 @@ export default {
 	methods: {
 		...mapActions([Constant.REMOVE_PLAN, Constant.MOVE_UP, Constant.MOVE_DOWN, Constant.REPRACE_ROUTE]),
 		saveDetail() {
-
 			console.log(this.nowItem.content)
 			console.log(this.nowItem.cost)
 			this.replaceRoute(this.nowItem)
+		}
+	},
+	created() {
+		this.nowItem = { ...this.item }
+		console.log(this.nowItem.content)
+		console.log(this.nowItem.cost)
+	},
+	watch: {
+		nowItem() {
+			this.nowItem = this.item
 		}
 	},
 };

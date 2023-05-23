@@ -29,7 +29,8 @@
 
 <script>
 import empRestAPI from '@/util/http-common.js'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import Constant from '@/common/Constant';
 export default {
     name: "PlanDetail",
     data() {
@@ -39,7 +40,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["planList"]),
+        ...mapGetters(["planList", "accessToken"]),
     },
     created() {
     },
@@ -47,6 +48,7 @@ export default {
 
     },
     methods: {
+        ...mapActions([Constant.CHECK_REFRESH]),
         pickSpot(id) {
             var checkedId = id;
             this.$emit('checkedIdFromChild', checkedId)
@@ -58,9 +60,22 @@ export default {
                 login_id: "test",
                 routes: this.planList
             }
-            empRestAPI.post('/plan', data)
-                .then(() => console.log("sucess"))
-                .catch(() => console.log("catch exception"))
+            console.log(data)
+            empRestAPI.post('/plan', data, {
+                headers: {
+                    ACCESS_TOKEN: this.accessToken,
+                    REFRESH_TOKEN: "NoneToken"
+                },
+            })
+                .then(() => console.log("success"))
+                .catch((data) => {
+                    if (data.response.status == 403) {
+                        this[Constant.CHECK_REFRESH]();
+                        console.log("checkRefresh");
+                        this.savePlan();
+                    }
+                    console.log("저장에 실패 하였습니다.")
+                })
         }
     },
 };

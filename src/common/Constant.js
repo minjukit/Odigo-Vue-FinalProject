@@ -35,5 +35,12 @@ export default Object.freeze(
         REMOVE_TOKENS: "removeTokens",
         CHECK_REFRESH_TOKEN_MUTATION : "checkRefreshTokenMutation",
         CHECK_REFRESH_TOKEN : "checkRefreshToken",
+        FORCE_PLANLIST : "forcePlanList",
+        FORCE_PLANLIST_MUTATION : "force_PlanListMutation",
+        SET_STARTDATE: "setStartDate",
+        SET_ENDDATE: "setEedDate",
+        SET_STARTDATE_MUTATION: "setStartDateMutation",
+        SET_ENDDATE_MUTATION: "setEedDateMutation",
+        CHECK_REFRESH: "checkRefresh",
     }
 );
