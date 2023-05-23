@@ -15,8 +15,13 @@ export default new Vuex.Store({
     accessToken: "",
     refreshToken: "",
     isLogin: false,
+    nickName: "",
   },
   getters: {
+    nickName(state) {
+      return state.nickName;
+    },
+
     items(state) {
       return state.items;
     },
@@ -136,6 +141,8 @@ export default new Vuex.Store({
     [Constant.SET_ALLTOKENS_MUTATION](state, payload) {
       state.accessToken = payload.access_TOKEN;
       state.refreshToken = payload.refresh_TOKEN;
+      state.nickName = payload.nickName;
+      console.log(state.nickName);
       state.isLogin = true;
     },
 
@@ -190,6 +197,7 @@ export default new Vuex.Store({
     [Constant.REMOVE_TOKENS](state) {
       state.accessToken = "";
       state.refreshToken = "";
+      state.nickName = "";
       state.isLogin = false;
     },
   },

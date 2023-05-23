@@ -97,6 +97,7 @@
 
 <script>
 import http from "@/util/http-common.js";
+import { mapGetters } from 'vuex';
 
 export default {
   name: "BoardInputItem",
@@ -119,7 +120,11 @@ export default {
   props: {
     type: { type: String },
   },
+  computed: {
+    ...mapGetters(["nickName"])
+  },
   created() {
+    console.log("nickname = " + this.nickName)
     if (this.type === "modify") {
       console.log(this.type)
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
@@ -254,7 +259,10 @@ export default {
 <style scoped>
 #imagebound {
   width: 100%;
-  height: 300px;
+  padding: 10px;
+  overflow:hidden;
+	height:auto;
+  min-height: 150px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -264,6 +272,8 @@ export default {
 }
 
 .imageelement{
+  border: 1px solid  rgb(162, 205, 255);
+  
   display: flex;
   align-content: center;
   align-items: center;
