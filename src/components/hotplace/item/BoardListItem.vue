@@ -7,7 +7,7 @@
     <b-td>{{ idx+1 }}</b-td>
     <b-td>{{ title }}</b-td>
     <b-td>{{ count }}</b-td>
-    <b-td>{{ userid }}</b-td>
+    <b-td>{{ loginId }}</b-td>
     <b-td>{{ modifiedDate | dateFormat }}</b-td>
   </b-tr>
   </router-link
@@ -22,11 +22,12 @@ export default {
   props: {
     idx: Number,
     id: Number,
-    userid: String,
+    loginId: String,
     content: String,
     title: String,
     count: Number,
-    createdDate: Date,
+    heart: Number,
+    fileInfos: [],
     modifiedDate: Date
   },
   filters: {

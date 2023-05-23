@@ -3,11 +3,10 @@
   <b-row class="mb-1">
   
     <b-col style="text-align: left">
-      <b-form @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit" @reset="onReset" >
 
         <b-form-group
           id="title-group"
-          label="제목:"
           label-for="title"
   
         >
@@ -121,7 +120,7 @@ export default {
     type: { type: String },
   },
   computed: {
-    ...mapGetters(["nickName"])
+    ...mapGetters(["nickName", "accessToken"])
   },
   created() {
     console.log("nickname = " + this.nickName)
@@ -179,11 +178,18 @@ export default {
     registArticle() {
       console.log(this.article);
       http
-        .post(`/board`, {
+        .post(`/hotplace`, {
           userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
-        })
+        
+        },{
+        headers: {
+            ACCESS_TOKEN: this.accessToken,
+            REFRESH_TOKEN: "noneToken",
+          }
+        }
+        )
         .then(response => {
           if (response.status === 200) {
             // 200 OK 상태 코드 처리

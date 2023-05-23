@@ -66,15 +66,17 @@
 </template>
 
 <script>
-// import http from "@/util/http-common.js";
+import http from "@/util/http-common.js";
 // import BoardListItem from "@/components/board/item/BoardListItem";
-//import moment from "moment";
+import moment from "moment";
+import { mapGetters } from 'vuex';
 
 export default {
   name: "hotPlaceList",
   components: {
     // BoardListItem,
   },
+  
   data() {
     return {
       articles: [],
@@ -82,9 +84,10 @@ export default {
       perPage: 6, // 한페이지 당 보여질 글 개수
       fields: [
         { key: 'index', label: '글번호' },
-        { key: 'user', label: '작성자' },
+        { key: 'loginId', label: '작성자' },
         { key: 'title', label: '제목' },
         { key: 'count', label: '조회수' },
+        { key: 'heart', label: '좋아요수' },
         { key: 'modifiedDate', label: '작성일'},
       ],
       sortBy: 'dateDesc', // 정렬방식 default
@@ -92,6 +95,7 @@ export default {
         { value: 'dateDesc', text: '최근순' },
         { value: 'dateAsc', text: '오래된순' }
       ],
+      
        
     };
   },
@@ -100,18 +104,14 @@ export default {
     this.currentPage = this.$route.params.currentPage;
     if(this.currentPage === undefined) this.currentPage =1;
      if(this.sortBy === undefined) this.sortBy ='dateDesc';
-    // http.get(`/hotplace`,
-    // {headers: {
-    //         ACCESS_TOKEN: "noneToken",
-    //         REFRESH_TOKEN: "noneToken",
-    //       },}).then(({ data }) => {
-    //   this.articles = data;
-    //   for(let i =0; i<this.articles.length; i++){
-    //      this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
-    //   }
-    //   console.log("created")
-    //   console.log(this.filteredData)
-    // });
+    http.get(`/hotplace`).then(({ data }) => {
+      this.articles = data;
+      for(let i =0; i<this.articles.length; i++){
+         this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
+      }
+      console.log("created")
+      console.log(this.filteredData)
+    });
 
   },
   methods: {
@@ -159,7 +159,8 @@ export default {
         }
         return sortedArticles;
 
-      }
+      },
+      ...mapGetters(["accessToken"])
     }
 };
 </script>
