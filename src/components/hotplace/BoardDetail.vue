@@ -22,6 +22,11 @@
    
           <b-card-body class="text-left">
             <div v-html="message"></div>
+            <div id="imagebound">
+              <div v-for ="image in article.fileInfos" :key = "image.id" class="imageelement" >
+                <img :src="image.originFile"  max-width= "1000" height="auto">
+              </div>
+            </div>
           </b-card-body>
         </b-card>
       </b-col>
@@ -70,7 +75,7 @@ export default {
       article: {},
       modifiedDate: new Date(),
       isScrolled: false,
-      showButton: false
+      showButton: false,
     };
   },
   computed: {
@@ -170,5 +175,27 @@ export default {
 .button-float .b-icon{
    scale: 300%;
    margin-top: 1px;
+}
+
+#imagebound {
+  width: 100%;
+  padding: 10px;
+  overflow:hidden;
+	height:auto;
+  min-height: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 30px auto auto auto;
+  border-radius: 1%;
+  border: 1px solid rgb(218, 218, 218);
+}
+
+.imageelement{
+  border: 1px solid  rgb(162, 205, 255);
+  
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 </style>
