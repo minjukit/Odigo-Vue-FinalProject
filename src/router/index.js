@@ -10,19 +10,19 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
-    transitionName: 'fade',
+    transitionName: "fade",
   },
   {
     path: "/about",
     name: "about",
     component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-    transitionName: 'fade',
+    transitionName: "fade",
   },
   {
     path: "/region",
     name: "region",
     component: () => import(/* webpackChunkName: "region" */ "@/views/TripByRegionView.vue"),
-    transitionName: 'fade',
+    transitionName: "fade",
     children: [
       {
         path: "regionSearch",
@@ -37,7 +37,7 @@ const routes = [
     name: "board",
     component: () => import(/* webpackChunkName: "board" */ "@/views/BoardView.vue"),
     redirect: "/board/list",
-    transitionName: 'fade',
+    transitionName: "fade",
     children: [
       {
         path: "list",
@@ -75,7 +75,7 @@ const routes = [
   {
     path: "/plan",
     name: "plan",
-    transitionName: 'fade',
+    transitionName: "fade",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
       console.log(store.getters.isLogin);
@@ -120,7 +120,7 @@ const routes = [
     name: "hotplace",
     component: () => import(/* webpackChunkName: "board" */ "@/views/HotPlaceView.vue"),
     redirect: "/hotplace/list",
-    transitionName: 'fade',
+    transitionName: "fade",
     children: [
       {
         path: "list",

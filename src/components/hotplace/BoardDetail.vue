@@ -8,16 +8,6 @@
     <b-row class="mb-1">
       <b-col>
         <b-card>
-        <!-- <b-card
-          :header-html=
-          "`<div class='text-left'><h3>${article.title} </h3></div>
-          <div  class='text-left'>${modifiedDate} | ${article.count} 읽음</h6></div>
-          <div class='text-right'><h6>${article.userid}</div>`"
-          class="mb-2"
-          id="boardcard"
-          border-variant="light"
-          no-body
-        > -->
         <b-card-header class="mb-2 d-flex flex-column">
         
           <div class="d-flex">
@@ -25,7 +15,7 @@
             <div class="flex-item1"><h6>{{modifiedDate}}</h6></div>
           </div>
           <div class="d-flex">
-          <div class="flex-item2"><h6>{{article.user}} 닉네임</h6></div>
+          <div class="flex-item2"><h6>{{article.loginId}}</h6></div>
           <div class="flex-item1"><h6> {{article.count}} 읽음</h6></div>
           </div>
         </b-card-header>
@@ -73,7 +63,7 @@ import CommentList from "./CommentList.vue";
 
 export default {
   components: {CommentList},
-  name: "BoardDetail",
+  name: "hotPlaceDetail",
   
   data() {
     return {
@@ -103,7 +93,7 @@ export default {
   },
   methods: {
     listArticle() {
-      this.$router.push({ name: "HotPlaceList" , 
+      this.$router.push({ name: "hotPlaceList" , 
       params: {
         currentPage: this.$route.params.currentPage,
         sortBy: this.$route.params.sortBy

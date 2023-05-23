@@ -1,10 +1,6 @@
 <template>
   <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글목록</h3></b-alert>
-      </b-col>
-    </b-row>
+   
     <b-row class="mb-1">
       <b-col class="text-right">
         <b-button variant="outline-primary" @click="moveWrite()"
@@ -32,7 +28,7 @@
       </b-col>
 
     </b-row>
-    <b-row>
+    <b-row  class ="mt-2">
       <b-col v-if="articles.length">
         <b-table hover responsive
         :per-page="perPage"
@@ -135,7 +131,7 @@ export default {
     // },
     rowClickHandler(row){ //click event
       this.$router.push({ 
-        name: "boardDetail",
+        name: "hotPlaceDetail",
         params:{
           id:row.id,
           currentPage: this.currentPage,

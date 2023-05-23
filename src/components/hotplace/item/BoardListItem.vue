@@ -1,7 +1,7 @@
 <!-- ***************사용 안함***************-->
 <template #cell(fieldName)="data">
 <router-link
-        :to="{ name: 'boardDetail', params: { id: id } }"
+        :to="{ name: 'hotPlaceDetail', params: { id: id } }"
         >
   <b-tr>
     <b-td>{{ idx+1 }}</b-td>
@@ -18,7 +18,7 @@
 import moment from "moment";
 
 export default {
-  name: "BoardListItem",
+  name: "HotPlaceListItem",
   props: {
     idx: Number,
     id: Number,

@@ -3,7 +3,7 @@
   <b-row class="mb-1">
   
     <b-col style="text-align: left">
-      <b-form @submit="onSubmit" @reset="onReset" >
+      <b-form @submit="onSubmit" @reset="onReset" enctype="multipart/form-data">
 
         <b-form-group
           id="title-group"
@@ -112,8 +112,10 @@ export default {
       },
       isUserid: false,
       //file: null,
-      files: [], //업로드용 파일
+      fileInfos: [
+      ], //업로드용 파일
       images: [],
+      formData: [],
     };
   },
   props: {
@@ -173,23 +175,25 @@ export default {
       this.article.id = 0;
       this.article.title = "";
       this.article.content = "";
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "hotPlaceList" });
     },
     registArticle() {
       console.log(this.article);
+      console.log("=========file========")
+      console.log(this.fileInfos)
+ 
       http
         .post(`/hotplace`, {
           userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
-        
+          fileInfos: this.fileInfos,
         },{
         headers: {
             ACCESS_TOKEN: this.accessToken,
             REFRESH_TOKEN: "noneToken",
           }
-        }
-        )
+        })
         .then(response => {
           if (response.status === 200) {
             // 200 OK 상태 코드 처리
@@ -211,7 +215,7 @@ export default {
           //userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
-        })
+          })
         .then(() => {
           // 현재 route를 /list로 변경.
           this.moveList();
@@ -219,7 +223,7 @@ export default {
 
     },
     moveList() {
-      this.$router.push({ name: "HotPlaceList" });
+      this.$router.push({ name: "hotPlaceList" });
     },
     chooseImage() {
       this.$refs.imageInput.click();
@@ -229,24 +233,27 @@ export default {
       },
     onFileChange(event) {
       const files = event.target.files;
-
+      this.fileInfos= [];
+       this.images= [];
       if (files && files.length > 0) {
         for (let i = 0; i < files.length; i++) {
           console.log("file input method")
           const file = files[i];
-          const reader = new FileReader();
+          let reader = new FileReader();
+         
           var imageData = null;
           reader.onload = (event)=>{
             imageData = {
               url: event.target.result
             };
             this.images.push(imageData)
+            // console.log("===========imageData")
+            let temp = reader.result;
+            this.fileInfos.push(temp);
+            console.log("===========change fileInfos")
+            console.log(this.fileInfos)
           }
-          console.log("===========imageData")
-          console.log(imageData)
-
-          console.log(this.images)
-          reader.readAsDataURL(file);
+           reader.readAsDataURL(file);
         }
       }
     },
