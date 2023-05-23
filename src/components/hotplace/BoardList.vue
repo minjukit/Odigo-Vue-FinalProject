@@ -80,7 +80,7 @@ export default {
       perPage: 6, // 한페이지 당 보여질 글 개수
       fields: [
         { key: 'index', label: '글번호' },
-        { key: 'loginId', label: '작성자' },
+        { key: 'nickName', label: '작성자' },
         { key: 'title', label: '제목' },
         { key: 'count', label: '조회수' },
         { key: 'heart', label: '좋아요수' },

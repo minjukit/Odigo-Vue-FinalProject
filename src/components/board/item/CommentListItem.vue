@@ -4,7 +4,7 @@
        <div class="container">
         <div class="row">
         <!-- <div class="col-12 mx-auto"> -->
-        <label class="nicklabel">이름 {{data.userId}}</label>
+        <label class="nicklabel">이름 {{data.nickName}}</label>
         <label class="datelabel">{{data.modifiedDate}}</label>
 
         <b-dropdown class="dropdown" variant="link" toggle-class="text-decoration-none" no-caret>
@@ -49,7 +49,7 @@
   export default {
     name: 'CommentListItem',
     components: {},
-    props: ["comment"],
+    props: ["comment", "boardId"],
     data() {
         return {
             data:{

@@ -9,7 +9,7 @@
     
         <comment-list-item 
         v-for="(comment) in comments" :key="comment.idx" :comment="comment"
-         @commentChangeEvent="getCommentList" class="commentBody"></comment-list-item>
+         @commentChangeEvent="getCommentList" class="commentBody" :boardId="boardId"></comment-list-item>
        
 
       </b-row>
@@ -32,11 +32,17 @@ export default {
             comments: [
                 
             ],
+            
         };
+    },
+    props: {
+        boardId: {
+            type: Number
+        }
     },
     created() {
 
-        http.get(`/comment`).then(({ data }) => {
+        http.get(`/comment/list/${this.boardId}`).then(({ data }) => {
             console.log(data)
             this.comments = data;
             for(let i =0; i<this.comments.length; i++){

@@ -25,7 +25,7 @@
             <div class="flex-item1"><h6>{{modifiedDate}}</h6></div>
           </div>
           <div class="d-flex">
-          <div class="flex-item2"><h6>{{article.loginId}}</h6></div>
+          <div class="flex-item2"><h6>{{article.nickName}}</h6></div>
           <div class="flex-item1"><h6> {{article.count}} 읽음</h6></div>
           </div>
         </b-card-header>
@@ -59,7 +59,7 @@
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
      <div class="mt-5">
-     <comment-list></comment-list>
+     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
     </div>
   </b-container>
 
@@ -80,24 +80,27 @@ export default {
       article: {},
       modifiedDate: new Date(),
       isScrolled: false,
-      showButton: false
+      showButton: false,
     };
   },
+ 
   computed: {
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
       return "";
     },
+  
   },
   mounted() {
   window.addEventListener('scroll', this.handleScroll);
   },
   created() {
+    
     http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
       this.article = data;
       console.log("createdDetail")
-      console.log(data)
+      console.log(this.article.id)
       this.modifiedDate= moment(this.article.modifiedDate).format("YYYY.MM.DD HH:MM");
     });
   },
