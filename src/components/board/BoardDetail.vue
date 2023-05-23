@@ -25,7 +25,7 @@
             <div class="flex-item1"><h6>{{modifiedDate}}</h6></div>
           </div>
           <div class="d-flex">
-          <div class="flex-item2"><h6>{{article.user}} 닉네임</h6></div>
+          <div class="flex-item2"><h6>{{article.loginId}}</h6></div>
           <div class="flex-item1"><h6> {{article.count}} 읽음</h6></div>
           </div>
         </b-card-header>

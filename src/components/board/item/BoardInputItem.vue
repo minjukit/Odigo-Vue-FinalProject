@@ -46,6 +46,7 @@
 
 <script>
 import http from "@/util/http-common.js";
+import { mapGetters } from 'vuex';
 
 export default {
   name: "BoardInputItem",
@@ -59,6 +60,9 @@ export default {
        },
       isUserid: false,
     };
+  },
+   computed: {
+    ...mapGetters(["nickName", "accessToken"])
   },
   props: {
     type: { type: String },
@@ -121,6 +125,12 @@ export default {
           userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
+        }
+        ,{
+        headers: {
+            ACCESS_TOKEN: this.accessToken,
+            REFRESH_TOKEN: "noneToken",
+          }
         })
         .then(response => {
           if (response.status === 200) {
