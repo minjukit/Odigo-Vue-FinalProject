@@ -79,17 +79,18 @@ export default {
       currentPage: 1,
       perPage: 6, // 한페이지 당 보여질 글 개수
       fields: [
-        { key: 'index', label: '글번호' },
+        // { key: 'index', label: '글번호' },
         { key: 'nickName', label: '작성자' },
         { key: 'title', label: '제목' },
         { key: 'count', label: '조회수' },
         { key: 'heart', label: '좋아요수' },
         { key: 'modifiedDate', label: '작성일'},
       ],
-      sortBy: 'dateDesc', // 정렬방식 default
+      sortBy: 'heartDesc', // 정렬방식 default
       sortOption: [
         { value: 'dateDesc', text: '최근순' },
-        { value: 'dateAsc', text: '오래된순' }
+        { value: 'dateAsc', text: '오래된순' },
+        { value: 'heartDesc', text: '인기순' }
       ],
       
        
@@ -99,7 +100,7 @@ export default {
     this.sortBy = this.$route.params.sortBy;
     this.currentPage = this.$route.params.currentPage;
     if(this.currentPage === undefined) this.currentPage =1;
-     if(this.sortBy === undefined) this.sortBy ='dateDesc';
+     if(this.sortBy === undefined) this.sortBy ='heartDesc';
     http.get(`/hotplace`).then(({ data }) => {
       this.articles = data;
       for(let i =0; i<this.articles.length; i++){
@@ -151,6 +152,9 @@ export default {
           console.log(sortedArticles);
         }else if(this.sortBy ==='dateAsc'){
           sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='heartDesc'){
+          sortedArticles.sort((a, b) => new Date(b.heart).getTime() - new Date(a.heart).getTime());
           console.log(sortedArticles);
         }
         return sortedArticles;
