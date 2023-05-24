@@ -13,6 +13,11 @@ const routes = [
     transitionName: "fade",
   },
   {
+    path: "/index",
+    name: "home",
+    component: HomeView,
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
@@ -78,18 +83,18 @@ const routes = [
     transitionName: "fade",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
-      console.log(store.getters.isLogin);
-      if (!store.getters.isLogin) {
-        alert("로그인을 해야 합니다.");
-        next({
-          path: "/login",
-          query: {
-            redirect: to.fullPath,
-            data: "example data", // 전달하려는 데이터 추가
-          },
-        });
-      }
+
+      if(!store.getters.isLogin) {
+        alert("로그인을 해야 합니다.")
+        next({path: '/login',
+        query: {
+          redirect: to.fullPath,
+          }
+        })
+      } else {
+
       next();
+      }
     },
     children: [
       {
@@ -103,7 +108,12 @@ const routes = [
         name: "savePlan",
         component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanView.vue"),
       },
-    ],
+      {
+        path: "DatePlan",
+        name: "DatePlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/views/DatePlanView.vue"),
+      },
+    ]
   },
   {
     path: "/login",
@@ -155,6 +165,20 @@ const routes = [
           import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardDelete.vue"),
       },
     ],
+    path: "/userDetail",
+    name: "userDetail",
+    component: () => import("@/components/user/UserDetail.vue"),
+  },
+  {
+    path: "/userModify",
+    name: "userModify",
+    component: () => import("@/components/user/UserModify.vue"),
+  },
+  {
+    path: "/userPlan",
+    name: "userPlan",
+    component: () => import("@/components/user/UserModify.vue"),
+
   },
 ];
 
@@ -170,6 +194,7 @@ router.beforeEach((to, from, next) => {
   store
     .dispatch("getCert")
     .then(() => {
+      console.log("before router")
       // 액션이 완료된 후 다음으로 이동
       next();
     })

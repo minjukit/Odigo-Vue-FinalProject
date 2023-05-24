@@ -2,13 +2,18 @@
 	<div class="container" style="margin-top: 2%;">
 		<div class="row" style="margin-left: 0%; width:100%">
 			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
-				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:69.5%" v-model.lazy:value="keyWord" />
+				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
+				@keyup.enter="getById" />
+			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="enddate"
+				v-model="startdate" class="mb-2" placeholder="시작일"></b-form-datepicker>
+			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" v-model="enddate" class="mb-2"
+				:min="startdate" placeholder="종료일"></b-form-datepicker>
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
 				@click="getById">검색</button>
-			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toSavePage">저장
-				하기</button>
+			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toDatePage">일별
+				설정</button>
 		</div>
-		<div class="row" style="margin-top: 1%">
+		<div class="row">
 			<div class="col-5">
 				<map-list :items="items" :checkedId="checkedId" @checkedIdFromChild="getChecked"></map-list>
 			</div>
@@ -31,13 +36,24 @@ import PlanList from '@/components/plan/PlanList.vue';
 export default {
 	components: {
 		MapList,
-		PlanList
+		PlanList,
+	},
+	watch: {
+		startdate() {
+			this[Constant.SET_STARTDATE](this.startdate)
+		},
+
+		enddate() {
+			this[Constant.SET_ENDDATE](this.enddate)
+		},
 	},
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.addPlanList = this.addPlanList
 		this[Constant.INITIATE_ROUTE]()
 		// this[Constant.INITIATE_PLANS]()
+		// this[Constant.PLANLIST_PRE_PROCESS]();
+		// console.log("created")
 	},
 	computed: {
 		...mapGetters(["items", "data", "planList"]),
@@ -52,6 +68,10 @@ export default {
 			infos: [],
 			bounds: {},
 			checkedId: "",
+			startdate: null,
+			enddate: null,
+			now: new Date(),
+			days: 0,
 		};
 	},
 	mounted() {
@@ -67,7 +87,8 @@ export default {
 		// [Constant.GET_ROUTES]() {
 		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
 		// },
-		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS]),
+		...mapActions([Constant.GET_ROUTES, Constant.SET_STARTDATE, Constant.SET_ENDDATE,
+		Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS]),
 
 		addPlanList(idx) {
 			console.log(this.items[idx].place_name)
@@ -130,8 +151,8 @@ export default {
 					() => {
 						this.makeList(this.data)
 					}
-				).catch((data) => {
-					if (data == "Error") {
+				).catch((response) => {
+					if (response == "Error") {
 						this.getById()
 					}
 				});
@@ -200,7 +221,7 @@ export default {
 				// this.markers.push(marker);
 
 				var infowindow = new window.kakao.maps.InfoWindow({
-					content: '<div class="wrap" style="width: 270px; font-size: 13px">' +
+					content: '<div class="wrap" style="width: 300px; font-size: 13px">' +
 						'     	<div class="info">' +
 						'       	<div class="title">' +
 						area[i].place_name +
@@ -254,9 +275,9 @@ export default {
 		moveCenter(lat, lng) {
 			this.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
 		},
-		toSavePage() {
+		toDatePage() {
 			if (this.planList.length != 0) {
-				this.$router.push('/plan/savePlan')
+				this.$router.push('/plan/DatePlan')
 			} else {
 				alert("여행지를 최소 하나는 선택 해야 합니다.");
 			}
@@ -272,5 +293,14 @@ export default {
 	margin-top: 1%;
 	margin-left: -10px;
 	padding: 0;
+}
+
+#btn-search {
+	height: 38px
+}
+
+.date {
+	border: solid;
+	border-color: rgba(0, 0, 0, 0.2);
 }
 </style>

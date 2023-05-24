@@ -1,15 +1,12 @@
 <template>
 	<div class="container" style="margin-top: 1%;">
 		<div class="row" style="margin-top: 1%">
-			<div class="col-5">
-				<plan-register></plan-register>
-			</div>
-			<div class="col-7">
+			<div class="col-6">
 				<div id="map"></div>
 			</div>
-		</div>
-		<div class="row">
-			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent="reloadMap"></plan-list-detail>
+			<div class="col-6">
+				<drag-list id="drag"></drag-list>
+			</div>
 		</div>
 	</div>
 </template>
@@ -17,16 +14,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
-import PlanRegister from '@/components/plan/PlanRegister.vue';
-import PlanListDetail from '@/components/plan/PlanListDetail.vue';
+import DragList from '@/components/plan/DragList';
 
 export default {
 	components: {
-		PlanRegister,
-		PlanListDetail,
+		DragList
 	},
 	created() {
-		console.log("create")
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.RemovePlanList = this.toRemovePlan
 		this[Constant.INITIATE_ROUTE]()
@@ -34,6 +28,9 @@ export default {
 	},
 	watch: {
 		planList() {
+			console.log("parent")
+			console.log(this.planList)
+			this.reloadMap()
 			this.startPlanMap()
 		}
 	},
@@ -229,7 +226,6 @@ export default {
 			console.log(this.planList.length)
 		},
 		setPolyLine() {
-
 			this.linePositionpath = [];
 			this.polyline = new window.kakao.maps.Polyline({
 				map1: this.map,
@@ -256,7 +252,7 @@ export default {
 				title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 				clickable: true,
 			});
-			console.log(markerImage);
+			// console.log(markerImage);
 
 			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
 			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
@@ -273,10 +269,20 @@ export default {
 
 <style scoped>
 #map {
-	width: 96%;
-	height: 500px;
+	width: 105%;
+	height: 680px;
 	margin-top: 1%;
-	margin-left: -10px;
+	margin-left: -20px;
 	padding: 0;
+}
+
+#drag {
+	height: 630px;
+	border-radius: 30px;
+	border-style: solid;
+	border-width: 2.5px;
+	border-color: rgba(0, 0, 0, .3);
+	padding: 5px 0px 5px 0px;
+	margin-top: 6px;
 }
 </style>

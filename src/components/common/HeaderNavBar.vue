@@ -12,7 +12,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item><router-link to="/region/regionSearch">지역별 여행지</router-link></b-nav-item>
-          <b-nav-item><router-link to="/hotplace">핫플레이스</router-link></b-nav-item>
+          <b-nav-item><router-link to="/test">핫플레이스</router-link></b-nav-item>
           <b-nav-item><router-link to="/plan/searchPlan">여행계획</router-link></b-nav-item>
           <b-nav-item><router-link to="/board">공지사항</router-link></b-nav-item>
         </b-navbar-nav>
@@ -32,8 +32,8 @@
             <template #button-content>
               <em>User</em>
             </template>
-            <b-dropdown-item>마이페이지</b-dropdown-item>
-            <b-dropdown-item>나의 계획</b-dropdown-item>
+            <b-dropdown-item><router-link to="/userDetail">마이페이지</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link to="/userDetail">나의 계획</router-link></b-dropdown-item>
             <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -58,7 +58,7 @@ export default {
 
     doLogout() {
       this[Constant.LOGOUT]()
-      this.$router.push('/')
+      this.$router.push('/index')
     },
   },
 };

@@ -118,32 +118,32 @@ export default {
 				.then((data) => {
 					this.gugunList = data.data;
 				})
-				.catch(() => { })
+				.catch(() => { console.log("asd") })
 		},
 
 		addPlanList(idx) {
-			if (this.isLogin == true) {
-				let address = this.result[idx].addr1
-				this[Constant.GET_ROUTE](address)
-					.then(({ data }) => this.checkPlan(data.documents, this.result[idx]))
-					.catch((data) => {
-						if (data == "Error") {
-							this.addPlanList(idx)
-							return;
-						}
-					})
-			} else {
-				let origin = this.result[idx];
-				console.log(origin)
-				let findPlan = {
-					address_name: origin.addr1,
-					place_name: origin.title,
-					x: origin.longitude,
-					y: origin.latitude,
-					id: origin.content_id + "1324212312123",
-				}
-				this[Constant.SET_PLAN](findPlan)
-			}
+			// if (this.isLogin == true) {
+			let address = this.result[idx].addr1
+			this[Constant.GET_ROUTE](address)
+				.then(({ data }) => this.checkPlan(data.documents, this.result[idx]))
+				.catch((data) => {
+					if (data == "Error") {
+						this.addPlanList(idx)
+						return;
+					}
+				})
+			// } else {
+			// 	let origin = this.result[idx];
+			// 	console.log(origin)
+			// 	let findPlan = {
+			// 		address_name: origin.addr1,
+			// 		place_name: origin.title,
+			// 		x: origin.longitude,
+			// 		y: origin.latitude,
+			// 		id: origin.content_id + "1324212312123",
+			// 	}
+			// 	this[Constant.SET_PLAN](findPlan)
+			// }
 			this.openModal()
 		},
 
