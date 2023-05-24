@@ -65,7 +65,7 @@ export default {
 <style scope>
 
 .navb{
-  margin-right: 140px;
+  margin-right: 190px;
 }
 
 .navContainer{
@@ -103,7 +103,7 @@ b-nav-item {
 }
 
 #imgLogo {
-  margin-left: 150px;
+  margin-left: 190px;
   scale: 130%;
 }
 

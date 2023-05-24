@@ -1,8 +1,8 @@
 <template>
   <b-container class="bv-example-row mt-3">
    
-    <b-row class="mb-1">
-      <b-col class="text-right">
+    <b-row class="ml-2">
+      <b-col class="text-left">
         <b-button variant="outline-primary" @click="moveWrite()"
           >글쓰기</b-button
         >

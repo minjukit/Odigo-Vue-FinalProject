@@ -61,9 +61,9 @@
         <b-button variant="outline-secondary" @click="listArticle">목록</b-button>
       </b-col>
      
-      <button class = "btn">
-        <b-icon class ="icon" icon="heart" font-scale="1.1"></b-icon>
-        좋아요</button>
+      <button class = "btn mr-3" @click="updateHeart">
+        <b-icon class ="icon" :icon="iconHeart" font-scale="1.2"></b-icon>
+        &nbsp;좋아요</button>
         
     </b-row>
     <!--댓글-->
@@ -96,6 +96,7 @@ export default {
       isScrolled: false,
       showButton: false,
       map: null,
+      iconHeart: "heart"
     };
   },
   computed: {
@@ -129,6 +130,20 @@ export default {
     window.setHotPlaceLoc = this.setHotPlaceLoc
   },
   methods: {
+    updateHeart(){
+      http.get(`/hotplace/${this.$route.params.id}/heart`).then(response => {
+          if (response.status === 200) {
+            // 200 OK 상태 코드 처리
+            this.iconHeart = "heart-fill"
+          } else {
+            // 다른 상태 코드 처리
+            alert(response.status);
+          }
+        }).catch(()=>{
+             let msg = "좋아요 처리시 문제가 발생했습니다.";
+             alert(msg);
+     });
+    },
     listArticle() {
       this.$router.push({ name: "hotPlaceList" , 
       params: {
