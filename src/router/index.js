@@ -83,17 +83,16 @@ const routes = [
     transitionName: "fade",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
-
-      if(!store.getters.isLogin) {
-        alert("로그인을 해야 합니다.")
-        next({path: '/login',
-        query: {
-          redirect: to.fullPath,
-          }
-        })
+      if (!store.getters.isLogin) {
+        alert("로그인을 해야 합니다.");
+        next({
+          path: "/login",
+          query: {
+            redirect: to.fullPath,
+          },
+        });
       } else {
-
-      next();
+        next();
       }
     },
     children: [
@@ -113,7 +112,7 @@ const routes = [
         name: "DatePlan",
         component: () => import(/* webpackChunkName: "region" */ "@/views/DatePlanView.vue"),
       },
-    ]
+    ],
   },
   {
     path: "/login",
@@ -165,6 +164,8 @@ const routes = [
           import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardDelete.vue"),
       },
     ],
+  },
+  {
     path: "/userDetail",
     name: "userDetail",
     component: () => import("@/components/user/UserDetail.vue"),
@@ -178,7 +179,6 @@ const routes = [
     path: "/userPlan",
     name: "userPlan",
     component: () => import("@/components/user/UserModify.vue"),
-
   },
 ];
 
@@ -194,7 +194,7 @@ router.beforeEach((to, from, next) => {
   store
     .dispatch("getCert")
     .then(() => {
-      console.log("before router")
+      console.log("before router");
       // 액션이 완료된 후 다음으로 이동
       next();
     })

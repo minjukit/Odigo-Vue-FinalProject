@@ -63,13 +63,7 @@
       console.log(this.data)
     },
     methods: {
-    //    addComment(){
-    //   this.comments.push({
-    //     id:4,name:this.newComment.name,content:this.newComment.content, time:new Date(),like:0
-    //   })
-    //   this.newComment.name = " "
-    //   this.newComment.content= " "
-    // }
+
       deleteComment(item){
         console.log(item)
         
