@@ -2,9 +2,9 @@
    <!-- <b-form @submit="onSubmit" @reset="onReset"> -->
     <b-card border-variant="0"> <!-- 카드 no border-->
        <div class="container">
-        <div class="row" id= "rowcontainer">
+        <div class="row">
         <!-- <div class="col-12 mx-auto"> -->
-        <label class="nicklabel">{{data.nickName}}</label>
+        <label class="nicklabel">이름 {{data.userId}}</label>
         <label class="datelabel">{{data.modifiedDate}}</label>
 
         <b-dropdown class="dropdown" variant="link" toggle-class="text-decoration-none" no-caret>
@@ -49,7 +49,7 @@
   export default {
     name: 'CommentListItem',
     components: {},
-    props: ["comment", "boardId"],
+    props: ["comment"],
     data() {
         return {
             data:{
@@ -114,10 +114,6 @@
   
   <style scoped>
   
-#rowcontainer{
-  display: flex;
-}
-
   .nicklabel{
    font-weight: bold;
     text-align: left;
@@ -128,7 +124,6 @@
     .datelabel{
     text-align: left;
     float: left;
-
   }
 
   .editicon{

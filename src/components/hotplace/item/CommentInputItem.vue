@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row" id="row1">
           <div class="col-10 mx-auto">
-            <b-form-input :placeholder="nickName"></b-form-input>
+            <b-form-input placeholder="여기 닉넴"></b-form-input>
             <b-form-textarea 
               id="textarea-no-resize"
               v-model="comment.content"
@@ -32,7 +32,6 @@
 <script>
 
 import http from "@/util/http-common"
-import {mapGetters} from 'vuex'
 
   export default {
     name: 'CommentInputItem',
@@ -41,16 +40,14 @@ import {mapGetters} from 'vuex'
         return {
             comment: {
               id: 0,
-              nickName: "",
+              userId: 1,
+              title: "",
               content: "",
               boardId: 1
             },
             text: ""
         };
     },
-       computed: {
-    ...mapGetters(["nickName", "accessToken"])
-  },
     created() {},
     methods: {
      
@@ -58,15 +55,9 @@ import {mapGetters} from 'vuex'
        
         http
         .post(`/comment`, {
-          accessToken: this.comment.accessToken,
+          userId: this.comment.userId,
           content: this.comment.content,
           boardId: this.comment.boardId
-        }
-        ,{
-        headers: {
-            ACCESS_TOKEN: this.accessToken,
-            REFRESH_TOKEN: "noneToken",
-          }
         })
         .then(response => {
           if (response.status === 200) {

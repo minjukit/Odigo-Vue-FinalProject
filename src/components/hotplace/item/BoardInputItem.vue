@@ -1,11 +1,12 @@
 <template>
+
   <b-row class="mb-1">
+  
     <b-col style="text-align: left">
-      <b-form @submit="onSubmit" @reset="onReset">
+      <b-form @submit="onSubmit" @reset="onReset" enctype="multipart/form-data">
 
         <b-form-group
           id="title-group"
-          label="제목:"
           label-for="title"
   
         >
@@ -18,16 +19,57 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="content-group" label="내용:" label-for="content">
+        
+
+        <div class="mb-3">
+          <b-button-toolbar class="ml-0.5">
+          <b-button-group class="mr-1" @click="chooseImage">
+            <input
+              type="file"
+              style="display: none"
+              ref="imageInput"
+              accept="image/png,image/jpeg,image/jpg"
+              @change="onFileChange"
+              multiple files
+            />
+          <b-button title="New File" >
+            <b-icon icon="camera" aria-hidden="true"></b-icon>
+            &nbsp;사진
+          </b-button>
+          
+          <b-button title="New loc">
+            <b-icon icon="map" aria-hidden="true"></b-icon>
+             &nbsp;위치
+          </b-button>
+          </b-button-group>
+          
+          <b-button-group class="mr-1">
+            <b-button title="Align left">
+              <b-icon icon="text-left" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button title="Align center">
+              <b-icon icon="text-center" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button title="Align right">
+              <b-icon icon="text-right" aria-hidden="true"></b-icon>
+        </b-button>
+      </b-button-group>
+
+          </b-button-toolbar>
+          
+        </div>
+        <b-form-group id="content-group" label="  " label-for="content">
           <b-form-textarea
             id="content"
             v-model="article.content"
-            placeholder="내용 입력..."
+            placeholder="내용을 입력하세요"
             rows="10"
             max-rows="15"
           ></b-form-textarea>
+           
         </b-form-group>
-
+        
+      
         <b-button
           type="submit"
           variant="primary"
@@ -39,6 +81,14 @@
           >글수정</b-button
         >
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+
+
+        
+        <div id="imagebound">
+          <div v-for ="image in images" :key = "image.url" class="imageelement" >
+            <img :src="image.url"  max-width= "1000" height="auto">
+          </div>
+        </div>
       </b-form>
     </b-col>
   </b-row>
@@ -50,6 +100,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: "BoardInputItem",
+  
   data() {
     return {
       article: {
@@ -57,17 +108,24 @@ export default {
         user: "",
         title: "",
         content: "",
-       },
+         
+      },
       isUserid: false,
+      //file: null,
+      fileInfos: [
+      ], //업로드용 파일
+      images: [],
+      formData: [],
     };
-  },
-   computed: {
-    ...mapGetters(["nickName", "accessToken"])
   },
   props: {
     type: { type: String },
   },
+  computed: {
+    ...mapGetters(["nickName", "accessToken"])
+  },
   created() {
+    console.log("nickname = " + this.nickName)
     if (this.type === "modify") {
       console.log(this.type)
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
@@ -89,6 +147,7 @@ export default {
     // console.log(this.article.title)
     // console.log(this.article)
   },
+
   methods: {
     onSubmit(event) {
       event.preventDefault();
@@ -116,17 +175,20 @@ export default {
       this.article.id = 0;
       this.article.title = "";
       this.article.content = "";
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "hotPlaceList" });
     },
     registArticle() {
       console.log(this.article);
+      console.log("=========file========")
+      console.log(this.fileInfos)
+ 
       http
-        .post(`/board`, {
+        .post(`/hotplace`, {
           userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
-        }
-        ,{
+          fileInfos: this.fileInfos,
+        },{
         headers: {
             ACCESS_TOKEN: this.accessToken,
             REFRESH_TOKEN: "noneToken",
@@ -153,7 +215,7 @@ export default {
           //userid: this.article.userid,
           title: this.article.title,
           content: this.article.content,
-        })
+          })
         .then(() => {
           // 현재 route를 /list로 변경.
           this.moveList();
@@ -161,12 +223,72 @@ export default {
 
     },
     moveList() {
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "hotPlaceList" });
     },
+    chooseImage() {
+      this.$refs.imageInput.click();
+    },
+    clearFiles() {
+        this.$refs['image-input'].reset()
+      },
+    onFileChange(event) {
+      const files = event.target.files;
+      this.fileInfos= [];
+       this.images= [];
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          console.log("file input method")
+          const file = files[i];
+          let reader = new FileReader();
+         
+          var imageData = null;
+          reader.onload = (event)=>{
+            imageData = {
+              url: event.target.result
+            };
+            this.images.push(imageData)
+            // console.log("===========imageData")
+            let temp = reader.result;
+            this.fileInfos.push(temp);
+            console.log("===========change fileInfos")
+            console.log(this.fileInfos)
+          }
+           reader.readAsDataURL(file);
+        }
+      }
+    },
+    clearImage() {
+     
+    },
+    fileDeleteButton(e) {
+        const name = e.target.getAttribute('name');
+        this.files = this.files.filter(data => data.number !== Number(name));
+        // console.log(this.files);
+    },   
   },
 };
 </script>
 
-<style>
+<style scoped>
+#imagebound {
+  width: 100%;
+  padding: 10px;
+  overflow:hidden;
+	height:auto;
+  min-height: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 30px auto auto auto;
+  border-radius: 1%;
+  border: 1px solid rgb(218, 218, 218);
+}
 
+.imageelement{
+  border: 1px solid  rgb(162, 205, 255);
+  
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
 </style>

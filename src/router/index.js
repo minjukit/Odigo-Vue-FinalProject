@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import store from '@/store/index'; 
+import store from "@/store/index";
 
 Vue.use(VueRouter);
 
@@ -10,6 +10,7 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
+    transitionName: "fade",
   },
   {
     path: "/index",
@@ -20,24 +21,28 @@ const routes = [
     path: "/about",
     name: "about",
     component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    transitionName: "fade",
   },
   {
     path: "/region",
     name: "region",
     component: () => import(/* webpackChunkName: "region" */ "@/views/TripByRegionView.vue"),
-    children : [
+    transitionName: "fade",
+    children: [
       {
         path: "regionSearch",
-        name: "boardList",
-        component: () => import(/* webpackChunkName: "board" */ "@/components/region/RegionSearch.vue"),
+        name: "regionSearch",
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/region/RegionSearch.vue"),
       },
-    ]
+    ],
   },
   {
     path: "/board",
     name: "board",
     component: () => import(/* webpackChunkName: "board" */ "@/views/BoardView.vue"),
     redirect: "/board/list",
+    transitionName: "fade",
     children: [
       {
         path: "list",
@@ -75,8 +80,10 @@ const routes = [
   {
     path: "/plan",
     name: "plan",
+    transitionName: "fade",
     component: () => import(/* webpackChunkName: "region" */ "@/views/PlanView.vue"),
     beforeEnter: (to, from, next) => {
+
       if(!store.getters.isLogin) {
         alert("로그인을 해야 합니다.")
         next({path: '/login',
@@ -85,6 +92,7 @@ const routes = [
           }
         })
       } else {
+
       next();
       }
     },
@@ -92,7 +100,8 @@ const routes = [
       {
         path: "searchPlan",
         name: "searchPlan",
-        component: () => import(/* webpackChunkName: "region" */ "@/components/plan/PlanSearch.vue"),
+        component: () =>
+          import(/* webpackChunkName: "region" */ "@/components/plan/PlanSearch.vue"),
       },
       {
         path: "savePlan",
@@ -117,6 +126,45 @@ const routes = [
     component: () => import("@/components/user/RegForm.vue"),
   },
   {
+    path: "/hotplace",
+    name: "hotplace",
+    component: () => import(/* webpackChunkName: "board" */ "@/views/HotPlaceView.vue"),
+    redirect: "/hotplace/list",
+    transitionName: "fade",
+    children: [
+      {
+        path: "list",
+        name: "hotPlaceList",
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardList.vue"),
+      },
+      {
+        path: "write",
+        name: "hotPlaceRegister",
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardRegister.vue"),
+      },
+      {
+        path: "detail/:id",
+        props: true,
+        name: "hotPlaceDetail",
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardDetail.vue"),
+      },
+      {
+        path: "modify/:id",
+        name: "hotPlaceModify",
+        props: true,
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardModify.vue"),
+      },
+      {
+        path: "delete/:id",
+        name: "hotPlaceDelete",
+        component: () =>
+          import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardDelete.vue"),
+      },
+    ],
     path: "/userDetail",
     name: "userDetail",
     component: () => import("@/components/user/UserDetail.vue"),
@@ -130,6 +178,7 @@ const routes = [
     path: "/userPlan",
     name: "userPlan",
     component: () => import("@/components/user/UserModify.vue"),
+
   },
 ];
 
@@ -139,21 +188,22 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to,from,next) => {
-  to
-  from
-  store.dispatch('getCert')
+router.beforeEach((to, from, next) => {
+  to;
+  from;
+  store
+    .dispatch("getCert")
     .then(() => {
       console.log("before router")
       // 액션이 완료된 후 다음으로 이동
       next();
     })
-    .catch(error => {
+    .catch((error) => {
       // 액션 처리 중 에러가 발생한 경우
       console.error(error);
       next(false); // 라우터 이동 취소
     });
-  next()
-})
+  next();
+});
 
 export default router;
