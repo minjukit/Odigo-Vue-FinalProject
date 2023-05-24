@@ -7,7 +7,6 @@ import Constant from "@/common/Constant";
 import empRestAPI from "@/util/http-common.js";
 import createPersistedState from "vuex-persistedstate";
 
-
 export default new Vuex.Store({
   state: {
     items: [],
@@ -16,8 +15,13 @@ export default new Vuex.Store({
     accessToken: "",
     refreshToken: "",
     isLogin: false,
+    nickName: "",
   },
   getters: {
+    nickName(state) {
+      return state.nickName;
+    },
+
     items(state) {
       return state.items;
     },
@@ -41,7 +45,7 @@ export default new Vuex.Store({
 
     isLogin(state) {
       return state.isLogin;
-    }
+    },
   },
   mutations: {
     [Constant.SET_ROUTES](state, payload) {
@@ -121,9 +125,9 @@ export default new Vuex.Store({
           checkBool = false;
         }
       }
-      console.log(state.planList)
-      console.log(payload)
-      console.log(checkBool)
+      console.log(state.planList);
+      console.log(payload);
+      console.log(checkBool);
       if (checkBool) {
         payload.content = "";
         payload.cost = "";
@@ -135,91 +139,108 @@ export default new Vuex.Store({
     },
 
     [Constant.SET_ALLTOKENS_MUTATION](state, payload) {
-      state.accessToken = payload.access_TOKEN
-      state.refreshToken = payload.refresh_TOKEN
-      state.isLogin = true
+      state.accessToken = payload.access_TOKEN;
+      state.refreshToken = payload.refresh_TOKEN;
+      state.nickName = payload.nickName;
+      console.log(state.nickName);
+      state.isLogin = true;
     },
 
     [Constant.SET_ACCESSTOKENS_MUTATION](state, payload) {
-      state.accessToken = payload.access_TOKEN
-      state.isLogin = true
+      state.accessToken = payload.access_TOKEN;
+      state.isLogin = true;
     },
 
     [Constant.SET_REFRESHTOKENS_MUTATION](state, payload) {
-      state.refreshToken = payload.refresh_TOKEN
-      state.isLogin = true
+      state.refreshToken = payload.refresh_TOKEN;
+      state.isLogin = true;
     },
 
     [Constant.GET_CERT_MUTATION](state) {
-      empRestAPI.post("/user/issue", null, {
-        headers: {
-          ACCESS_TOKEN: state.accessToken,
-          REFRESH_TOKEN: "noneToken",
-        },}).then((response) => {
-          console.log(response.data)
+      empRestAPI
+        .post("/user/issue", null, {
+          headers: {
+            ACCESS_TOKEN: state.accessToken,
+            REFRESH_TOKEN: "noneToken",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
           this.commit(Constant.SET_ACCESSTOKENS_MUTATION, response.data);
           state.isLogin = true;
-        }).catch((data) => {
-          if(data.response.status == 403) {
-            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
+        })
+        .catch((data) => {
+          if (data.response.status == 403) {
+            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
           }
-				});
+        });
     },
 
     [Constant.CHECK_REFRESH_TOKEN_MUTATION](state) {
-         empRestAPI.post("/user/issue", null, {
-        headers: {
-          ACCESS_TOKEN: "noneToken",
-          REFRESH_TOKEN: state.refreshToken,
-        },}).then((response) => {
-          console.log(response.data)
+      empRestAPI
+        .post("/user/issue", null, {
+          headers: {
+            ACCESS_TOKEN: "noneToken",
+            REFRESH_TOKEN: state.refreshToken,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
           this.commit(Constant.SET_ALLTOKENS_MUTATION, response.data);
           state.isLogin = true;
-        }).catch(() => {
+        })
+        .catch(() => {
           this.commit(Constant.REMOVE_TOKENS);
-				});
+        });
     },
 
     [Constant.REMOVE_TOKENS](state) {
       state.accessToken = "";
       state.refreshToken = "";
+      state.nickName = "";
       state.isLogin = false;
-    }
+    },
   },
 
   actions: {
     [Constant.GET_ROUTES]({ commit, state }, keyWord) {
-      return empRestAPI.get(`/map/${keyWord}`,{
+      return empRestAPI
+        .get(`/map/${keyWord}`, {
           headers: {
             ACCESS_TOKEN: state.accessToken,
             // REFRESH_TOKEN : state.refreshToken
-          },}).then(({ data }) => {
-        commit(Constant.SET_ROUTES, data.documents);
-        commit(Constant.SET_ALLROUTES, data);
-      }).catch((data) => {
-        if(data.response.status == 403) {
-          this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
-          console.log("checkRefresh");
-          throw new Error
-        }
-      })
+          },
+        })
+        .then(({ data }) => {
+          commit(Constant.SET_ROUTES, data.documents);
+          commit(Constant.SET_ALLROUTES, data);
+        })
+        .catch((data) => {
+          if (data.response.status == 403) {
+            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
+            console.log("checkRefresh");
+            throw new Error();
+          }
+        });
     },
 
-    [Constant.GET_ROUTE]({ commit, state },keyWord) {
-      commit
-      console.log(keyWord)
-      return empRestAPI.get(`/map/${keyWord}`,
-      {
-        headers: {
-          ACCESS_TOKEN: state.accessToken,
-          // REFRESH_TOKEN : state.refreshToken
-        },}).catch((data) => {
-          if(data.response.status == 403) {
-            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
-            console.log("checkRefresh");
-            throw new Error
-          }
+    [Constant.GET_ROUTE]({ commit, state }, keyWord) {
+      commit;
+      console.log(keyWord);
+      return empRestAPI
+        .get(`/map/${keyWord}`, {
+          headers: {
+            ACCESS_TOKEN: state.accessToken,
+            // REFRESH_TOKEN : state.refreshToken
+          },
         })
+        .catch((data) => {
+          if (data.response.status == 403) {
+            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
+            console.log("checkRefresh");
+            throw new Error();
+          }
+        });
     },
 
     [Constant.INITIATE_ROUTE]({ commit }) {
@@ -242,7 +263,7 @@ export default new Vuex.Store({
       console.log(id);
       commit(Constant.MOVE_UP_MUTATION, id);
     },
-    
+
     [Constant.MOVE_DOWN]({ commit }, id) {
       console.log(id);
       commit(Constant.MOVE_DOWN_MUTATION, id);
@@ -253,23 +274,23 @@ export default new Vuex.Store({
     },
 
     [Constant.SET_PLAN]({ commit }, plan) {
-      commit(Constant.SET_PLAN_MUTATION, plan)
+      commit(Constant.SET_PLAN_MUTATION, plan);
     },
 
-    [Constant.SET_TOKENS]({commit}, tokens) {
-      commit(Constant.SET_ALLTOKENS_MUTATION, tokens)
+    [Constant.SET_TOKENS]({ commit }, tokens) {
+      commit(Constant.SET_ALLTOKENS_MUTATION, tokens);
     },
 
-    [Constant.GET_CERT]({commit}) {
-      commit(Constant.GET_CERT_MUTATION)
+    [Constant.GET_CERT]({ commit, state }) {
+      if (state.isLogin == true) {
+        commit(Constant.GET_CERT_MUTATION);
+      }
     },
 
-    [Constant.LOGOUT]({commit}) {
+    [Constant.LOGOUT]({ commit }) {
       commit(Constant.REMOVE_TOKENS);
-    }
-
+    },
   },
   modules: {},
   plugins: [createPersistedState()],
-
 });

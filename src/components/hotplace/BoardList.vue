@@ -1,10 +1,6 @@
 <template>
   <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글목록</h3></b-alert>
-      </b-col>
-    </b-row>
+   
     <b-row class="mb-1">
       <b-col class="text-right">
         <b-button variant="outline-primary" @click="moveWrite()"
@@ -32,7 +28,7 @@
       </b-col>
 
     </b-row>
-    <b-row>
+    <b-row  class ="mt-2">
       <b-col v-if="articles.length">
         <b-table hover responsive
         :per-page="perPage"
@@ -69,12 +65,14 @@
 import http from "@/util/http-common.js";
 // import BoardListItem from "@/components/board/item/BoardListItem";
 import moment from "moment";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "BoardList",
+  name: "hotPlaceList",
   components: {
     // BoardListItem,
   },
+  
   data() {
     return {
       articles: [],
@@ -85,6 +83,7 @@ export default {
         { key: 'nickName', label: '작성자' },
         { key: 'title', label: '제목' },
         { key: 'count', label: '조회수' },
+        { key: 'heart', label: '좋아요수' },
         { key: 'modifiedDate', label: '작성일'},
       ],
       sortBy: 'dateDesc', // 정렬방식 default
@@ -92,6 +91,7 @@ export default {
         { value: 'dateDesc', text: '최근순' },
         { value: 'dateAsc', text: '오래된순' }
       ],
+      
        
     };
   },
@@ -100,7 +100,7 @@ export default {
     this.currentPage = this.$route.params.currentPage;
     if(this.currentPage === undefined) this.currentPage =1;
      if(this.sortBy === undefined) this.sortBy ='dateDesc';
-    http.get(`/board`).then(({ data }) => {
+    http.get(`/hotplace`).then(({ data }) => {
       this.articles = data;
       for(let i =0; i<this.articles.length; i++){
          this.articles[i].modifiedDate = moment(this.articles[i].modifiedDate).format("YY.MM.DD");
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     moveWrite() {
-      this.$router.push({ name: "boardRegister" });
+      this.$router.push('/hotplace/write' );
     },
     pageClick(){
       //this.currentPage = page;
@@ -131,7 +131,7 @@ export default {
     // },
     rowClickHandler(row){ //click event
       this.$router.push({ 
-        name: "boardDetail",
+        name: "hotPlaceDetail",
         params:{
           id:row.id,
           currentPage: this.currentPage,
@@ -155,7 +155,8 @@ export default {
         }
         return sortedArticles;
 
-      }
+      },
+      ...mapGetters(["accessToken"])
     }
 };
 </script>

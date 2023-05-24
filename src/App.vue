@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header-nav-bar></header-nav-bar>
+    <transition :name="transitionName">
     <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -15,6 +17,21 @@ export default {
   components: {
     HeaderNavBar
   },
+  data() {
+		return {
+			transitionName: ""
+		}
+	},
+  watch: {
+    $route(to, from) {
+      if(to.meta.page == null || from.meta.page == null){
+        this.transitionName = "fade";
+      }else{
+        this.transitionName = to.meta.page > from.meta.page ? "next" : "prev";
+      }
+      console.log(this.transitionName);
+    }
+  }
 };
 </script>
 
@@ -40,4 +57,8 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+/* 전환효과 (Fade) */
+.fade-enter-active, .fade-leave-active { transition: opacity .2s; }
+.fade-enter, .fade-leave-to { opacity: 0; }
 </style>

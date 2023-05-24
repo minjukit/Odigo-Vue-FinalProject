@@ -8,16 +8,6 @@
     <b-row class="mb-1">
       <b-col>
         <b-card>
-        <!-- <b-card
-          :header-html=
-          "`<div class='text-left'><h3>${article.title} </h3></div>
-          <div  class='text-left'>${modifiedDate} | ${article.count} 읽음</h6></div>
-          <div class='text-right'><h6>${article.userid}</div>`"
-          class="mb-2"
-          id="boardcard"
-          border-variant="light"
-          no-body
-        > -->
         <b-card-header class="mb-2 d-flex flex-column">
         
           <div class="d-flex">
@@ -32,6 +22,11 @@
    
           <b-card-body class="text-left">
             <div v-html="message"></div>
+            <div id="imagebound">
+              <div v-for ="image in article.fileInfos" :key = "image.id" class="imageelement" >
+                <img :src="image.originFile"  max-width= "1000" height="auto">
+              </div>
+            </div>
           </b-card-body>
         </b-card>
       </b-col>
@@ -59,7 +54,7 @@
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
      <div class="mt-5">
-     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
+     <comment-list></comment-list>
     </div>
   </b-container>
 
@@ -73,7 +68,7 @@ import CommentList from "./CommentList.vue";
 
 export default {
   components: {CommentList},
-  name: "BoardDetail",
+  name: "hotPlaceDetail",
   
   data() {
     return {
@@ -83,30 +78,27 @@ export default {
       showButton: false,
     };
   },
- 
   computed: {
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
       return "";
     },
-  
   },
   mounted() {
   window.addEventListener('scroll', this.handleScroll);
   },
   created() {
-    
-    http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
+    http.get(`/hotplace/${this.$route.params.id}`).then(({ data }) => {
       this.article = data;
       console.log("createdDetail")
-      console.log(this.article.id)
+      console.log(data)
       this.modifiedDate= moment(this.article.modifiedDate).format("YYYY.MM.DD HH:MM");
     });
   },
   methods: {
     listArticle() {
-      this.$router.push({ name: "boardList" , 
+      this.$router.push({ name: "hotPlaceList" , 
       params: {
         currentPage: this.$route.params.currentPage,
         sortBy: this.$route.params.sortBy
@@ -183,5 +175,27 @@ export default {
 .button-float .b-icon{
    scale: 300%;
    margin-top: 1px;
+}
+
+#imagebound {
+  width: 100%;
+  padding: 10px;
+  overflow:hidden;
+	height:auto;
+  min-height: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 30px auto auto auto;
+  border-radius: 1%;
+  border: 1px solid rgb(218, 218, 218);
+}
+
+.imageelement{
+  border: 1px solid  rgb(162, 205, 255);
+  
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 </style>
