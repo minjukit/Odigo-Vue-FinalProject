@@ -41,8 +41,7 @@ import {mapGetters} from 'vuex'
         return {
             comment: {
               id: 0,
-              userName: "",
-              title: "",
+              nickName: "",
               content: "",
               boardId: 1
             },
@@ -59,9 +58,15 @@ import {mapGetters} from 'vuex'
        
         http
         .post(`/comment`, {
-          userId: this.comment.userId,
+          accessToken: this.comment.accessToken,
           content: this.comment.content,
           boardId: this.comment.boardId
+        }
+        ,{
+        headers: {
+            ACCESS_TOKEN: this.accessToken,
+            REFRESH_TOKEN: "noneToken",
+          }
         })
         .then(response => {
           if (response.status === 200) {
