@@ -19,7 +19,7 @@
           <div class="flex-item1"><h6> {{article.count}} 읽음</h6></div>
           </div>
         </b-card-header>
-   
+
           <b-card-body class="text-left">
             <div v-html="message"></div>
             <div id="imagebound">
@@ -47,14 +47,14 @@
         >
       </b-col>
     </b-row>
-     <!--댓글-->
-     <b-button
+    <!--댓글-->
+    <b-button
       v-if="isScrolled && showButton"
       @click="scrollToTop"
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
-     <div class="mt-5">
-     <comment-list></comment-list>
+    <div class="mt-5">
+    <comment-list></comment-list>
     </div>
   </b-container>
 
@@ -173,8 +173,8 @@ export default {
   border: none;
 }
 .button-float .b-icon{
-   scale: 300%;
-   margin-top: 1px;
+  scale: 300%;
+  margin-top: 1px;
 }
 
 #imagebound {

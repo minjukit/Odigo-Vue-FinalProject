@@ -48,7 +48,7 @@ export default {
 
         getCommentList(){
             console.log("list reload.....")
-            http.get(`/comment`).then(({ data }) => {
+            http.get(`/comment/`).then(({ data }) => {
             console.log("get function...then..")
             this.comments = data;
             for(let i =0; i<this.comments.length; i++){
