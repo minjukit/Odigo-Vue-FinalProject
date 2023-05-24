@@ -1,17 +1,11 @@
 <template>
-  <div class="home">
-    <kakao-map></kakao-map>
+  <div class="RegionSearch">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import KakaoMap from "@/components/map/KakaoMap.vue"
-
 export default {
-  name: 'TripByRegionView',
-  components: {
-    KakaoMap
-   
-  }
+  name: 'RegionSearch',
 }
 </script>
