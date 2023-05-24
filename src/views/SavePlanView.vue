@@ -26,6 +26,7 @@ export default {
 		PlanListDetail,
 	},
 	created() {
+		console.log("create")
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.RemovePlanList = this.toRemovePlan
 		this[Constant.INITIATE_ROUTE]()

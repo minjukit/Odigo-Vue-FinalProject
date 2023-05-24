@@ -161,19 +161,18 @@ export default new Vuex.Store({
     },
 
     [Constant.GET_CERT_MUTATION](state) {
-      empRestAPI.post("/user/issue", null, {
-        headers: {
-          ACCESS_TOKEN: state.accessToken,
-          REFRESH_TOKEN: "noneToken",
-        },}).then((response) => {
+      empRestAPI.post("/user/issue").then((response) => {
+        console.log("cert mutation")
+        console.log(response)
           this.commit(Constant.SET_ACCESSTOKENS_MUTATION, response.data);
           state.isLogin = true;
-        }).catch((data) => {
-          console.log(data.response)
-          if(data.response.status == 403) {
-            this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
-          }
-				});
+        });
+        // .catch((data) => {
+        //   console.log(data.response)
+        //   if(data.response.status == 403) {
+        //     this.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
+        //   }
+				// });
     },
 
     [Constant.CHECK_REFRESH_TOKEN_MUTATION](state) {

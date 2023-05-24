@@ -116,11 +116,20 @@ const routes = [
     name: "regForm",
     component: () => import("@/components/user/RegForm.vue"),
   },
-
   {
-    path: "/test",
-    name: "test",
-    component: () => import("@/components/plan/DragList.vue"),
+    path: "/userDetail",
+    name: "userDetail",
+    component: () => import("@/components/user/UserDetail.vue"),
+  },
+  {
+    path: "/userModify",
+    name: "userModify",
+    component: () => import("@/components/user/UserModify.vue"),
+  },
+  {
+    path: "/userPlan",
+    name: "userPlan",
+    component: () => import("@/components/user/UserModify.vue"),
   },
 ];
 
@@ -135,6 +144,7 @@ router.beforeEach((to,from,next) => {
   from
   store.dispatch('getCert')
     .then(() => {
+      console.log("before router")
       // 액션이 완료된 후 다음으로 이동
       next();
     })

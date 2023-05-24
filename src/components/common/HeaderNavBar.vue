@@ -32,8 +32,8 @@
             <template #button-content>
               <em>User</em>
             </template>
-            <b-dropdown-item>마이페이지</b-dropdown-item>
-            <b-dropdown-item>나의 계획</b-dropdown-item>
+            <b-dropdown-item><router-link to="/userDetail">마이페이지</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link to="/userDetail">나의 계획</router-link></b-dropdown-item>
             <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>

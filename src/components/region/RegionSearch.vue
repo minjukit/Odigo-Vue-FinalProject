@@ -118,7 +118,7 @@ export default {
 				.then((data) => {
 					this.gugunList = data.data;
 				})
-				.catch(() => { })
+				.catch(() => { console.log("asd") })
 		},
 
 		addPlanList(idx) {
