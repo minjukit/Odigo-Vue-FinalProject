@@ -177,23 +177,11 @@ export default {
     if (this.type === "modify") {
       console.log(this.type)
       http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
-        // this.article.articleno = data.article.articleno;
-        // this.article.userid = data.article.userid;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
         console.log(data)
         this.article = data
-        // this.article = {...data}
-        // this.id = data.id;
-        // this.title = data.title;
-        // this.content = data.content;
-        // console.log(this.article.title)
       });
-      //this.isUserid = true;
     }
-    // console.log("데이터왜안나와")
-    // console.log(this.article.title)
-    // console.log(this.article)
+
   },
 
   methods: {

@@ -36,13 +36,13 @@ export default {
     },
     created() {
 
-        http.get(`/comment`).then(({ data }) => {
-            console.log(data)
-            this.comments = data;
-            for(let i =0; i<this.comments.length; i++){
-                this.comments[i].modifiedDate = moment(this.comments[i].modifiedDate).format("YY.MM.DD HH:mm");
-            }
-            });
+        // http.get(`/comment`).then(({ data }) => {
+        //     console.log(data)
+        //     this.comments = data;
+        //     for(let i =0; i<this.comments.length; i++){
+        //         this.comments[i].modifiedDate = moment(this.comments[i].modifiedDate).format("YY.MM.DD HH:mm");
+        //     }
+        //     });
     },
     methods: {
 
