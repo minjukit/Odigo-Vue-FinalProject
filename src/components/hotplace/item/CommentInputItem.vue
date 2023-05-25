@@ -2,9 +2,9 @@
    <b-form @submit="addComment" @reset="onReset">
     <b-card border-variant="0">
       <div class="container">
-        <div class="row" id="row1">
+        <div class="row" >
           <div class="col-10 mx-auto">
-            <b-form-input placeholder="여기 닉넴"></b-form-input>
+            <b-form-input :placeholder="nickName" class="inputName"></b-form-input>
             <b-form-textarea 
               id="textarea-no-resize"
               v-model="comment.content"
@@ -32,6 +32,7 @@
 <script>
 
 import http from "@/util/http-common"
+import {mapGetters} from 'vuex'
 
   export default {
     name: 'CommentInputItem',
@@ -40,29 +41,41 @@ import http from "@/util/http-common"
         return {
             comment: {
               id: 0,
-              userId: 1,
-              title: "",
+              nickName: "",
               content: "",
               boardId: 1
             },
             text: ""
         };
     },
-    created() {},
+       computed: {
+    ...mapGetters(["nickName", "accessToken"]),
+    
+  },
+  props:["boardid"],
+    created() {
+      this.boardId = this.boardid
+    },
     methods: {
      
        addComment(){
        
         http
-        .post(`/comment`, {
-          userId: this.comment.userId,
+        .post(`/hotcomment`, {
+          accessToken: this.comment.accessToken,
           content: this.comment.content,
-          boardId: this.comment.boardId
+          boardId: this.boardId
+        }
+        ,{
+        headers: {
+            ACCESS_TOKEN: this.accessToken,
+            REFRESH_TOKEN: "noneToken",
+          }
         })
         .then(response => {
           if (response.status === 200) {
             // 200 OK 상태 코드 처리
-            console.log("comment save...")
+            console.log("hotcomment save...")
             this.$emit("commentChangeEvent");
           } else {
             // 다른 상태 코드 처리
@@ -96,5 +109,9 @@ import http from "@/util/http-common"
   #btn2{
     float: right;
     margin-right: 7px;
+  }
+
+  .inputName{
+    border: none;
   }
   </style>

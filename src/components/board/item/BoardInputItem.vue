@@ -30,15 +30,15 @@
 
         <b-button
           type="submit"
-          variant="primary"
+          variant="outline-success"
           class="m-1"
           v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else
+        <b-button type="submit" variant="outline-success" class="m-1" v-else
           >글수정</b-button
         >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-button type="reset" variant="outline-danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
   </b-row>

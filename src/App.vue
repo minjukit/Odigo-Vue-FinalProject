@@ -4,34 +4,37 @@
     <transition :name="transitionName">
     <router-view/>
     </transition>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
 
 <script>
+import FooterBar from "./components/common/FooterBar.vue";
 import HeaderNavBar from "./components/common/HeaderNavBar.vue";
 
 
 export default {
   name: "App",
   components: {
-    HeaderNavBar
+    HeaderNavBar,
+    FooterBar
   },
   data() {
 		return {
 			transitionName: ""
 		}
 	},
-  watch: {
-    $route(to, from) {
-      if(to.meta.page == null || from.meta.page == null){
-        this.transitionName = "fade";
-      }else{
-        this.transitionName = to.meta.page > from.meta.page ? "next" : "prev";
-      }
-      console.log(this.transitionName);
-    }
-  }
+  // watch: {
+  //   $route(to, from) {
+  //     if(to.meta.page == null || from.meta.page == null){
+  //       this.transitionName = "fade";
+  //     }else{
+  //       this.transitionName = to.meta.page > from.meta.page ? "next" : "prev";
+  //     }
+  //     console.log(this.transitionName);
+  //   }
+  // }
 };
 </script>
 

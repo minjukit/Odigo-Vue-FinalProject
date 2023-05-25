@@ -2,9 +2,9 @@
    <!-- <b-form @submit="onSubmit" @reset="onReset"> -->
     <b-card border-variant="0"> <!-- 카드 no border-->
        <div class="container">
-        <div class="row">
+        <div class="row" id= "rowcontainer">
         <!-- <div class="col-12 mx-auto"> -->
-        <label class="nicklabel">이름 {{data.userId}}</label>
+        <label class="nicklabel">{{data.nickName}}</label>
         <label class="datelabel">{{data.modifiedDate}}</label>
 
         <b-dropdown class="dropdown" variant="link" toggle-class="text-decoration-none" no-caret>
@@ -49,7 +49,7 @@
   export default {
     name: 'CommentListItem',
     components: {},
-    props: ["comment"],
+    props: ["comment", "boardId"],
     data() {
         return {
             data:{
@@ -63,17 +63,11 @@
       console.log(this.data)
     },
     methods: {
-    //    addComment(){
-    //   this.comments.push({
-    //     id:4,name:this.newComment.name,content:this.newComment.content, time:new Date(),like:0
-    //   })
-    //   this.newComment.name = " "
-    //   this.newComment.content= " "
-    // }
+
       deleteComment(item){
         console.log(item)
         
-        http.delete(`/comment/${item}`).then((response) => {
+        http.delete(`/hotcomment/${item}`).then((response) => {
           let msg =response.status;
           if (response.status === 200) {
             msg = "삭제가 완료되었습니다.";
@@ -96,7 +90,7 @@
       },
       modifyComment(){
       http
-        .put(`/comment/${this.data.id}`,  {
+        .put(`/hotcomment/${this.data.id}`,  {
           id: this.article.id,
           userId: this.data.userid,
           title: this.data.title,
@@ -114,6 +108,10 @@
   
   <style scoped>
   
+#rowcontainer{
+  display: flex;
+}
+
   .nicklabel{
    font-weight: bold;
     text-align: left;
@@ -124,6 +122,7 @@
     .datelabel{
     text-align: left;
     float: left;
+
   }
 
   .editicon{

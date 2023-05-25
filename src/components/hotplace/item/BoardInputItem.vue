@@ -7,15 +7,15 @@
           
         <b-button
           type="submit"
-          variant="primary"
+          variant="outline-success"
           class = "btnForm"
           v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class = "btnForm" v-else
+        <b-button type="submit" variant="outline-success" class = "btnForm" v-else
           >글수정</b-button
         >
-        <b-button type="reset" variant="danger" class = "btnForm">초기화</b-button>
+        <b-button type="reset"  variant="outline-danger" class = "btnForm">초기화</b-button>
 
 
 
@@ -36,16 +36,16 @@
         
 
         <div class="mb-3">
-          <b-button-toolbar class="ml-0.5">
+          <b-button-toolbar class="ml-0.5" >
           
-          <b-button-group class="mr-1">
-            <b-button title="Align left">
+          <b-button-group class="mr-1" >
+            <b-button title="Align left" variant="outline-success">
               <b-icon icon="text-left" aria-hidden="true" @click = "changeAlign(`left`)"></b-icon>
             </b-button>
-            <b-button title="Align center">
+            <b-button title="Align center" variant="outline-success">
               <b-icon icon="text-center" aria-hidden="true" @click = "changeAlign(`center`)"></b-icon>
             </b-button>
-            <b-button title="Align right">
+            <b-button title="Align right" variant="outline-success">
               <b-icon icon="text-right" aria-hidden="true" @click = "changeAlign(`right`)"></b-icon>
         </b-button>
       </b-button-group>
@@ -67,8 +67,8 @@
         </b-form-group>
 
 
-        <b-button-group class="mr-1" @click="chooseImage">
-          <b-button title="New File" class="ml-1">
+        <div class="mr-1" >
+          <b-button title="New File" class="mr-1" variant="outline-success" @click="chooseImage">
             <b-icon icon="camera" aria-hidden="true"></b-icon>
             &nbsp;사진
           </b-button>
@@ -81,7 +81,7 @@
               multiple files
             />
       
-          </b-button-group>
+          </div>
           
   
         <div id="imagebound">
@@ -90,26 +90,38 @@
           </div>
         </div>
 
-        <b-button title="New loc" class="mt-3">
+        <b-button title="New loc" class="mt-3" variant="outline-success">
             <b-icon icon="map" aria-hidden="true"></b-icon>
              &nbsp;위치
         </b-button>  
-        
-        <div class="container" style="margin-top: 2%;">
-          <div class="row" style="margin-left: 0%; width:100%">
-            <input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
-              aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
+        <b-row>
+           <b-col>
+            <b-card style="margin-top: 3%;" v-if="this.placeName!=''">
+              <b-card-header id="cardheader" >
+                {{placeName}}
+              </b-card-header>
+              <b-card-body>
+                 {{roadName}}
+              </b-card-body>
+            </b-card>
+           </b-col>
+          <b-col>
+        <div class="container" style="margin-top: 3%;">
+          <div class="row" style="width:100%">
+            <b-form-input id="input-valid" class="form-control valid"  placeholder="검색어를 입력하세요"
+              aria-label="검색어를 입력하세요" style="margin-left:2%; margin-right: 1%; width:80%;" v-model.lazy:value="keyWord"
               @keyup.enter="getById" />
             <button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
               @click="getById">검색</button>
           </div>
           <div class="row">
-            <div class="col-7">
+            <div class="col-12">
               <div id="map"></div>
             </div>
           </div>
         </div>
-
+          </b-col>
+      </b-row>
       </b-form>
     </b-col>
   </b-row>
@@ -531,7 +543,7 @@ export default {
 
 #map{
   width: 96%;
-	height: 500px;
+	height: 200px;
 	margin-top: 1%;
 	margin-left: -10px;
 	padding: 0;
@@ -540,5 +552,8 @@ export default {
 .close{
   border-radius: 30%;
 }
-
+#cardheader{
+  background: rgba(180, 231, 202, 0.342);
+  border-radius: 5px;
+}
 </style>

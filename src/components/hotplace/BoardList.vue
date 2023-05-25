@@ -3,7 +3,7 @@
    
     <b-row class="ml-2">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="moveWrite()"
+        <b-button variant="success" @click="moveWrite()"
           >글쓰기</b-button
         >
       </b-col>

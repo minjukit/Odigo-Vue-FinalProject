@@ -1,15 +1,15 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row>
-      <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
-      </b-col>
+      <!-- <b-col>
+        <b-alert show variant="success"><h3>{{article.title}}</h3></b-alert>
+      </b-col> -->
     </b-row>
     <b-row class="mb-1">
       <b-col>
          <b-col class="text-right">
         <b-button
-          variant="outline-info"
+          variant="outline-success"
           size="sm"
           @click="moveModifyArticle"
           class="mr-2"
@@ -20,7 +20,7 @@
       </b-col>
 
         <b-card class= "mt-3">
-        <b-card-header class="mb-2 d-flex flex-column">
+        <b-card-header class="mb-2 d-flex flex-column" id= "cardheader">
         
           <div class="d-flex">
             <div class='text-left'><h3>{{article.title}} </h3></div>
@@ -56,16 +56,21 @@
         </b-card>
       </b-col>
     </b-row>
+    
     <b-row class="mb-1">
-      <b-col class="mb-1" align-self="center">
-        <b-button variant="outline-secondary" @click="listArticle">목록</b-button>
-      </b-col>
-     
-      <button class = "btn mr-3" @click="updateHeart">
+  
+      <button class = "btn ml-auto mr-3" @click="updateHeart">
+        추천수&nbsp; 
         <b-icon class ="icon" :icon="iconHeart" font-scale="1.2"></b-icon>
-        &nbsp;좋아요</button>
-        
-    </b-row>
+        &nbsp;{{article.heart}}</button>
+      </b-row>
+      
+      <b-row class="center" align-self="center">
+        <b-col>
+          <b-button variant="outline-secondary" @click="listArticle">목록</b-button>
+        </b-col>
+      </b-row>
+    
     <!--댓글-->
     <b-button
       v-if="isScrolled && showButton"
@@ -73,7 +78,7 @@
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
     <div class="mt-5">
-    <comment-list></comment-list>
+    <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
     </div>
   </b-container>
 
@@ -135,6 +140,7 @@ export default {
           if (response.status === 200) {
             // 200 OK 상태 코드 처리
             this.iconHeart = "heart-fill"
+            this.article.heart++;
           } else {
             // 다른 상태 코드 처리
             alert(response.status);
@@ -309,4 +315,10 @@ export default {
 	margin :auto;
 	padding: 0;
 }
+
+#cardheader{
+  background: rgba(180, 231, 202, 0.342);
+  border-radius: 5px;
+}
+
 </style>

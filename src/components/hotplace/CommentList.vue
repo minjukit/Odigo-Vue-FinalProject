@@ -2,14 +2,14 @@
     <b-container>
         <div>
             <h4 class="text-left">댓글</h4>
-            <comment-input-item></comment-input-item>
+            <comment-input-item :boardid="boardId"></comment-input-item>
         </div>
     <div>
       <b-row v-if="comments.length">
     
         <comment-list-item 
-        v-for="(comment) in comments" :key="comment.idx" :comment="comment"
-         @commentChangeEvent="getCommentList" class="commentBody"></comment-list-item>
+        v-for="(comment) in comments" :key="comment.id" :comment="comment"
+         @commentChangeEvent="getCommentList" class="commentBody" :boardId="boardId"></comment-list-item>
        
 
       </b-row>
@@ -32,23 +32,29 @@ export default {
             comments: [
                 
             ],
+            
         };
     },
+    props: {
+        boardId: {
+            type: Number
+        }
+    },
     created() {
-
-        // http.get(`/comment`).then(({ data }) => {
-        //     console.log(data)
-        //     this.comments = data;
-        //     for(let i =0; i<this.comments.length; i++){
-        //         this.comments[i].modifiedDate = moment(this.comments[i].modifiedDate).format("YY.MM.DD HH:mm");
-        //     }
-        //     });
+    console.log("boardId======" + this.boardId)
+        http.get(`/hotcomment/list/`+this.boardId).then(({ data }) => {
+            console.log(data)
+            this.comments = data;
+            for(let i =0; i<this.comments.length; i++){
+                this.comments[i].modifiedDate = moment(this.comments[i].modifiedDate).format("YY.MM.DD HH:mm");
+            }
+            });
     },
     methods: {
 
         getCommentList(){
             console.log("list reload.....")
-            http.get(`/comment/`).then(({ data }) => {
+            http.get(`/hotcomment/list/`+this.boardId).then(({ data }) => {
             console.log("get function...then..")
             this.comments = data;
             for(let i =0; i<this.comments.length; i++){
