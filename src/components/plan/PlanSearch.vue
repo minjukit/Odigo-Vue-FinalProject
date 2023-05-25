@@ -4,10 +4,10 @@
 			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
 				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
 				@keyup.enter="getById" />
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="enddate"
-				v-model="startdate" class="mb-2" placeholder="시작일"></b-form-datepicker>
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" v-model="enddate" class="mb-2"
-				:min="startdate" placeholder="종료일"></b-form-datepicker>
+			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="endDate"
+				v-model="nowStartDate" :value="startDate" class="mb-2" placeholder="시작일"></b-form-datepicker>
+			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" :value="endDate" class="mb-2"
+				v-model="nowEndDate" :min="startDate" placeholder="종료일"></b-form-datepicker>
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
 				@click="getById">검색</button>
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toDatePage">일별
@@ -33,30 +33,34 @@ import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
 import PlanList from '@/components/plan/PlanList.vue';
 
+
 export default {
 	components: {
 		MapList,
 		PlanList,
 	},
 	watch: {
-		startdate() {
-			this[Constant.SET_STARTDATE](this.startdate)
+		nowStartDate() {
+			this[Constant.SET_STARTDATE](this.nowStartDate)
 		},
 
-		enddate() {
-			this[Constant.SET_ENDDATE](this.enddate)
+		nowEndDate() {
+			this[Constant.SET_ENDDATE](this.nowEndDate)
 		},
 	},
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.addPlanList = this.addPlanList
 		this[Constant.INITIATE_ROUTE]()
+		this.nowStartDate = this.startDate
+		this.nowEndDate = this.endDate
+
 		// this[Constant.INITIATE_PLANS]()
 		// this[Constant.PLANLIST_PRE_PROCESS]();
 		// console.log("created")
 	},
 	computed: {
-		...mapGetters(["items", "data", "planList"]),
+		...mapGetters(["items", "data", "planList", "startDate", "endDate"]),
 	},
 	data() {
 		return {
@@ -68,19 +72,20 @@ export default {
 			infos: [],
 			bounds: {},
 			checkedId: "",
-			startdate: null,
-			enddate: null,
+			nowStartDate: null,
+			nowEndDate: null,
 			now: new Date(),
 			days: 0,
 		};
 	},
 	mounted() {
+		this.loadScript();
 		if (window.kakao && window.kakao.maps) {
 			// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
 			this.loadMap();
 		} else {
 			// 없다면 카카오 스크립트 추가 후 맵 실행
-			this.loadScript();
+			// this.loadScript();
 		}
 	},
 	methods: {
@@ -277,6 +282,10 @@ export default {
 		},
 		toDatePage() {
 			if (this.planList.length != 0) {
+				if (this.startDate == null || this.endDate == null) {
+					alert("날짜를 지정해 주십시오")
+					return;
+				}
 				this.$router.push('/plan/DatePlan')
 			} else {
 				alert("여행지를 최소 하나는 선택 해야 합니다.");

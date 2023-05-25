@@ -14,7 +14,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
-import DragList from '@/components/plan/DragList';
+import DragList from '@/components/planDetail/DragList';
 
 export default {
 	components: {
@@ -27,15 +27,15 @@ export default {
 		// this[Constant.INITIATE_PLANS]()
 	},
 	watch: {
-		planList() {
+		modifyList() {
 			console.log("parent")
-			console.log(this.planList)
+			console.log(this.modifyList)
 			this.reloadMap()
 			this.startPlanMap()
 		}
 	},
 	computed: {
-		...mapGetters(["items", "data", "planList"]),
+		...mapGetters(["items", "data", "modifyList"]),
 	},
 	data() {
 		return {
@@ -69,10 +69,9 @@ export default {
 		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS, Constant.REMOVE_PLAN]),
 
 		toRemovePlan(idx) {
-			console.log(this.planList[idx]);
-			this[Constant.REMOVE_PLAN](this.planList[idx].id)
+			console.log(this.modifyList[idx]);
+			this[Constant.REMOVE_PLAN](this.modifyList[idx].id)
 			this.setPolyLine();
-			this.makeList(this.planList)
 		},
 
 		addPlanList(idx) {
@@ -130,7 +129,7 @@ export default {
 		startPlanMap() {
 			this.closeInfoWindow()
 
-			this.makeList(this.planList)
+			this.makeList(this.modifyList)
 		},
 
 		makeList(data) {
@@ -187,6 +186,7 @@ export default {
 						'       <div class="body">' +
 						'           <div class="desc">' +
 						area[i].address_name +
+						`</div>` +
 						'	  </div>'// 인포윈도우에 표시할 내용
 				});
 				infowindow.setZIndex(11)
@@ -222,7 +222,7 @@ export default {
 			this.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
 		},
 		toSavePage() {
-			console.log(this.planList.length)
+			console.log(this.modifyList.length)
 		},
 		setPolyLine() {
 			this.linePositionpath = [];

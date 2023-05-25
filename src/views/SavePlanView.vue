@@ -56,6 +56,7 @@ export default {
 		};
 	},
 	mounted() {
+		this.loadScript();
 		if (window.kakao && window.kakao.maps) {
 			// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
 			this.loadMap();
@@ -188,8 +189,6 @@ export default {
 						'       <div class="body">' +
 						'           <div class="desc">' +
 						area[i].address_name +
-						`<div class="close" onclick="RemovePlanList(${i})" style="font-size : 13px; margin:3px -28px 0 0">삭제하기</div>` +
-						`      		</div>` +
 						`</div>` +
 						'	  </div>'// 인포윈도우에 표시할 내용
 				});
@@ -256,7 +255,6 @@ export default {
 				title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 				clickable: true,
 			});
-			console.log(markerImage);
 
 			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
 			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다

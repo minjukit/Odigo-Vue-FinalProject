@@ -11,15 +11,15 @@
 				<input type="password" id="inputPassword" class="form-control" v-model.lazy:value="password"
 					placeholder="Password" required>
 				<div id="remember" class="checkbox">
-					<label>
+					<!-- <label>
 						<input type="checkbox" value="remember-me"> Remember me
-					</label>
+					</label> -->
 				</div>
-				<button class="btn btn-lg btn-primary btn-block btn-signin" @click.prevent.stop="login">Sign in</button>
+				<button class="btn btn-lg btn-primary btn-block btn-signin" @click.prevent.stop="login">로그인 하기</button>
 			</form><!-- /form -->
-			<a href="#" class="forgot-password">
+			<!-- <a href="#" class="forgot-password">
 				Forgot the password?
-			</a>
+			</a> -->
 		</div><!-- /card-container -->
 	</div><!-- /container -->
 </template>
