@@ -8,11 +8,11 @@
       </b-col> -->
     </b-row>
     <b-row class="mb-1">
-      <b-col class="text-right">
+      <b-col class="text-right mr-5 mt-3">
         <b-button variant="success" @click="moveWrite()">글쓰기</b-button>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="articles.length">
       <b-col class="my-1" align-h="center">
         <b-form-group label="정렬" label-for="sort-by-select" label-cols-sm="10" label-align-sm="right" label-size="sm"
           class="mb-0">
@@ -48,7 +48,12 @@
             align="center" class="pagination"></b-pagination>
         </div>
       </b-col>
-      <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
+      <b-col v-else class="text-center">
+        <div style="height: 70px;">  </div>
+        글 목록이 없습니다.
+        
+        <div style="height: 80px;">  </div>
+        </b-col>
     </b-row>
 
   </b-container>

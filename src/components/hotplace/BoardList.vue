@@ -47,7 +47,11 @@
 
         </div>
       </b-col>
-      <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
+      <b-col v-else class="text-center">
+        글 목록이 없습니다.
+        
+        <div style="height: 150px;">  </div>
+        </b-col>
     </b-row>
 
   </b-container>
