@@ -1,6 +1,6 @@
 <template>
 
-  <b-row class="mb-1">
+  <b-row class="mb-1 ml-3 mr-3">
   
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset" enctype="multipart/form-data">
@@ -31,7 +31,7 @@
             v-model="article.title"
             type="text"
             required
-            placeholder="제목 입력..."
+            placeholder="제목을 입력하세요"
           ></b-form-input>
         </b-form-group>
 

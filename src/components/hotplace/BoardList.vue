@@ -3,14 +3,13 @@
 
    
     <b-row class="ml-2">
-      <b-col class="text-left">
+      <b-col class="text-right mr-5 mt -3">
         <b-button variant="success" @click="moveWrite()"
-          >글쓰기</b-button
-        >
+          >글쓰기</b-button>
 
       </b-col>
     </b-row>
-    <b-row>
+    <b-row  v-if="articles.length">
       <b-col class="my-1" align-h="center">
         <b-form-group label="정렬" label-for="sort-by-select" label-cols-sm="10" label-align-sm="right" label-size="sm"
           class="mb-0">
@@ -47,10 +46,11 @@
 
         </div>
       </b-col>
-      <b-col v-else class="text-center">
+      <b-col>
+      <div style="height: 90px;">  </div>
         글 목록이 없습니다.
         
-        <div style="height: 150px;">  </div>
+        <div style="height: 96px;">  </div>
         </b-col>
     </b-row>
 

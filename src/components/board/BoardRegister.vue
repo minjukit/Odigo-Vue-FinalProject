@@ -1,10 +1,10 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row>
-      <b-col>
+      <!-- <b-col>
           <b-alert  show variant="success" class="mt-3">
           <h3>글쓰기</h3></b-alert>
-      </b-col>
+      </b-col> -->
     </b-row>
     <board-input-item type="register" />
   </b-container>

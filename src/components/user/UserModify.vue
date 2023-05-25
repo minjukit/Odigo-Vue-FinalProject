@@ -1,18 +1,31 @@
 <template>
 	<div class="container">
-		<div class="card card-container">
+		<b-card class="cardCon">
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>
 			<form>
+				<p class="inputarea">ID</p>
 				<input type="input" id="input" class="form-control" placeholder="id를 입력해주세요" v-model="id" disabled>
-				<input type="input" id="input" class="form-control" placeholder="mail을 입력해주세요" v-model="mail">
+
+				<p class="inputarea">이름</p>
 				<input type="input" id="input" class="form-control" placeholder="이름을 입력해주세요" v-model="name">
+				
+				
+
+				<p class="inputarea">Email</p>
+				<input type="input" id="input" class="form-control" placeholder="mail을 입력해주세요" v-model="mail">
+
+				<p class="inputarea">전화번호</p>
 				<input type="input" id="input" class="form-control" placeholder="전화번호를 입력해주세요" v-model="phoneNumber">
+				<p class="inputarea">닉네임</p>
 				<input type="input" id="input" class="form-control" placeholder="닉네임을 입력해주세요" v-model="nickName">
-				<button class="btn btn-lg btn-primary btn-block" @click.prevent.stop="modifyBtn">수정하기</button>
-			</form><!-- /form -->
-		</div><!-- /card-container -->
+				
+			
+					<b-button class="btndetail" variant="success" @click.prevent.stop="modifyBtn">정보 수정</b-button>
+			
+			</form>
+		</b-card><!-- /card-container -->
 	</div><!-- /container -->
 </template>
 
@@ -194,5 +207,21 @@ input[type=input],
 .forgot-password:active,
 .forgot-password:focus {
 	color: rgb(12, 97, 33);
+}
+
+.cardCon {
+  width: 380px;
+  background: rgba(255, 255, 255, 0.425);
+}
+
+.btndetail {
+  margin-top: 30px;
+  width: 130px;
+  text-align: center;
+}
+
+.inputarea {
+  margin-top: 13px;
+  text-align: left;
 }
 </style>

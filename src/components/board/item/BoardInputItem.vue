@@ -1,5 +1,5 @@
 <template>
-  <b-row class="mb-1">
+  <b-row class="mb-1 mr-3 ml-3">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
 
@@ -26,7 +26,7 @@
             v-model="article.title"
             type="text"
             required
-            placeholder="제목 입력..."
+            placeholder="제목을 입력하세요"
           ></b-form-input>
         </b-form-group>
 
@@ -34,7 +34,7 @@
           <b-form-textarea
             id="content"
             v-model="article.content"
-            placeholder="내용 입력..."
+            placeholder="내용을 입력하세요"
             rows="10"
             max-rows="15"
           ></b-form-textarea>

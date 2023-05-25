@@ -1,6 +1,6 @@
 <template>
-	<div class="container">
-		<b-card class="cardCom">
+	<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+		<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded ml-auto mr-auto" style="width:400px; text-align:center" id="userPage">
 		
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
@@ -27,7 +27,7 @@
 				Forgot the password?
 			</a> -->
 			
-		</b-card>
+		</div>
 		<div class="heightmo">
 			</div>
 	</div><!-- /container -->
@@ -71,7 +71,7 @@ export default {
 
 <style scoped>
 .heightmo{
-	height: 170px;
+	height: 130px;
 }
 .cardCom{
 	width: 380px;
@@ -89,7 +89,10 @@ export default {
 margin-top: 10px;
  text-align: left;
 }
-
+#userPage{
+	margin-top: 50px;
+	
+}
 
 .card-container.card {
 	max-width: 350px;

@@ -7,22 +7,45 @@
             style="text-shadow: 0px 0px 2px #000"
             fade
             indicators
-            img-width="1024"
-            img-height="300"
+            img-width="980"
+            img-height="320"
             
         >
-            <b-carousel-slide
-            caption="First Slide"
-            img-src="https://picsum.photos/1024/300/?image=10" 
-            ></b-carousel-slide>
-            <b-carousel-slide
-            caption="Second Slide"
-            img-src="https://picsum.photos/1024/300/?image=12"
-            ></b-carousel-slide>
-            <b-carousel-slide
-            caption="Third Slide"
-            img-src="https://picsum.photos/1024/300/?image=22"
-            ></b-carousel-slide>
+            <b-carousel-slide>
+                <template #img>
+                <img
+                    class="d-block ml-auto mr-auto"
+                    width="980"
+                    height="320"
+                    src="@/assets/home/banner1.jpg"
+                    height:auto
+                >
+                </template>
+            </b-carousel-slide>
+            <b-carousel-slide>
+                <template #img>
+                <img
+                    class="d-block ml-auto mr-auto"
+                    width="980"
+                    height="320"
+                    src="@/assets/home/home8.jpg"
+                    height:auto
+                >
+                </template>
+            </b-carousel-slide>
+            <b-carousel-slide>
+                <template #img>
+                <img
+                    class="d-block ml-auto mr-auto"
+                    width="980"
+                    height="320"
+                    src="@/assets/home/home4.jpg"
+                    height:auto
+                >
+                </template>
+            </b-carousel-slide>
+            
+            
         </b-carousel>
     </div>
 </template>
@@ -44,7 +67,7 @@ export default {
 
 <style scoped>
 #homeSlide{
-    padding: 10%;
+    padding: 4%;
 }
 
 </style>

@@ -49,10 +49,10 @@
         </div>
       </b-col>
       <b-col v-else class="text-center">
-        <div style="height: 70px;">  </div>
+        <div style="height: 90px;">  </div>
         글 목록이 없습니다.
         
-        <div style="height: 80px;">  </div>
+        <div style="height: 100px;">  </div>
         </b-col>
     </b-row>
 
