@@ -11,14 +11,14 @@
                         <input id="planName" class="form-control search" type="search" placeholder="계획 이름을 입력하세요"
                             style="width:100%;height: 50px;" v-model.lazy:value="planName" />
                     </tr>
-                    <tr>
+                    <tr >
                         <td style="font-size: 17px;">계획 설명</td>
                     </tr>
                     <tr>
                         <textarea class="form-control text-area" rows="5" placeholder="상세 설명을 추가해 주세요"
                             v-model.lazy="planDetail"></textarea>
                     </tr>
-                    <tr>
+                    <tr style="background: white;">
                         <template v-if="!onModify">
                             <button id="plan_save_btn" type="button" class="btn btn-success" @click="savePlan">계획
                                 저장하기</button>
@@ -80,6 +80,7 @@ export default {
                 .then(() => {
                     console.log("success")
                     this[Constant.INITIATE_PLANS]()
+                    alert("저장되었습니다.")
                     this.$router.push("/")
                 })
                 .catch(() => {
@@ -136,8 +137,9 @@ export default {
 }
 
 #plan_save_btn {
-    width: 100%;
+    width: 90%;
     border: none;
     height: 45px;
 }
+
 </style>

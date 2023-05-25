@@ -2,7 +2,7 @@
     <div id="mapList">
         <span style="font-size: 25px;">여행지 검색</span>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table class="table table-striped table-hover">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th class="col-3" style="right-margin:5px;">번호</th>
@@ -78,5 +78,9 @@ export default {
 
 .table-wrapper-scroll-y {
     display: block;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color:  rgba(120, 219, 178, 0.288);
 }
 </style>

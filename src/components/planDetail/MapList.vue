@@ -2,7 +2,7 @@
     <div id="mapList">
         <span style="font-size: 25px;">여행지 검색</span>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table class="table table-striped table-hover">
+            <table class="table-primary table-hover">
                 <thead>
                     <tr>
                         <th class="col-3" style="right-margin:5px;">번호</th>
@@ -43,6 +43,9 @@ export default {
     data() {
         return {
             checkedId: "",
+            striped: false,
+        bordered: false,
+        borderless: false,
         }
     },
     created() {

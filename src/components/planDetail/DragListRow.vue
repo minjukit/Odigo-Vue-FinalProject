@@ -3,17 +3,15 @@
 		<td class="col-7" @click="openModal">{{ item.place_name }}</td>
 		<!-- <td class="col-3" @click="openModal">{{ item.phone }}</td> -->
 		<td class="col-2" @click="openModal">{{ item.category_group_name }}</td>
-		<td class="col-3" @click="openModal"><a href="#" onclick="return false;">상세 설정</a></td>
+		<td class="col-3" @click="openModal"><a href="#" onclick="return false;">상세 보기</a></td>
 		<RouteModal v-if="showModal" @close="showModal = false" :item="item"></RouteModal>
 	</tr>
 </template>
 
 <script>
-import RouteModal from '@/components/plan/RouteModal.vue'
+import RouteModal from '@/components/planDetail/RouteModal.vue'
 import { mapActions, mapState } from 'vuex';
 import Constant from '@/common/Constant'
-
-
 export default {
 	components: {
 		RouteModal,

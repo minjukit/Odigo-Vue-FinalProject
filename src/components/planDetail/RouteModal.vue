@@ -23,7 +23,6 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" @click="$emit('close')">닫기</button>
-						<button type="button" class="btn btn-primary" @click="saveDetail">저장 하기</button>
 					</div>
 				</div>
 			</div>

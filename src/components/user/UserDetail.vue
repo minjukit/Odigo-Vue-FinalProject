@@ -1,20 +1,30 @@
 <template>
 	<div class="container">
-		<div class="card card-container">
+		<b-card   class="cardCon">
+		
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>
 			<form>
+				<p class="inputarea">ID</p>
 				<input type="input" id="input" class="form-control" placeholder="id를 입력해주세요" :value="user.loginId" disabled>
-				<input type="input" id="input" class="form-control" placeholder="mail을 입력해주세요" :value="user.mail" disabled>
+				
+				<p class="inputarea">이름</p>
 				<input type="input" id="input" class="form-control" placeholder="이름을 입력해주세요" :value="user.name" disabled>
+				
+				<p class="inputarea">Email</p>
+				<input type="input" id="input" class="form-control" placeholder="email을 입력해주세요" :value="user.mail" disabled>
+				
+				<p class="inputarea">전화번호</p>
 				<input type="input" id="input" class="form-control" placeholder="전화번호를 입력해주세요" :value="user.phoneNumber"
 					disabled>
+				<p class="inputarea">닉네임</p>
 				<input type="input" id="input" class="form-control" placeholder="닉네임을 입력해주세요" :value="user.nickName"
 					disabled>
-				<button class="btn btn-lg btn-primary btn-block" @click.prevent.stop="toModify">수정하기</button>
+					<b-button class = "btnmodi" variant="success" @click.prevent.stop="toModify">수정하기</b-button>
 			</form><!-- /form -->
-		</div><!-- /card-container -->
+	
+		</b-card>
 	</div><!-- /container -->
 </template>
 
@@ -50,6 +60,7 @@ export default {
 </script>
 
 <style scoped>
+
 .card-container.card {
 	max-width: 350px;
 	padding: 40px 40px;
@@ -103,6 +114,7 @@ export default {
 	min-height: 1em;
 }
 
+
 .reauth-email {
 	display: block;
 	color: #404040;
@@ -122,6 +134,7 @@ export default {
 	direction: ltr;
 	height: 44px;
 	font-size: 16px;
+	
 }
 
 .form-signin input[type=email],
@@ -147,7 +160,7 @@ input[type=input],
 
 .btn.btn-signin {
 	/*background-color: #4d90fe; */
-	background-color: rgb(104, 145, 162);
+	background-color: rgb(125, 194, 165);
 	/* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
 	padding: 0px;
 	font-weight: 700;
@@ -170,7 +183,7 @@ input[type=input],
 }
 
 .forgot-password {
-	color: rgb(104, 145, 162);
+	color: rgb(104, 162, 135);
 }
 
 .forgot-password:hover,
@@ -178,4 +191,23 @@ input[type=input],
 .forgot-password:focus {
 	color: rgb(12, 97, 33);
 }
+
+
+.cardCon{
+	width: 380px;
+	background: rgba(255, 255, 255, 0.425);
+}
+
+.btnmodi{
+	margin-top: 30px;
+	width: 150px;
+}
+
+
+.inputarea{
+margin-top: 13px;
+ text-align: left;
+}
+
+
 </style>

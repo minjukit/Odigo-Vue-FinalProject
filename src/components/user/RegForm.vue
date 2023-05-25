@@ -1,25 +1,35 @@
 <template>
 	<div class="container">
-		<div class="card card-container">
+			<b-card   class="cardCon">
+		
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>
 			<form>
-				<input type="input" id="input" class="form-control" placeholder="id를 입력해주세요" v-model.lazy:value="id"
+				
+				<p class="inputarea">아이디</p>
+				<input type="input" id="input" class="form-control" placeholder="" v-model.lazy:value="id"
 					required autofocus>
-				<input type="input" id="input" class="form-control" placeholder="Password" v-model.lazy:value="password"
+					<p class="inputarea">비밀번호</p>
+				<input type="input" id="input" class="form-control" placeholder="" v-model.lazy:value="password"
 					required>
-				<input type="input" id="input" class="form-control" placeholder="mail을 입력해주세요" v-model.lazy:value="mail"
+					<p class="inputarea">이름</p>
+				<input type="input" id="input" class="form-control" placeholder=""  v-model.lazy:value="name"
 					required>
-				<input type="input" id="input" class="form-control" placeholder="이름을 입력해주세요" v-model.lazy:value="name"
+					<p class="inputarea">Email</p>
+				<input type="input" id="input" class="form-control" placeholder=""  v-model.lazy:value="mail"
 					required>
-				<input type="input" id="input" class="form-control" placeholder="전화번호를 입력해주세요"
+					<p class="inputarea">전화번호</p>
+				<input type="input" id="input" class="form-control" placeholder="" 
 					v-model.lazy:value="phoneNumber" required>
-				<input type="input" id="input" class="form-control" placeholder="닉네임을 입력해주세요" v-model.lazy:value="nickName"
+					<p class="inputarea">닉네임</p>
+				<input type="input" id="input" class="form-control" placeholder=""  v-model.lazy:value="nickName"
 					required>
-				<button class="btn btn-lg btn-primary btn-block" @click.prevent.stop="registerBtn">가입하기</button>
+					<b-button class = "btnmodi" variant="success" @click.prevent.stop="registerBtn">가입하기</b-button>
+				<!-- <button class="btn btn-lg btn-primary btn-block" @click.prevent.stop="registerBtn">가입하기</button> -->
 			</form><!-- /form -->
-		</div><!-- /card-container -->
+		<!-- /card-container -->
+		</b-card>
 	</div><!-- /container -->
 </template>
 
@@ -47,7 +57,8 @@ export default {
 				nickName: this.nickName,
 			}
 			empRestAPI.post('/user', data)
-				.then(() => console.log("success"))
+				.then(() => {console.log("success")
+				this.$router.push("/");})
 				.catch(() => console.log("catch exception"))
 		}
 	}
@@ -184,4 +195,23 @@ input[type=input],
 .forgot-password:focus {
 	color: rgb(12, 97, 33);
 }
+
+
+.cardCon{
+	width: 380px;
+	background: rgba(255, 255, 255, 0.425);
+}
+
+.btnmodi{
+	margin-top: 20px;
+	width: 150px;
+}
+
+
+.inputarea{
+margin-top: 10px;
+ text-align: left;
+}
+
+
 </style>

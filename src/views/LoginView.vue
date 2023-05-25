@@ -1,26 +1,35 @@
 <template>
 	<div class="container">
-		<div class="card card-container">
+		<b-card class="cardCom">
+		
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
 			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>
 			<form class="form-signin">
 				<span id="reauth-email" class="reauth-email"></span>
-				<input type="id" id="inputEmail" class="form-control" style="margin-bottom: 3%;" placeholder="id"
+
+
+					<p class="inputarea">아이디</p>
+				<input type="id" id="inputEmail" class="form-control" style="margin-bottom: 3%;"
 					v-model.lazy:value="id" required autofocus>
+					<p class="inputarea">비밀번호</p>
 				<input type="password" id="inputPassword" class="form-control" v-model.lazy:value="password"
-					placeholder="Password" required>
+					required>
 				<div id="remember" class="checkbox">
 					<!-- <label>
 						<input type="checkbox" value="remember-me"> Remember me
 					</label> -->
 				</div>
-				<button class="btn btn-lg btn-primary btn-block btn-signin" @click.prevent.stop="login">로그인 하기</button>
+				<b-button class = "btnmodify" variant="success" @click.prevent.stop="login">로그인</b-button>
+				<!-- <button class="btn btn-lg btn-primary btn-block btn-signin" @click.prevent.stop="login">로그인 하기</button> -->
 			</form><!-- /form -->
 			<!-- <a href="#" class="forgot-password">
 				Forgot the password?
 			</a> -->
-		</div><!-- /card-container -->
+			
+		</b-card>
+		<div class="heightmo">
+			</div>
 	</div><!-- /container -->
 </template>
 
@@ -60,7 +69,28 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.heightmo{
+	height: 170px;
+}
+.cardCom{
+	width: 380px;
+	background: rgba(255, 255, 255, 0.425);
+}
+
+.btnmodify{
+	margin-top: 50px;
+	width: 150px;
+	height: 30px;
+}
+
+
+.inputarea{
+margin-top: 10px;
+ text-align: left;
+}
+
+
 .card-container.card {
 	max-width: 350px;
 	padding: 40px 40px;

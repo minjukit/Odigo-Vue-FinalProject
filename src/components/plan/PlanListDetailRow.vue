@@ -6,7 +6,11 @@
 		<td class="middleTd" style="padding-top: 17px;">
 			<a :href="item.place_url" target="_blank" v-if="item.place_url != null">이동하기</a>
 		</td>
-		<td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
+		<td>
+			<b-icon icon="bookmark-x-fill" scale="2" variant="danger" @click="toRemovePlan(item.id)"></b-icon>
+			<!-- <b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제
+			</b-button> -->
+		</td>
 		<RouteModal v-if="showModal" @close="showModal = false" :item="item"></RouteModal>
 	</tr>
 </template>

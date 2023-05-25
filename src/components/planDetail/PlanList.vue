@@ -2,7 +2,8 @@
     <div id="mapList">
         <span style="font-size: 25px;">여행지 목록</span>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table class="table table-striped table-hover">
+            
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col-1" style="right-margin:5px;">번호</th>
@@ -26,11 +27,19 @@
                             <td class="middleTd"><a :href="item.place_url" target="_blank" v-if="item.place_url != null">
                                     이동하기
                                 </a></td>
-                            <td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
+                            <td>
+                                <!-- <b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">
+                           
+                                삭제
+                                </b-button> -->
+                                <b-icon icon="bookmark-x-fill" scale="2" variant="danger" @click="toRemovePlan(item.id)"></b-icon>
+                                </td>
+
                         </tr>
                     </template>
                 </tbody>
             </table>
+            
         </div>
     </div>
 </template>
@@ -95,5 +104,22 @@ export default {
 
 .middleTd {
     vertical-align: middle;
+}
+
+a:link {
+  color: rgb(101, 160, 142);
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: rgb(101, 160, 142);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+  text-decoration: underline;
 }
 </style>

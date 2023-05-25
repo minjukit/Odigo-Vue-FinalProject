@@ -38,10 +38,12 @@ export default {
 				this.id = this.user.loginId
 				this.password = this.user.password
 				this.mail = this.user.mail
+				this.name = this.user.name
 				this.phoneNumber = this.user.phoneNumber
 				this.nickName = this.user.nickName
 				console.log(this.data)
 				console.log(this.user)
+				
 			}).catch()
 	}
 	, methods: {
@@ -55,7 +57,8 @@ export default {
 				nickName: this.nickName,
 			}
 			empRestAPI.put(`/user/${this.user.id}`, data)
-				.then(() => console.log("success"))
+				.then(() => {console.log("success");
+				this.$router.push("/");})
 				.catch(() => console.log("catch exception"))
 		}
 	}

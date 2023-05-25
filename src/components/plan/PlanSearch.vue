@@ -2,14 +2,15 @@
 	<div class="container" style="margin-top: 2%;">
 		<div class="row" style="margin-left: 0%; width:100%">
 			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
-				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
+				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:26%" v-model.lazy:value="keyWord"
 				@keyup.enter="getById" />
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="endDate"
-				v-model="nowStartDate" :value="startDate" class="mb-2" placeholder="시작일"></b-form-datepicker>
-			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" :value="endDate" class="mb-2"
-				v-model="nowEndDate" :min="startDate" placeholder="종료일"></b-form-datepicker>
-			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
+				<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
 				@click="getById">검색</button>
+			<b-form-datepicker style="margin-right: 1%; width:21%" id="example-datepicker1" :min="now" :max="endDate"
+				v-model="nowStartDate" :value="startDate" class="mb-2" placeholder="시작일"></b-form-datepicker>
+			<b-form-datepicker style="margin-right: 1%; width:21%" id="example-datepicker2" :value="endDate" class="mb-2"
+				v-model="nowEndDate" :min="startDate" placeholder="종료일"></b-form-datepicker>
+			
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toDatePage">일별
 				설정</button>
 		</div>

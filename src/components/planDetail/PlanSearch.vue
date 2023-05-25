@@ -1,15 +1,18 @@
 <template>
 	<div class="container" style="margin-top: 2%;">
 		<div class="row" style="margin-left: 0%; width:100%">
+			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
+				@click="getById">검색</button>
+			
 			<input id="search-keyword" class="form-control search" type="search" placeholder="검색어를 입력하세요"
 				aria-label="검색어를 입력하세요" style="margin-right: 1%; width:27.5%" v-model.lazy:value="keyWord"
 				@keyup.enter="getById" />
+			
 			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker1" :min="now" :max="enddate"
 				v-model="startdate" class="mb-2" placeholder="시작일"></b-form-datepicker>
 			<b-form-datepicker style="margin-right: 1%; width:20.1%" id="example-datepicker2" v-model="enddate" class="mb-2"
 				:min="startdate" placeholder="종료일"></b-form-datepicker>
-			<button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
-				@click="getById">검색</button>
+		
 			<button id="btn-search" class="btn btn-outline-success" type="button" style="width: 11%" @click="toDatePage">일별
 				설정</button>
 		</div>

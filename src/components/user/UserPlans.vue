@@ -18,6 +18,9 @@
           </template>
 
           <template #cell(buttons)="row">
+           
+            <!-- <b-icon icon="x-circle" scale="2" variant="danger" @click="deletePlan(row.item.id)"/> -->
+            
             <button class="btn btn-danger btn-sm" @click="deletePlan(row.item.id)">삭제하기</button>
           </template>
         </b-table>

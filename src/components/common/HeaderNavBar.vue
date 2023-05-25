@@ -32,9 +32,8 @@
             <b-dropdown-item
               ><router-link to="/userDetail">내 정보</router-link></b-dropdown-item
             >
-            <b-dropdown-item><router-link to="/userDetail">나의 여행계획</router-link></b-dropdown-item>
-            <b-dropdown-item><router-link to="/userDetail">마이페이지</router-link></b-dropdown-item>
-            <b-dropdown-item><router-link to="/userPlans">나의 계획</router-link></b-dropdown-item>
+            
+            <b-dropdown-item><router-link to="/userPlans">나의 여행계획</router-link></b-dropdown-item>
 
             <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>

@@ -18,7 +18,7 @@
 				</table>
 			</div>
 		</div>
-		<b-button id="plan_save_btn" type="button" class="btn btn-success" @click="toSavePage">저장 페이지로</b-button>
+		<b-button variant="success" id="plan_save_btn" type="button" class="btn btn-success" @click="toSavePage">저장 페이지로</b-button>
 	</div>
 </template>
   
@@ -135,7 +135,7 @@ export default {
 }
 
 #plan_save_btn {
-	width: 101.18%;
+	width: 95%;
 	height: 47px;
 	border-radius: 20px;
 	margin-left: -2.6px;
@@ -152,5 +152,8 @@ export default {
 .table-wrapper-scroll-y {
 	display: block;
 }
+
+
+
 </style>
   
