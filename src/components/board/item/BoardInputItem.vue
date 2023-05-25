@@ -3,9 +3,21 @@
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
 
+         <b-button
+          type="submit"
+          variant="outline-success"
+          class = "btnForm"
+          v-if="this.type === 'register'"
+          >글작성</b-button
+        >
+        <b-button type="submit"  variant="outline-success" class = "btnForm" v-else
+          >글수정</b-button
+        >
+        <b-button type="reset" variant="outline-danger" class = "btnForm">초기화</b-button>
+
         <b-form-group
           id="title-group"
-          label="제목:"
+          
           label-for="title"
   
         >
@@ -18,7 +30,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="content-group" label="내용:" label-for="content">
+        <b-form-group id="content-group" label-for="content">
           <b-form-textarea
             id="content"
             v-model="article.content"
@@ -28,17 +40,7 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button
-          type="submit"
-          variant="primary"
-          class="m-1"
-          v-if="this.type === 'register'"
-          >글작성</b-button
-        >
-        <b-button type="submit" variant="primary" class="m-1" v-else
-          >글수정</b-button
-        >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+       
       </b-form>
     </b-col>
   </b-row>
@@ -113,10 +115,10 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.article.id = 0;
+      
       this.article.title = "";
       this.article.content = "";
-      this.$router.push({ name: "boardList" });
+
     },
     registArticle() {
       console.log(this.article);
@@ -167,6 +169,9 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+.btnForm{
+  margin: 5px 5px 15px 5px;
+  float: right;
+}
 </style>

@@ -1,13 +1,28 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row>
-      <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
-      </b-col>
+      <!-- <b-col>
+          <b-alert  show variant="success" class="mt-3">
+          <h3>QnA</h3></b-alert>
+      </b-col> -->
     </b-row>
-    <b-row class="mb-1">
-      <b-col>
-        <b-card>
+    <b-row>
+    <b-col class="text-right">
+        <b-button
+          variant="outline-success"
+          size="sm"
+          @click="moveModifyArticle"
+          class="mr-2"
+          >글수정</b-button>
+        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
+          >글삭제</b-button
+        >
+      </b-col>
+      </b-row>
+    <b-row class="mb-1 mt-3">
+      
+      <b-col >
+        <b-card class ="cardCom">
         <!-- <b-card
           :header-html=
           "`<div class='text-left'><h3>${article.title} </h3></div>
@@ -18,7 +33,7 @@
           border-variant="light"
           no-body
         > -->
-        <b-card-header class="mb-2 d-flex flex-column">
+        <b-card-header class="mb-2 d-flex flex-column" id ="cardheader">
         
           <div class="d-flex">
             <div class='text-left'><h3>{{article.title}} </h3></div>
@@ -37,30 +52,21 @@
       </b-col>
     </b-row>
     <b-row class="mb-1">
-      <b-col class="mb-1" align-self="center">
+      <b-col class="mb-1 mt-4" align-self="center">
         <b-button variant="outline-secondary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyArticle"
-          class="mr-2"
-          >글수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
-      </b-col>
+    
     </b-row>
      <!--댓글-->
-     <b-button
+  
+     <div class="mt-5">
+     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
+    </div>
+    <b-button
       v-if="isScrolled && showButton"
       @click="scrollToTop"
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
-     <div class="mt-5">
-     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
-    </div>
   </b-container>
 
 </template>
@@ -171,17 +177,27 @@ export default {
 
 .button-float {
   position: fixed;
-  bottom: 80px;
+  bottom: 90px;
   right: 90px;
   font-size: 40%;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(62, 165, 255);
+  background-color: rgb(74, 199, 136);
   border: none;
 }
 .button-float .b-icon{
    scale: 300%;
    margin-top: 1px;
 }
+
+#cardheader{
+  background: rgba(180, 231, 202, 0.342);
+  border-radius: 5px;
+}
+
+.cardCom{
+  height:500px;
+}
+
 </style>

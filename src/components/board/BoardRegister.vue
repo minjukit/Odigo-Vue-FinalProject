@@ -2,7 +2,8 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>글작성</h3></b-alert>
+          <b-alert  show variant="success" class="mt-3">
+          <h3>글쓰기</h3></b-alert>
       </b-col>
     </b-row>
     <board-input-item type="register" />
@@ -20,4 +21,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#cardheader{
+  background: rgba(180, 231, 202, 0.342);
+  border-radius: 5px;
+}
+</style>

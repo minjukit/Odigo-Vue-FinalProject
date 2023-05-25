@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "@/store/index"
+import store from "@/store/index";
 import Constant from "@/common/Constant";
 
 const axiosObj = axios.create({
@@ -7,28 +7,28 @@ const axiosObj = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "REFRESH_TOKEN": "noneToken",
+    REFRESH_TOKEN: "noneToken",
   },
-})
-axiosObj.interceptors.request.use((config)=>{
-  console.log('axios intercepter before!!')
-  console.log(store.state)
-  const token = store.state.accessToken
+});
+axiosObj.interceptors.request.use((config) => {
+  console.log("axios intercepter before!!");
+  console.log(store.state);
+  const token = store.state.accessToken;
   config.headers.ACCESS_TOKEN = token ? token : "";
-return  config;
+  return config;
 });
 
 axiosObj.interceptors.response.use(
-  (response)=>{
-    return response
+  (response) => {
+    return response;
   },
   (error) => {
     if (error.response.status == 403) {
-      store.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION)
-      console.log("refresh")
+      store.commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
+      console.log("refresh");
     }
-    return Promise.reject(error)
-  },
+    return Promise.reject(error);
+  }
 );
 
 export default axiosObj;

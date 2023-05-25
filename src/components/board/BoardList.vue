@@ -1,15 +1,15 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row>
-      <b-col>
-        <b-alert show>
-          <h3>글목록</h3>
+      <!-- <b-col>
+        <b-alert  show variant="success" class="mt-3">
+          <h3>정보</h3>
         </b-alert>
-      </b-col>
+      </b-col> -->
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()">글쓰기</b-button>
+        <b-button variant="success" @click="moveWrite()">글쓰기</b-button>
       </b-col>
     </b-row>
     <b-row>
@@ -45,7 +45,7 @@
         <!--page navigation-->
         <div class="overflow-auto mt-5" id="pagNav">
           <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router
-            align="center"></b-pagination>
+            align="center" class="pagination"></b-pagination>
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -127,7 +127,7 @@ export default {
           sortBy: this.sortBy
         }
       });
-    }
+    },
   },
   computed: {
     rows() {
@@ -165,4 +165,14 @@ export default {
   justify-content: center; 
   align-items: center;
 } */
+
+.pagination > .active > a, 
+.pagination > .active > span, 
+.pagination > .active > a:hover, 
+.pagination > .active > span:hover, 
+.pagination > .active > a:focus, 
+.pagination > .active > span:focus {
+  background: red;
+  border-color: red;
+}
 </style>

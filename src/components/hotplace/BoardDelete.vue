@@ -22,7 +22,7 @@
 import http from "@/util/http-common.js";
 
 export default {
-  name: "BoardDelete",
+  name: "hotPlaceDelete",
    data() {
       return {
         variant: 'light',
@@ -51,6 +51,7 @@ export default {
       }
     },
   created() {
+ 
     http.delete(`/hotplace/${this.$route.params.id}`).then((response) => {
       let msg =response.status;
       if (response.status === 200) {
@@ -59,10 +60,10 @@ export default {
       alert(msg);
       //console.log(msg);
       // 현재 route를 /list로 변경.
-      this.$router.push({ name: "HotPlaceList" });
+      this.$router.push({ name: "hotPlaceList" });
     }).catch((err)=>{
       alert("삭제 처리시 문제가 발생했습니다."+err);
-       this.$router.push({ name: "HotPlaceList" });
+       this.$router.push({ name: "hotPlaceList" });
     }
     );
   },

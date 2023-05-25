@@ -2,9 +2,9 @@
    <b-form @submit="addComment" @reset="onReset">
     <b-card border-variant="0">
       <div class="container">
-        <div class="row" id="row1">
+        <div class="row" >
           <div class="col-10 mx-auto">
-            <b-form-input :placeholder="nickName"></b-form-input>
+            <b-form-input :placeholder="nickName" class="inputName"></b-form-input>
             <b-form-textarea 
               id="textarea-no-resize"
               v-model="comment.content"
@@ -16,9 +16,9 @@
               </div>
     
           <div class="col-10 mx-auto" id="areaBottom">
-              <button class = "btn col-1.5" id="btn1">
+              <!-- <button class = "btn col-1.5" id="btn1">
               <b-icon class ="icon" icon="image" font-scale="1.1"></b-icon>
-              파일</button>
+              파일</button> -->
               <b-button class = "btn col-1.5" id="btn2" type="submit">전송</b-button>
           </div>
       </div>
@@ -49,9 +49,13 @@ import {mapGetters} from 'vuex'
         };
     },
        computed: {
-    ...mapGetters(["nickName", "accessToken"])
+    ...mapGetters(["nickName", "accessToken"]),
+    
   },
-    created() {},
+  props:["boardid"],
+    created() {
+      this.boardId = this.boardid
+    },
     methods: {
      
        addComment(){
@@ -60,7 +64,7 @@ import {mapGetters} from 'vuex'
         .post(`/comment`, {
           accessToken: this.comment.accessToken,
           content: this.comment.content,
-          boardId: this.comment.boardId
+          boardId: this.boardId
         }
         ,{
         headers: {
@@ -105,5 +109,9 @@ import {mapGetters} from 'vuex'
   #btn2{
     float: right;
     margin-right: 7px;
+  }
+
+  .inputName{
+    border: none;
   }
   </style>

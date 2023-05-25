@@ -1,7 +1,11 @@
 <template>
-    <div class="mt-5">
-
-        <h3>hotplace 들어올거다</h3>
+    <div class="homeSlide">
+        <b-card bg-variant="dark" text-variant="white" title="Card Title">
+            <b-card-text>
+                With supporting text below as a natural lead-in to additional content.
+            </b-card-text>
+            <b-button href="#" variant="primary">Go somewhere</b-button>
+        </b-card>
     </div>
 </template>
 
@@ -19,4 +23,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+#homeSlide{
+    margin-top: 10px;
+    padding: 10%;
+}
+</style>

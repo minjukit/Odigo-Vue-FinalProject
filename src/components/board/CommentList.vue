@@ -2,7 +2,7 @@
     <b-container>
         <div>
             <h4 class="text-left">댓글</h4>
-            <comment-input-item></comment-input-item>
+            <comment-input-item :boardid="boardId"></comment-input-item>
         </div>
     <div>
       <b-row v-if="comments.length">
@@ -13,7 +13,7 @@
        
 
       </b-row>
-      <b-col v-else class="text-center">첫 댓글을 작성해주세요</b-col>
+      <b-col v-else class="text-center">첫 댓글을 작성해보세요</b-col>
     </div>
     </b-container>
 </template>
@@ -54,7 +54,7 @@ export default {
 
         getCommentList(){
             console.log("list reload.....")
-            http.get(`/comment`).then(({ data }) => {
+            http.get(`/comment/list/`+this.boardId).then(({ data }) => {
             console.log("get function...then..")
             this.comments = data;
             for(let i =0; i<this.comments.length; i++){

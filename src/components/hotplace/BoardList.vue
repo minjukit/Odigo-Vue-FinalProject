@@ -1,9 +1,13 @@
 <template>
   <b-container class="bv-example-row mt-3">
 
-    <b-row class="mb-1">
-      <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()">글쓰기</b-button>
+   
+    <b-row class="ml-2">
+      <b-col class="text-left">
+        <b-button variant="success" @click="moveWrite()"
+          >글쓰기</b-button
+        >
+
       </b-col>
     </b-row>
     <b-row>
@@ -38,8 +42,9 @@
         </b-table>
         <!--page navigation-->
         <div class="overflow-auto mt-5" id="pagNav">
-          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router
-            align="center"></b-pagination>
+
+          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="center"></b-pagination>
+
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -66,17 +71,19 @@ export default {
       currentPage: 1,
       perPage: 6, // 한페이지 당 보여질 글 개수
       fields: [
-        { key: 'index', label: '글번호' },
+        // { key: 'index', label: '글번호' },
         { key: 'nickName', label: '작성자' },
         { key: 'title', label: '제목' },
         { key: 'count', label: '조회수' },
         { key: 'heart', label: '좋아요수' },
         { key: 'modifiedDate', label: '작성일' },
       ],
-      sortBy: 'dateDesc', // 정렬방식 default
+      sortBy: 'heartDesc', // 정렬방식 default
       sortOption: [
         { value: 'dateDesc', text: '최근순' },
-        { value: 'dateAsc', text: '오래된순' }
+        { value: 'dateAsc', text: '오래된순' },
+        { value: 'heartDesc', text: '인기순' },
+        { value: 'hitDesc', text: '조회수순' }
       ],
 
 
@@ -85,8 +92,11 @@ export default {
   created() {
     this.sortBy = this.$route.params.sortBy;
     this.currentPage = this.$route.params.currentPage;
-    if (this.currentPage === undefined) this.currentPage = 1;
+
+    if(this.currentPage === undefined) this.currentPage =1;
+     if(this.sortBy === undefined) this.sortBy ='heartDesc';
     if (this.sortBy === undefined) this.sortBy = 'dateDesc';
+
     http.get(`/hotplace`).then(({ data }) => {
       this.articles = data;
       for (let i = 0; i < this.articles.length; i++) {
@@ -127,20 +137,27 @@ export default {
       });
     }
   },
-  computed: {
-    rows() {
-      return this.articles.length
-    },
-    filteredData() {
-      let sortedArticles = [...this.articles]; // eslint 부작용 제거 => 배열 복사
-      if (this.sortBy === 'dateDesc') {
-        sortedArticles.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-        console.log(sortedArticles);
-      } else if (this.sortBy === 'dateAsc') {
-        sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
-        console.log(sortedArticles);
-      }
-      return sortedArticles;
+
+    computed: {
+      rows() {
+        return this.articles.length
+      },
+      filteredData(){
+        let sortedArticles = [...this.articles]; // eslint 부작용 제거 => 배열 복사
+        if(this.sortBy === 'dateDesc'){
+          sortedArticles.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='dateAsc'){
+          sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='heartDesc'){
+          sortedArticles.sort((a, b) => b.heart - a.heart);
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='hitDesc'){
+          sortedArticles.sort((a, b) => b.count - a.count);
+          console.log(sortedArticles);
+        }
+        return sortedArticles;
 
     },
     ...mapGetters(["accessToken"])
@@ -159,6 +176,34 @@ export default {
   text-align: left;
 }
 
+.pagination > li > a
+{
+    background-color: white;
+    color: #5A4181;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181 !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181;
+}
 /* #pagNav{
   display: flex; 
   justify-content: center; 

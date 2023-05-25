@@ -26,15 +26,16 @@
           @keyup.13="addComment()"
           ></b-form-textarea>
      
+        <!--
         <button class = "btn">
         <b-icon class ="icon" icon="heart" font-scale="1.1"></b-icon>
         좋아요</button>
-        <button class = "btn">
+         <button class = "btn">
         <b-icon class ="icon" icon="chat-right-text" font-scale="1.1"></b-icon>
         답글</button>
          <button class = "btn">
          <b-icon class ="icon" icon="image" font-scale="1.1"></b-icon>
-        파일</button>
+        파일</button> -->
         </div>
         </div>
         <!-- </div> -->
@@ -63,13 +64,7 @@
       console.log(this.data)
     },
     methods: {
-    //    addComment(){
-    //   this.comments.push({
-    //     id:4,name:this.newComment.name,content:this.newComment.content, time:new Date(),like:0
-    //   })
-    //   this.newComment.name = " "
-    //   this.newComment.content= " "
-    // }
+
       deleteComment(item){
         console.log(item)
         
