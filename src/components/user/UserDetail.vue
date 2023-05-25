@@ -1,82 +1,41 @@
 <template>
- <b-container class="bv-example-row">
+  <b-container class="bv-example-row">
     <b-card class="cardCon">
       <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
-      <img
-        id="profile-img"
-        class="profile-img-card"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-      />
+      <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
       <p id="profile-name" class="profile-name-card"></p>
       <form>
         <p class="inputarea">ID</p>
-        <input
-          type="input"
-          id="input"
-          class="form-control"
-          placeholder="id를 입력해주세요"
-          :value="user.loginId"
-          disabled
-        />
+        <input type="input" id="input" class="form-control" placeholder="id를 입력해주세요" :value="user.loginId" disabled />
 
         <p class="inputarea">이름</p>
-        <input
-          type="input"
-          id="input"
-          class="form-control"
-          placeholder="이름을 입력해주세요"
-          :value="user.name"
-          disabled
-        />
+        <input type="input" id="input" class="form-control" placeholder="이름을 입력해주세요" :value="user.name" disabled />
 
         <p class="inputarea">Email</p>
-        <input
-          type="input"
-          id="input"
-          class="form-control"
-          placeholder="email을 입력해주세요"
-          :value="user.mail"
-          disabled
-        />
+        <input type="input" id="input" class="form-control" placeholder="email을 입력해주세요" :value="user.mail" disabled />
 
         <p class="inputarea">전화번호</p>
-        <input
-          type="input"
-          id="input"
-          class="form-control"
-          placeholder="전화번호를 입력해주세요"
-          :value="user.phoneNumber"
-          disabled
-        />
+        <input type="input" id="input" class="form-control" placeholder="전화번호를 입력해주세요" :value="user.phoneNumber"
+          disabled />
         <p class="inputarea">닉네임</p>
-        <input
-          type="input"
-          id="input"
-          class="form-control"
-          placeholder="닉네임을 입력해주세요"
-          :value="user.nickName"
-          disabled
-        />
-		<b-row>
-			<b-col cols="6">
-        <b-button class="btndetail" variant="success" @click.prevent.stop="toModify"
-          >수정하기</b-button>
-		</b-col>
-			<b-col cols="6">
-        <b-button class="btndetail" variant="success" @click.prevent.stop="toDelete"
-          >삭제하기</b-button
-        >
-		</b-col>
-		</b-row>
+        <input type="input" id="input" class="form-control" placeholder="닉네임을 입력해주세요" :value="user.nickName" disabled />
+        <b-row>
+          <b-col cols="6">
+            <b-button class="btndetail" variant="success" @click.prevent.stop="toModify">수정하기</b-button>
+          </b-col>
+          <b-col cols="6">
+            <b-button class="btndetail" variant="success" @click.prevent.stop="toDelete">삭제하기</b-button>
+          </b-col>
+        </b-row>
       </form>
       <!-- /form -->
     </b-card>
- </b-container>
+  </b-container>
   <!-- /container -->
 </template>
 
 <script>
-import empRestAPI from "@/util/http-common.js";
+import http from "@/util/http-common.js";
 export default {
   data() {
     return {
@@ -91,7 +50,7 @@ export default {
   },
   created() {
     console.log("create");
-    empRestAPI
+    http
       .get("/user/detail")
       .then((response) => {
         this.user = response.data;
@@ -100,6 +59,16 @@ export default {
       .catch();
   },
   methods: {
+    toDelete() {
+      console.log(this.user.id)
+      http.delete(`/user/${this.user.id}`)
+        .then(() => {
+          alert("회원 탈퇴에 성공 했습니다.")
+          this.$router.push("/")
+        }).catch(() => {
+          alert("회원 탈퇴에 실패 했습니다.")
+        })
+    },
     toModify() {
       this.$router.push("/userModify");
     },
