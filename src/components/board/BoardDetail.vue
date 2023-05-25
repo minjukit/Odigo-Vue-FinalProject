@@ -1,10 +1,10 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row>
-      <b-col>
+      <!-- <b-col>
           <b-alert  show variant="success" class="mt-3">
           <h3>QnA</h3></b-alert>
-      </b-col>
+      </b-col> -->
     </b-row>
     <b-row>
     <b-col class="text-right">
@@ -21,8 +21,8 @@
       </b-row>
     <b-row class="mb-1 mt-3">
       
-      <b-col>
-        <b-card>
+      <b-col >
+        <b-card class ="cardCom">
         <!-- <b-card
           :header-html=
           "`<div class='text-left'><h3>${article.title} </h3></div>
@@ -177,7 +177,7 @@ export default {
 
 .button-float {
   position: fixed;
-  bottom: 80px;
+  bottom: 90px;
   right: 90px;
   font-size: 40%;
   width: 40px;
@@ -195,4 +195,9 @@ export default {
   background: rgba(180, 231, 202, 0.342);
   border-radius: 5px;
 }
+
+.cardCom{
+  height:500px;
+}
+
 </style>

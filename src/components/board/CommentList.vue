@@ -13,7 +13,7 @@
        
 
       </b-row>
-      <b-col v-else class="text-center">첫 댓글을 작성해주세요</b-col>
+      <b-col v-else class="text-center">첫 댓글을 작성해보세요</b-col>
     </div>
     </b-container>
 </template>

@@ -36,16 +36,30 @@
             
             <div>
               <b-card>
-                위치 
+                 <b-card-header class="mb-2 d-flex flex-column" id= "bodyheader">
+                {{article.placeName}}
+                 </b-card-header>
                 <div id="map"></div>
-                HOTPLACE: {{article.placeName}}
-                <p>주소: {{article.roadName}}</p>
-               <b-link :href="article.url">상세페이지로 이동</b-link>
-               
+                 <b-card-header class="mb-2 d-flex flex-column" id= "bodyheader">
+                주소
+                 </b-card-header>
+                <p class="ml-3">{{article.roadName}}</p>
+                <div class="mt-5 text-center" >
+               <b-link :href="article.url" >상세페이지로 이동</b-link>
+                </div>
               
               </b-card>
             </div>
-            <div v-html="message"></div>
+            <b-card class="mt-5">
+              <b-card-header class="mb-2 d-flex flex-column" id= "bodyheader">
+                본문
+                 </b-card-header>
+            <div v-html="message" class="ml-3"></div>
+            </b-card >
+            <b-card class="mt-5">
+              <b-card-header class="mb-2 d-flex flex-column" id= "bodyheader">
+                HOT PLACE
+                 </b-card-header>
             <div id="imagebound">
               
               <div v-for ="image in article.fileInfos" :key = "image.id" class="imageelement" >
@@ -53,7 +67,7 @@
               </div>
 
             </div>
-           
+            </b-card>
           </b-card-body>
         </b-card>
       </b-col>
@@ -277,7 +291,7 @@ export default {
 
 .button-float {
   position: fixed;
-  bottom: 80px;
+  bottom: 90px;
   right: 90px;
   font-size: 40%;
   width: 40px;
@@ -314,13 +328,17 @@ export default {
 
 #map{
   width: 80%;
-	height: 200px;
-	margin :auto;
+	height: 300px;
+	margin : auto auto 10px auto;
 	padding: 0;
 }
 
 #cardheader{
   background: rgba(180, 231, 202, 0.342);
+  border-radius: 5px;
+}
+
+.bodyheader{
   border-radius: 5px;
 }
 

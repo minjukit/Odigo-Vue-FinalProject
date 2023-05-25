@@ -16,7 +16,7 @@
             ><router-link to="/region/regionSearch">지역별 여행지</router-link></b-nav-item>
           <b-nav-item><router-link to="/hotplace">핫플레이스</router-link></b-nav-item>
           <b-nav-item><router-link to="/plan/searchPlan">여행계획</router-link></b-nav-item>
-          <b-nav-item><router-link to="/board">공지사항</router-link></b-nav-item>
+          <b-nav-item><router-link to="/board">정보공유</router-link></b-nav-item>
 
           <template v-if="!isLogin">
             <b-nav-item><router-link to="/login">로그인</router-link></b-nav-item>

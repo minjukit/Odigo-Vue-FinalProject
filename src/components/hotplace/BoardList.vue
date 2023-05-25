@@ -178,14 +178,34 @@ export default {
   width: 300px;
   text-align: left;
 }
-.b-pagination{
-  color: green;
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #5A4181;
 }
-b-pagination > li > a:hover{
-  color: rgb(101, 221, 101)!important;
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
 }
-.pagination > li > a {
-  color: red;
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181 !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #5A4181 !Important;
+    border: solid 1px #5A4181;
 }
 /* #pagNav{
   display: flex; 

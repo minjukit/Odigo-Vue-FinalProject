@@ -1,8 +1,30 @@
 <template>
-    <b-container class="bv-example-row mt-3 text-center">
-    
+<section>
+
+    <div id ="homeSlide" >
+
+          <b-carousel
+              id="carousel-1"
+            
+              indicators
+              img-width="1024"
+              img-height="200"
+              style="max-width:1024px; max-height:200px"
+          >
+              <b-carousel-slide 
+              caption="정보를 나눔해보세요"
+              img-src="https://picsum.photos/1024/200/?image=33" 
+              ></b-carousel-slide>
+              <b-carousel-slide
+              caption="궁금한 것을 질문해보세요"
+              img-src="https://picsum.photos/1024/200/?image=93"
+              ></b-carousel-slide>
+          </b-carousel>
+      </div>
+          <b-container class="bv-example-row text-center">
     <router-view></router-view>
   </b-container>
+</section>
 </template>
 
 <script>
@@ -15,12 +37,12 @@ export default {
 </script>
 
 <style scoped>
-.underline-hotpink {
-  display: inline-block;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(99, 167, 255, 0.3) 30%
-  );
+section{
+  display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #ffffff; 
+}
+
+#homeSlide{
+  margin-top: 30px;
+  
 }
 </style>

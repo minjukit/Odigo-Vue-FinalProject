@@ -19,7 +19,7 @@
               <button class = "btn col-1.5" id="btn1">
               <b-icon class ="icon" icon="image" font-scale="1.1"></b-icon>
               파일</button>
-              <b-button class = "btn col-1.5" id="btn2" type="submit">전송</b-button>
+              <b-button class = "btn col-1.5" id="btn2" type="submit">등록</b-button>
           </div>
       </div>
       </div>

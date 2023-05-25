@@ -104,7 +104,7 @@
                 {{placeName}}
               </b-card-header>
               
-              <b-card-body  class="searchBefore" v-if="this.placeName!=''">
+              <b-card-body class="text-center"  style="margin-top: 9%;" v-if="this.placeName!=''">
                  {{roadName}}
                  <br/>  <br/>
                  <b-link :href="article.url">상세페이지로 이동</b-link>
@@ -595,9 +595,9 @@ export default {
 
 .searchContainer{
   display: flex;
-  justify-content: center;
-  justify-items: center;
-    align-items: center;
+  justify-content: stretch;
+  justify-items: stretch;
+    align-items: stretch;
 }
 
 .searchBefore{
