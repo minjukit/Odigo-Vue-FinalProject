@@ -1,19 +1,16 @@
 <template>
-	<tr>
-		<td class="middleTd" style="width:55px;" @click="openModal">{{ index + 1 }}</td>
-		<td class="middleTd" @click="openModal">{{ item.place_name }}</td>
-		<td class="middleTd" @click="openModal">{{ item.phone }}</td>
-		<td class="middleTd" style="padding-top: 17px;">
-			<a :href="item.place_url" target="_blank" v-if="item.place_url != null">이동하기</a>
-		</td>
-		<td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
+	<tr class="row" style="margin:0px;">
+		<td class="col-7" @click="openModal">{{ item.place_name }}</td>
+		<!-- <td class="col-3" @click="openModal">{{ item.phone }}</td> -->
+		<td class="col-2" @click="openModal">{{ item.category_group_name }}</td>
+		<td class="col-3" @click="openModal"><a href="#" onclick="return false;">상세 설정</a></td>
 		<RouteModal v-if="showModal" @close="showModal = false" :item="item"></RouteModal>
 	</tr>
 </template>
 
 <script>
 import RouteModal from '@/components/plan/RouteModal.vue'
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Constant from '@/common/Constant'
 
 
@@ -21,11 +18,11 @@ export default {
 	components: {
 		RouteModal,
 	},
+	computed: {
+		...mapState(["planList"]),
+	},
 	props: ["item", "index"],
 	created() {
-	},
-	computed: {
-		...mapGetters(["planList"])
 	},
 	methods: {
 		openModal() {
@@ -42,13 +39,13 @@ export default {
 			this.$emit("changeIndex");
 		},
 		moveDown(id) {
+			console.log(id)
 			this.moveDownAction(id)
-			console.log(this.planList)
 			this.$emit("changeIndex");
 		},
 		moveUp(id) {
+			console.log(id)
 			this.moveUpAction(id)
-			console.log(this.planList)
 			this.$emit("changeIndex");
 		},
 	},
@@ -62,15 +59,4 @@ export default {
 }
 </script>
 
-<style>
-.b-icon {
-	scale: 100%;
-	width: 30%;
-	margin: 2px;
-	padding: 1px;
-}
-
-.icon {
-	scale: 180%;
-}
-</style>
+<style></style>

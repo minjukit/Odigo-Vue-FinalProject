@@ -8,16 +8,16 @@
                         <th scope="col-1" style="right-margin:5px;">번호</th>
                         <th scope="col-5">장소 이름</th>
                         <th scope="col-3">연락처</th>
+                        <th scope="col-1">장소 분류</th>
                         <th scope="col-1">상세 정보</th>
-                        <th scope="col-1">삭제</th>
                     </tr>
                 </thead>
                 <tbody style="font-size:15px;">
-                    <tr v-if="planList.length == 0">
-                        <td colspan="5">검색 결과가 없습니다.</td>
+                    <tr v-if="modifyList.length == 0">
+                        <td colspan="7">검색 결과가 없습니다.</td>
                     </tr>
                     <template v-else>
-                        <plan-list-detail-row v-for="(item, index) in planList" :key="item.id" :item="item" :index="index"
+                        <plan-list-detail-row v-for="(item, index) in modifyList" :key="item.id" :item="item" :index="index"
                             @changeIndex="changeIndexEvent"></plan-list-detail-row>
                     </template>
                 </tbody>
@@ -32,9 +32,9 @@ import Constant from '@/common/Constant'
 import PlanListDetailRow from './PlanListDetailRow.vue';
 
 export default {
-    name: "PlanList",
+    name: "modifyList",
     computed: {
-        ...mapState(["planList"]),
+        ...mapState(["modifyList"]),
     },
     components: {
         PlanListDetailRow

@@ -2,7 +2,7 @@
   <div id="app">
     <header-nav-bar></header-nav-bar>
     <transition :name="transitionName">
-    <router-view/>
+      <router-view />
     </transition>
     <footer-bar></footer-bar>
   </div>
@@ -21,20 +21,22 @@ export default {
     FooterBar
   },
   data() {
-		return {
-			transitionName: ""
-		}
-	},
-  // watch: {
-  //   $route(to, from) {
-  //     if(to.meta.page == null || from.meta.page == null){
-  //       this.transitionName = "fade";
-  //     }else{
-  //       this.transitionName = to.meta.page > from.meta.page ? "next" : "prev";
-  //     }
-  //     console.log(this.transitionName);
-  //   }
-  // }
+
+    return {
+      transitionName: ""
+    }
+  },
+  watch: {
+    // $route(to, from) {
+    //   if(to.meta.page == null || from.meta.page == null){
+    //     this.transitionName = "fade";
+    //   }else{
+    //     this.transitionName = to.meta.page > from.meta.page ? "next" : "prev";
+    //   }
+    //   console.log(this.transitionName);
+    // }
+  }
+
 };
 </script>
 
@@ -69,6 +71,12 @@ nav a.router-link-exact-active {
 }
 
 /* 전환효과 (Fade) */
-.fade-enter-active, .fade-leave-active { transition: opacity .2s; }
-.fade-enter, .fade-leave-to { opacity: 0; }
-</style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}</style>

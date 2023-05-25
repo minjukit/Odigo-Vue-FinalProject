@@ -18,7 +18,7 @@
 				</table>
 			</div>
 		</div>
-		<b-button id="plan_save_btn" type="button" class="btn btn-success" @click="toSavePage">저장 페이지로</b-button>
+		<b-button id="plan_save_btn" type="button" class="btn btn-success" @click="goBack">돌아가기</b-button>
 	</div>
 </template>
   
@@ -34,7 +34,7 @@ export default {
 		DragListRow,
 	},
 	computed: {
-		...mapGetters(["startDate", "endDate", "planList", "endDate"]),
+		...mapGetters(["startDate", "endDate", "modifyList", "plan", "endDate"]),
 		// planList: {
 		// 	set: function () {
 		// 		console.log("상태변화")
@@ -46,18 +46,15 @@ export default {
 		// }
 	},
 	created() {
-		console.log(this.startDate)
-		console.log(this.endDate)
-
-		let start = new Date(this.startDate)
-		let end = new Date(this.endDate)
+		let start = this.plan.startDate
+		let end = this.plan.endDate
 
 		let diff = Math.abs(end.getTime() - start.getTime());
 		diff = Math.ceil(diff / (1000 * 60 * 60 * 24));
-		// diff = 5;
+
 		this.days = diff + 1;
 
-		let distribution = parseInt(this.planList.length / this.days)
+		let distribution = parseInt(this.modifyList.length / this.days)
 		if (distribution <= 0) {
 			distribution = 1
 		}
@@ -67,8 +64,8 @@ export default {
 		}
 		this.planListForDrag = []
 		console.log(distribution)
-		for (let i = 0; i < this.planList.length; i++) {
-			let now = this.planList[i]
+		for (let i = 0; i < this.modifyList.length; i++) {
+			let now = this.modifyList[i]
 			let gidx = parseInt(i / distribution)
 			if (gidx >= this.groups.length) {
 				gidx = this.groups.length - 1;
@@ -81,7 +78,7 @@ export default {
 			this.planListForDrag.push(now)
 		}
 		// console.log(this.planListForDrag)
-		this.planList = this.planListForDrag
+		this.modifyList = this.planListForDrag
 	},
 	methods: {
 		...mapActions([Constant.FORCE_PLANLIST]),
@@ -89,7 +86,7 @@ export default {
 			const groupItems = {};
 
 			this.groups.forEach(group => {
-				groupItems[group] = this.planList.filter(item => item.group === group);
+				groupItems[group] = this.modifyList.filter(item => item.group === group);
 			});
 
 			return groupItems;
@@ -108,10 +105,11 @@ export default {
 			// this.planList = newItems;
 			this[Constant.FORCE_PLANLIST](newItems)
 			console.log("method")
-			console.log(this.planList)
+			console.log(this.modifyList)
 		},
-		toSavePage() {
-			this.$router.push("/plan/savePlan")
+		goBack() {
+			// this.$router.push(`/planDetail/${this.plan.id}/savePlan`)
+			window.history.back();
 		}
 	},
 	// props(),
@@ -139,12 +137,11 @@ export default {
 	height: 47px;
 	border-radius: 20px;
 	margin-left: -2.6px;
-	margin-top: 32px;
 }
 
 .my-custom-scrollbar {
 	position: relative;
-	height: 585px;
+	height: 615px;
 	margin-top: 15px;
 	overflow: auto;
 }

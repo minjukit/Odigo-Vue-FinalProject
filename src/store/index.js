@@ -18,8 +18,27 @@ export default new Vuex.Store({
     nickName: "",
     startDate: null,
     endDate: null,
+    modifyList : [],
+    plan : null,
+    onModify : false,
+    preModify : false,
   },
   getters: {
+    preModify(state) {
+      return state.preModify;
+    },
+    onModify(state) {
+      return state.onModify;
+    },
+
+    plan(state) {
+      return state.plan;
+    },
+
+    modifyList(state) {
+      return state.modifyList;
+    },
+
     nickName(state) {
       return state.nickName;
     },
@@ -77,7 +96,15 @@ export default new Vuex.Store({
 
     [Constant.SET_PLANS](state, payload) {
       console.log(payload);
-      if (!state.planList.includes(payload)) {
+      let bool = true;
+      for (let i = 0; i < state.planList.length; i++) {
+        if (state.planList[i].id == payload.id) {
+          bool = false;
+        }
+      }
+      
+      console.log(bool)
+      if (bool) {
         payload.content = "";
         payload.cost = "";
         console.log(payload);
@@ -86,7 +113,12 @@ export default new Vuex.Store({
     },
     [Constant.INIT_PLANS](state) {
       state.planList = [];
+      state.startDate = null;
+      state.endDate = null;
+      state.onModify = false;
+      state.plan = null;
     },
+
     [Constant.REMOVE_PLAN_MUTAION](state, payload) {
       for (let i = 0; i < state.planList.length; i++) {
         if (state.planList[i].id == payload) {
@@ -212,6 +244,7 @@ export default new Vuex.Store({
       state.refreshToken = "";
       state.nickName = "";
       state.isLogin = false;
+      state.onModify = false;
     },
 
     [Constant.FORCE_PLANLIST_MUTATION](state, payload) {
@@ -227,6 +260,26 @@ export default new Vuex.Store({
       state.endDate = payload
       console.log(state.endDate)
     },
+
+    [Constant.SET_MODIFYLIST_MUTAION](state, payload) {
+      state.modifyList = payload;
+      console.log(state.modifyList)
+    },
+    [Constant.SET_MODIFY_PLAN_MUTION](state, payload) {
+      state.plan = payload;
+    },
+
+    [Constant.REPLACE_PLANLIST_MUTATION](state, payload) {
+      state.planList = payload
+      state.startDate = state.plan.startDate
+      state.endDate = state.plan.endDate
+      state.onModify = true;
+      state.preModify = true;
+    },
+
+    [Constant.FALSE_PREMODIFY_MUTAION](state) {
+      state.preModify = false;
+    }
 
   },
 
@@ -332,8 +385,24 @@ export default new Vuex.Store({
 
     [Constant.CHECK_REFRESH]({commit}) {
       commit(Constant.CHECK_REFRESH_TOKEN_MUTATION);
-    }
+    },
 
+    [Constant.SET_MODIFYLIST]({commit}, modifyList) {
+      console.log("modify")
+      console.log(modifyList)
+      commit(Constant.SET_MODIFYLIST_MUTAION, modifyList);
+    },
+    [Constant.SET_MODIFY_PLAN]({commit}, plan) {
+      commit(Constant.SET_MODIFY_PLAN_MUTION, plan)
+    },
+
+    [Constant.REPLACE_PLANLIST]({commit}, planlist) {
+      commit(Constant.REPLACE_PLANLIST_MUTATION, planlist)
+    },
+
+    [Constant.FALSE_PREMODIFY]({commit}) {
+      commit(Constant.FALSE_PREMODIFY_MUTAION)
+    }
   },
   modules: {},
   plugins: [createPersistedState()],

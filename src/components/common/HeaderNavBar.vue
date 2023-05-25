@@ -10,7 +10,9 @@
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
+
       <b-collapse id="nav-collapse"  is-nav>
+
         <b-navbar-nav class="ml-auto">
           <b-nav-item
             ><router-link to="/region/regionSearch">지역별 여행지</router-link></b-nav-item>
@@ -26,10 +28,14 @@
             <template #button-content>
               마이페이지
             </template>
+
             <b-dropdown-item
               ><router-link to="/userDetail">내 정보</router-link></b-dropdown-item
             >
             <b-dropdown-item><router-link to="/userDetail">나의 여행계획</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link to="/userDetail">마이페이지</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link to="/userPlans">나의 계획</router-link></b-dropdown-item>
+
             <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -52,11 +58,14 @@ export default {
     ...mapGetters(["isLogin"]),
   },
   methods: {
-    ...mapActions([Constant.GET_CERT, Constant.LOGOUT]),
+    ...mapActions([Constant.GET_CERT, Constant.LOGOUT, Constant.INITIATE_PLANS]),
 
     doLogout() {
-      this[Constant.LOGOUT]();
-      this.$router.push("/index");
+
+      this[Constant.LOGOUT]()
+      this[Constant.INITIATE_PLANS]()
+      this.$router.push('/index')
+
     },
   },
 };
