@@ -8,17 +8,26 @@
                         <th scope="col-1" style="right-margin:5px;">번호</th>
                         <th scope="col-5">장소 이름</th>
                         <th scope="col-3">연락처</th>
+                        <th scope="col-1">장소 분류</th>
                         <th scope="col-1">상세 정보</th>
                         <th scope="col-1">삭제</th>
                     </tr>
                 </thead>
                 <tbody style="font-size:15px;">
                     <tr v-if="planList.length == 0">
-                        <td colspan="5">검색 결과가 없습니다.</td>
+                        <td colspan="7">검색 결과가 없습니다.</td>
                     </tr>
                     <template v-else>
-                        <plan-list-detail-row v-for="(item, index) in planList" :key="item.id" :item="item" :index="index"
-                            @changeIndex="changeIndexEvent"></plan-list-detail-row>
+                        <tr v-for="(item, index) in planList" :key="item.id">
+                            <td class="middleTd" style="width:55px;">{{ index + 1 }}</td>
+                            <td class="middleTd">{{ item.place_name }}</td>
+                            <td class="middleTd">{{ item.phone }}</td>
+                            <td class="middleTd" style="width:100px;">{{ item.category_group_name }}</td>
+                            <td class="middleTd"><a :href="item.place_url" target="_blank" v-if="item.place_url != null">
+                                    이동하기
+                                </a></td>
+                            <td><b-button class="btn btn-danger btn-sm" @click="toRemovePlan(item.id)">삭제</b-button></td>
+                        </tr>
                     </template>
                 </tbody>
             </table>
@@ -27,28 +36,22 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
-import PlanListDetailRow from './PlanListDetailRow.vue';
 
 export default {
     name: "PlanList",
+    // props: ["items"],
     computed: {
-        ...mapState(["planList"]),
-    },
-    components: {
-        PlanListDetailRow
+        ...mapGetters(["planList"]),
     },
     props: {
     },
     data() {
         return {
-            showModal: false,
-            nowItem: {},
         }
     },
     created() {
-
     },
     mounted() {
 
@@ -63,18 +66,6 @@ export default {
             console.log(id);
             this[Constant.REMOVE_PLAN](id)
         },
-        moveDown(id) {
-            console.log(id)
-            this.moveDownAction(id)
-        },
-        moveUp(id) {
-            console.log(id)
-            this.moveUpAction(id)
-        },
-        changeIndexEvent() {
-            console.log("change List Detail.vue----------")
-            this.$emit("changeIndexEvent");
-        }
     },
 };
 </script>

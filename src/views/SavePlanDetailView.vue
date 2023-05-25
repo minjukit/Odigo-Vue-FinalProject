@@ -1,12 +1,15 @@
 <template>
 	<div class="container" style="margin-top: 1%;">
 		<div class="row" style="margin-top: 1%">
-			<div class="col-6">
+			<div class="col-5">
+				<plan-register></plan-register>
+			</div>
+			<div class="col-7">
 				<div id="map"></div>
 			</div>
-			<div class="col-6">
-				<drag-list id="drag"></drag-list>
-			</div>
+		</div>
+		<div class="row">
+			<plan-list-detail style="margin-top: 1.5%" @changeIndexEvent="reloadMap"></plan-list-detail>
 		</div>
 	</div>
 </template>
@@ -14,28 +17,29 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Constant from '@/common/Constant'
-import DragList from '@/components/plan/DragList';
+import PlanRegister from '@/components/planDetail/PlanRegister.vue';
+import PlanListDetail from '@/components/planDetail/PlanListDetail.vue';
+import http from "@/util/http-common.js";
 
 export default {
 	components: {
-		DragList
+		PlanRegister,
+		PlanListDetail,
 	},
+	props: ['id'],
 	created() {
 		window.closeInfoWindowByIndex = this.closeInfoWindowByIndex
 		window.RemovePlanList = this.toRemovePlan
-		this[Constant.INITIATE_ROUTE]()
+		// this[Constant.INITIATE_ROUTE]()
 		// this[Constant.INITIATE_PLANS]()
 	},
 	watch: {
-		planList() {
-			console.log("parent")
-			console.log(this.planList)
-			this.reloadMap()
+		modifyList() {
 			this.startPlanMap()
 		}
 	},
 	computed: {
-		...mapGetters(["items", "data", "planList"]),
+		...mapGetters(["items", "data", "modifyList", "plan"]),
 	},
 	data() {
 		return {
@@ -53,26 +57,43 @@ export default {
 		};
 	},
 	mounted() {
-		this.loadScript();
-		if (window.kakao && window.kakao.maps) {
-			// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
-			this.loadMap();
-		} else {
-			// 없다면 카카오 스크립트 추가 후 맵 실행
-			// this.loadScript();
-		}
+		// this.loadScript();
+		http.get(`/plan/${this.id}`).then((response) => {
+			console.log(response.data)
+			this.convertData(response.data);
+			if (window.kakao && window.kakao.maps) {
+				// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
+
+				this.loadMap();
+			} else {
+				// 없다면 카카오 스크립트 추가 후 맵 실행
+				this.loadScript();
+			}
+			// http.get(`/plan/${this.id}`).then((response) => {
+			// 	console.log(response.data)
+			// 	this.convertData(response.data);
+		}).catch()
+
+		// this.reloadMap()
 	},
 	methods: {
 		// [Constant.GET_ROUTES]() {
 		// 	return this.$store.dispatch(Constant.GET_ROUTES, this.keyWord)
 		// },
-		...mapActions([Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS, Constant.REMOVE_PLAN]),
-
+		...mapActions([Constant.SET_MODIFYLIST, Constant.SET_MODIFY_PLAN, Constant.GET_ROUTES, Constant.INITIATE_ROUTE, Constant.GET_PLANS, Constant.INITIATE_PLANS, Constant.REMOVE_PLAN]),
+		convertData(data) {
+			var routes = data.routes;
+			for (let i = 0; i < routes.length; i++) {
+				routes[i].group = routes[i].day
+				routes[i].id = routes[i].preId
+			}
+			this[Constant.SET_MODIFYLIST](routes)
+			this[Constant.SET_MODIFY_PLAN](data)
+		},
 		toRemovePlan(idx) {
-			console.log(this.planList[idx]);
-			this[Constant.REMOVE_PLAN](this.planList[idx].id)
-			this.setPolyLine();
-			this.makeList(this.planList)
+			console.log(this.modifyList[idx]);
+			this[Constant.REMOVE_PLAN](this.modifyList[idx].id)
+			// this.setPolyLine();
 		},
 
 		addPlanList(idx) {
@@ -111,7 +132,7 @@ export default {
 			};
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-			this.startPlanMap()
+
 
 		},
 
@@ -129,8 +150,7 @@ export default {
 		},
 		startPlanMap() {
 			this.closeInfoWindow()
-
-			this.makeList(this.planList)
+			this.makeList(this.modifyList)
 		},
 
 		makeList(data) {
@@ -187,6 +207,8 @@ export default {
 						'       <div class="body">' +
 						'           <div class="desc">' +
 						area[i].address_name +
+						+
+						`</div>` +
 						'	  </div>'// 인포윈도우에 표시할 내용
 				});
 				infowindow.setZIndex(11)
@@ -222,9 +244,10 @@ export default {
 			this.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
 		},
 		toSavePage() {
-			console.log(this.planList.length)
+			console.log(this.modifyList.length)
 		},
 		setPolyLine() {
+
 			this.linePositionpath = [];
 			this.polyline = new window.kakao.maps.Polyline({
 				map1: this.map,
@@ -250,8 +273,7 @@ export default {
 				position: position, // 마커를 표시할 위치
 				title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 				clickable: true,
-			});
-			// console.log(markerImage);
+			})
 
 			marker.setMap(this.map); // 지도 위에 마커를 표출합니다
 			//this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
@@ -268,20 +290,10 @@ export default {
 
 <style scoped>
 #map {
-	width: 105%;
-	height: 680px;
+	width: 96%;
+	height: 500px;
 	margin-top: 1%;
-	margin-left: -20px;
+	margin-left: -10px;
 	padding: 0;
-}
-
-#drag {
-	height: 630px;
-	border-radius: 30px;
-	border-style: solid;
-	border-width: 2.5px;
-	border-color: rgba(0, 0, 0, .3);
-	padding: 5px 0px 5px 0px;
-	margin-top: 6px;
 }
 </style>

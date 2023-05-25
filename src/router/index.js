@@ -165,6 +165,8 @@ const routes = [
           import(/* webpackChunkName: "board" */ "@/components/hotplace/BoardDelete.vue"),
       },
     ],
+  },
+  {
     path: "/userDetail",
     name: "userDetail",
     component: () => import("@/components/user/UserDetail.vue"),
@@ -175,11 +177,36 @@ const routes = [
     component: () => import("@/components/user/UserModify.vue"),
   },
   {
-    path: "/userPlan",
-    name: "userPlan",
-    component: () => import("@/components/user/UserModify.vue"),
-
+    path: "/userPlans",
+    name: "userPlans",
+    component: () => import("@/components/user/UserPlans.vue"),
   },
+
+  {
+    path: "/planDetail",
+    name: "userPlans",
+    component: () => import("@/views/PlanDetailView.vue"),
+    children : [
+      {
+        path: "searchPlan",
+        name: "searchPlan",
+        component: () =>
+          import(/* webpackChunkName: "region" */ "@/components/planDetail/PlanSearch.vue"),
+      },
+      {
+        path: "savePlan/:id",
+        name: "savePlan",
+        props:true,
+        component: () => import(/* webpackChunkName: "region" */ "@/views/SavePlanDetailView.vue"),
+      },
+      {
+        path: "DatePlan",
+        name: "DatePlan",
+        component: () => import(/* webpackChunkName: "region" */ "@/views/DatePlanDetailView.vue"),
+      },
+    ],
+  },
+
 ];
 
 const router = new VueRouter({
