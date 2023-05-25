@@ -58,14 +58,15 @@
     
     </b-row>
      <!--댓글-->
-     <b-button
+  
+     <div class="mt-5">
+     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
+    </div>
+    <b-button
       v-if="isScrolled && showButton"
       @click="scrollToTop"
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
-     <div class="mt-5">
-     <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
-    </div>
   </b-container>
 
 </template>
@@ -182,7 +183,7 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(62, 165, 255);
+  background-color: rgb(74, 199, 136);
   border: none;
 }
 .button-float .b-icon{

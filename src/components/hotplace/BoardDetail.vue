@@ -39,15 +39,17 @@
                 위치 
                 <div id="map"></div>
                 HOTPLACE: {{article.placeName}}
-              <p>주소: {{article.roadName}}</p>
-              <b-link href="#foo">{{article.url}}</b-link>
+                <p>주소: {{article.roadName}}</p>
+               <b-link :href="article.url">상세페이지로 이동</b-link>
+               
+              
               </b-card>
             </div>
             <div v-html="message"></div>
             <div id="imagebound">
               
               <div v-for ="image in article.fileInfos" :key = "image.id" class="imageelement" >
-                <img :src="image.originFile"  max-width= "1000" height="auto">
+                <img :src="image.originFile"  width = "100%" height="100%">
               </div>
 
             </div>
@@ -72,14 +74,15 @@
       </b-row>
     
     <!--댓글-->
+    
+    <div class="mt-5">
+    <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
+    </div>
     <b-button
       v-if="isScrolled && showButton"
       @click="scrollToTop"
       class="button-float"
     ><b-icon icon="arrow-up"></b-icon></b-button>
-    <div class="mt-5">
-    <comment-list :boardId = "Number(this.$route.params.id)"></comment-list>
-    </div>
   </b-container>
 
 </template>
@@ -115,13 +118,13 @@ export default {
   mounted() {
     this.loadScript(); // 맵 로딩지연되는거 
   
-  // if (window.kakao && window.kakao.maps) {
-	// 		// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
-	// 		this.loadMap();
-	// 	} else {
-	// 		// 없다면 카카오 스크립트 추가 후 맵 실행
-	// 		this.loadScript();
-	// 	}
+  if (window.kakao && window.kakao.maps) {
+			// 카카오 객체가 있고, 카카오 맵그릴 준비가 되어 있다면 맵 실행
+			this.loadMap();
+		} else {
+			// 없다면 카카오 스크립트 추가 후 맵 실행
+			this.loadScript();
+		}
     window.addEventListener('scroll', this.handleScroll);
   },
   created() {
@@ -280,7 +283,7 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(62, 165, 255);
+  background-color: rgb(74, 199, 136);
   border: none;
 }
 .button-float .b-icon{
@@ -293,7 +296,6 @@ export default {
   padding: 10px;
   overflow:hidden;
 	height:auto;
-  min-height: 150px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -303,10 +305,11 @@ export default {
 }
 
 .imageelement{
-  border: 1px solid  rgb(162, 205, 255);
+  
   display: flex;
   align-content: center;
   align-items: center;
+  
 }
 
 #map{

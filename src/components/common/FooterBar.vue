@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar variant="light" type="image.png" class="navContainer">
+    <b-navbar variant="light" type="image.png" id="navContainer">
       <b-navbar-brand
         ><router-link to="/">
           <img id="imgLogo" src="@/assets/logo2.png" class="d-inline-block align-top" alt="ODIGO" />
@@ -51,14 +51,13 @@ export default {
   margin-right: 190px;
 }
 
-.navContainer{
+#navContainer{
+  margin-top: 60px;
   background-color: #f2f2f2; /* 회색 연한 배경색 */
   box-shadow: 0 4px 1px rgba(12, 109, 85, 0.185); /* 그림자 설정 */
 }
 
-img {
-  width: 80px;
-}
+
 
 .header {
   padding: 30px;
@@ -86,7 +85,9 @@ b-nav-item {
 }
 
 #imgLogo {
+
   margin-left: 190px;
+  width: 80px;
   scale: 130%;
 }
 

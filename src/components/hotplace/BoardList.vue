@@ -52,7 +52,7 @@
         </b-table>
         <!--page navigation-->
         <div class="overflow-auto mt-5" id="pagNav">
-          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="center"></b-pagination>
+          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" use-router align="center"  style="color: green;" class="pagination" ></b-pagination>
         </div>
       </b-col>
       <b-col v-else class="text-center">글 목록이 없습니다.</b-col>
@@ -90,7 +90,8 @@ export default {
       sortOption: [
         { value: 'dateDesc', text: '최근순' },
         { value: 'dateAsc', text: '오래된순' },
-        { value: 'heartDesc', text: '인기순' }
+        { value: 'heartDesc', text: '인기순' },
+        { value: 'hitDesc', text: '조회수순' }
       ],
       
        
@@ -154,7 +155,10 @@ export default {
           sortedArticles.sort((a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
           console.log(sortedArticles);
         }else if(this.sortBy ==='heartDesc'){
-          sortedArticles.sort((a, b) => new Date(b.heart).getTime() - new Date(a.heart).getTime());
+          sortedArticles.sort((a, b) => b.heart - a.heart);
+          console.log(sortedArticles);
+        }else if(this.sortBy ==='hitDesc'){
+          sortedArticles.sort((a, b) => b.count - a.count);
           console.log(sortedArticles);
         }
         return sortedArticles;
@@ -174,7 +178,15 @@ export default {
   width: 300px;
   text-align: left;
 }
-
+.b-pagination{
+  color: green;
+}
+b-pagination > li > a:hover{
+  color: rgb(101, 221, 101)!important;
+}
+.pagination > li > a {
+  color: red;
+}
 /* #pagNav{
   display: flex; 
   justify-content: center; 

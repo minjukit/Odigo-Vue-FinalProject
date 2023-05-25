@@ -15,8 +15,10 @@
         <b-button type="submit" variant="outline-success" class = "btnForm" v-else
           >글수정</b-button
         >
-        <b-button type="reset"  variant="outline-danger" class = "btnForm">초기화</b-button>
-
+        <b-button type="reset"  variant="outline-danger" class = "btnForm"
+         v-if="this.type === 'register'">초기화</b-button>
+        <b-button @click ="moveList"  variant="outline-secondary" class = "btnForm"
+         v-else>글목록</b-button>
 
 
         <b-form-group
@@ -86,7 +88,7 @@
   
         <div id="imagebound">
           <div v-for ="image in images" :key = "image.url" class="imageelement" >
-            <img :src="image.url"  max-width= "1000" height="auto">
+            <img :src="image.url" class="containImage">
           </div>
         </div>
 
@@ -96,12 +98,19 @@
         </b-button>  
         <b-row>
            <b-col>
-            <b-card style="margin-top: 3%;" v-if="this.placeName!=''">
-              <b-card-header id="cardheader" >
+            <b-card style="margin-top: 3%; height:280px" class="searchContainer">
+              
+              <b-card-header id="cardheader" v-if="this.placeName!=''">
                 {{placeName}}
               </b-card-header>
-              <b-card-body>
+              
+              <b-card-body  class="searchBefore" v-if="this.placeName!=''">
                  {{roadName}}
+                 <br/>  <br/>
+                 <b-link :href="article.url">상세페이지로 이동</b-link>
+              </b-card-body>
+              <b-card-body class="searchBefore" v-else >
+                검색 후 위치를 선택해주세요
               </b-card-body>
             </b-card>
            </b-col>
@@ -114,7 +123,7 @@
             <button id="btn-search" class="btn btn-outline-success" type="button" style="margin-right: 1%; width :14%"
               @click="getById">검색</button>
           </div>
-          <div class="row">
+          <div class="row" style="margin-top: 5%;">
             <div class="col-12">
               <div id="map"></div>
             </div>
@@ -142,6 +151,7 @@ export default {
         user: "",
         title: "",
         content: "",
+        fileInfo: [],
          
       },
       isUserid: false,
@@ -188,10 +198,29 @@ export default {
 
     if (this.type === "modify") {
       console.log(this.type)
-      http.get(`/board/${this.$route.params.id}`).then(({ data }) => {
+      http.get(`/hotplace/${this.$route.params.id}`).then(({ data }) => {
         console.log(data)
         this.article = data
+        
+        this.roadName = this.article.roadName
+        this.placeName = this.article.placeName
+        this.x = this.article.lat
+        this.y = this.article.lon
+        this.url = this.article.url
+
+        for(let i =0;i< this.article.fileInfos.length; i++){
+          let imageData = {
+              url: this.article.fileInfos[i].originFile
+            };
+            this.images.push(imageData)
+        }
+        
+        this.loadMaker(this.article.lat, this.article.lon); 
+       
+      // console.log(this.items[idx])
       });
+     
+      
     }
 
   },
@@ -220,10 +249,12 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.article.id = 0;
       this.article.title = "";
       this.article.content = "";
-      this.$router.push({ name: "hotPlaceList" });
+      this.roadName = "";
+      this.placeName = "";
+      this.image = "";
+      //this.$router.push({ name: "hotPlaceList" });
     },
     registArticle() {
       console.log(this.article);
@@ -263,7 +294,7 @@ export default {
     modifyArticle() {
       
       http
-        .put(`/board/${this.article.id}`,  {
+        .put(`/hotplace/${this.article.id}`,  {
           id: this.article.id,
           //userid: this.article.userid,
           title: this.article.title,
@@ -359,10 +390,11 @@ export default {
 
 			this.map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
 		},
-    loadMaker() {
+    loadMaker(x,y) {
+      
 			const markerPosition = new window.kakao.maps.LatLng(
-				33.450701,
-				126.570667
+				x,
+				y
 			);
 
 			const marker = new window.kakao.maps.Marker({
@@ -518,19 +550,17 @@ export default {
 #imagebound {
   width: 100%;
   padding: 10px;
-  overflow:hidden;
-	height:auto;
+  overflow: hidden;
   min-height: 150px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: 30px auto auto auto;
+  margin: 20px auto auto auto;
   border-radius: 1%;
   border: 1px solid rgb(218, 218, 218);
 }
 
 .imageelement{
-  border: 1px solid  rgb(162, 205, 255);
   display: flex;
   align-content: center;
   align-items: center;
@@ -555,5 +585,23 @@ export default {
 #cardheader{
   background: rgba(180, 231, 202, 0.342);
   border-radius: 5px;
+}
+
+.containImage{
+  padding: 10px;
+  width: 400px;
+  object-fit: cover
+}
+
+.searchContainer{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+    align-items: center;
+}
+
+.searchBefore{
+  text-align: center;
+  margin-top: 75px ;
 }
 </style>

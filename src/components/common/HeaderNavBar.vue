@@ -73,9 +73,6 @@ export default {
   box-shadow: 0 4px 1px rgba(12, 109, 85, 0.185); /* 그림자 설정 */
 }
 
-img {
-  width: 80px;
-}
 
 .header {
   padding: 30px;
@@ -103,6 +100,7 @@ b-nav-item {
 }
 
 #imgLogo {
+  width:80px;
   margin-left: 190px;
   scale: 130%;
 }
