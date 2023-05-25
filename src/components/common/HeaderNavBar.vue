@@ -12,7 +12,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item><router-link to="/region/regionSearch">지역별 여행지</router-link></b-nav-item>
-          <b-nav-item><router-link to="/test">핫플레이스</router-link></b-nav-item>
+          <b-nav-item><router-link to="/hotplace">핫플레이스</router-link></b-nav-item>
           <b-nav-item><router-link to="/plan/searchPlan">여행계획</router-link></b-nav-item>
           <b-nav-item><router-link to="/board">공지사항</router-link></b-nav-item>
         </b-navbar-nav>
@@ -33,7 +33,7 @@
               <em>User</em>
             </template>
             <b-dropdown-item><router-link to="/userDetail">마이페이지</router-link></b-dropdown-item>
-            <b-dropdown-item><router-link to="/userDetail">나의 계획</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link to="/userPlans">나의 계획</router-link></b-dropdown-item>
             <b-dropdown-item @click="doLogout">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -54,10 +54,11 @@ export default {
     ...mapGetters(["isLogin"]),
   },
   methods: {
-    ...mapActions([Constant.GET_CERT, Constant.LOGOUT]),
+    ...mapActions([Constant.GET_CERT, Constant.LOGOUT, Constant.INITIATE_PLANS]),
 
     doLogout() {
       this[Constant.LOGOUT]()
+      this[Constant.INITIATE_PLANS]()
       this.$router.push('/index')
     },
   },

@@ -19,7 +19,14 @@
                             v-model.lazy="planDetail"></textarea>
                     </tr>
                     <tr>
-                        <button id="plan_save_btn" type="button" class="btn btn-success" @click="savePlan">계획 저장하기</button>
+                        <template v-if="!onModify">
+                            <button id="plan_save_btn" type="button" class="btn btn-success" @click="savePlan">계획
+                                저장하기</button>
+                        </template>
+                        <template v-else>
+                            <button id="plan_save_btn" type="button" class="btn btn-success" @click="modifyPlan">계획
+                                수정하기</button>
+                        </template>
                     </tr>
                 </tbody>
             </table>
@@ -40,40 +47,70 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["planList", "accessToken"]),
+        ...mapGetters(["planList", "accessToken", "startDate", "endDate", "onModify", "plan"]),
     },
     created() {
+        if (this.onModify == true) {
+            this.planDetail = this.plan.description
+            this.planName = this.plan.name
+        }
     },
     mounted() {
 
     },
     methods: {
-        ...mapActions([Constant.CHECK_REFRESH]),
+        ...mapActions([Constant.CHECK_REFRESH, Constant.INITIATE_PLANS]),
         pickSpot(id) {
             var checkedId = id;
             this.$emit('checkedIdFromChild', checkedId)
         },
+
         savePlan() {
             const data = {
                 name: this.planName,
                 description: this.planDetail,
                 login_id: "test",
-                routes: this.planList
+                routes: this.planList,
+                start_date: new Date(this.startDate),
+                end_date: new Date(this.endDate),
             }
             console.log(data)
             empRestAPI.post('/plan', data, {
-                headers: {
-                    ACCESS_TOKEN: this.accessToken,
-                    REFRESH_TOKEN: "NoneToken"
-                },
             })
-                .then(() => console.log("success"))
-                .catch((data) => {
-                    if (data.response.status == 403) {
-                        this[Constant.CHECK_REFRESH]();
-                        console.log("checkRefresh");
-                        this.savePlan();
-                    }
+                .then(() => {
+                    console.log("success")
+                    this[Constant.INITIATE_PLANS]()
+                    this.$router.push("/")
+                })
+                .catch(() => {
+                    console.log("저장에 실패 하였습니다.")
+                })
+        },
+
+        modifyPlan() {
+            const data = {
+                name: this.planName,
+                description: this.planDetail,
+                login_id: "test",
+                routes: this.planList,
+                start_date: new Date(this.startDate),
+                end_date: new Date(this.endDate),
+                id_for_delete: this.plan.id
+            }
+            console.log(data)
+            empRestAPI.post('/plan/modify', data, {
+            })
+                .then(() => {
+                    console.log("success")
+                    this[Constant.INITIATE_PLANS]()
+                    this.$router.push("/")
+                })
+                .catch((/**data**/) => {
+                    // if (data.response.status == 403) {
+                    //     this[Constant.CHECK_REFRESH]();
+                    //     console.log("checkRefresh");
+                    //     this.savePlan();
+                    // }
                     console.log("저장에 실패 하였습니다.")
                 })
         }

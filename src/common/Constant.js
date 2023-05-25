@@ -42,5 +42,13 @@ export default Object.freeze(
         SET_STARTDATE_MUTATION: "setStartDateMutation",
         SET_ENDDATE_MUTATION: "setEedDateMutation",
         CHECK_REFRESH: "checkRefresh",
+        SET_MODIFYLIST : "setModifyList",
+        SET_MODIFYLIST_MUTAION : "setModifyListMutation",
+        SET_MODIFY_PLAN : "setModifyPlan",
+        SET_MODIFY_PLAN_MUTION : "setModifyPlanMutation",
+        REPLACE_PLANLIST : "replacePlanList",
+        REPLACE_PLANLIST_MUTATION : "replacePlanList",
+        FALSE_PREMODIFY : "falsePremodify",
+        FALSE_PREMODIFY_MUTAION : "falsePremodifyMutation",
     }
 );
