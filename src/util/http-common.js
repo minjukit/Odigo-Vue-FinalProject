@@ -14,7 +14,7 @@ axiosObj.interceptors.request.use((config) => {
   console.log("axios intercepter before!!");
   console.log(store.state);
   const token = store.state.accessToken;
-  config.headers.ACCESS_TOKEN = token ? token : "";
+  config.headers.ACCESS_TOKEN = token ? token : "noneToken";
   return config;
 });
 
